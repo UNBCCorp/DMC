@@ -1,0 +1,92 @@
+<?php
+// module/Application/view/application/index/otros.phtml
+
+// 1. Establecemos el título para la pestaña del navegador
+$this->headTitle('Mapas de Percentiles - Región de Valparaíso');
+
+// 2. Añadimos todos los scripts JS necesarios para esta página.
+// Se cargarán al final del <body>.
+$this->inlineScript()
+    ->appendFile($this->basePath('/js/leaflet/leaflet.js'))
+    ->appendFile($this->basePath('/js/highcharts/highcharts.js'))
+    ->appendFile($this->basePath('/js/highcharts/map.js'))
+    ->appendFile($this->basePath('/js/highcharts/pattern-fill.js'))
+    ->appendFile($this->basePath('/js/turf/turf.min.js'))
+    ->appendFile($this->basePath('/js/easyprint/bundle.min.js'))
+    ->appendFile($this->basePath('/js/mapasPercintil.js'));
+?>
+<div class="container-fluid main-container">
+    <h1>Monitor de Sequías - Mapas de Percentiles (Región de Valparaíso)</h1>
+    <hr>
+    <div class="row">
+        <div class="col-md-2">
+            <?= $this->partial('application/partial/sidebar.phtml', ['activeRoute' => 'otros-indices']) ?>
+        </div>
+
+        <div class="col-md-10">
+            <div id="seccion-mapas-percentiles" class="content-section active m-0">
+                <div class="card">
+                    <div class="card-header bg-cabezera text-white">
+                        <h5>Mapas de Percentiles - Región de Valparaíso (DEMO)</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Mapa de Percentil de Precipitación</h6>
+                                <div id="map-percentil-precip" class="map-container">
+                                    <div class="map-loading-placeholder">Cargando mapa de precipitación...</div>
+                                </div>
+                                <div class="export-button-container">
+                                    <button class="btn btn-sm btn-primary export-pdf-btn" data-map-id="map-percentil-precip">
+                                        <span> Descargar Explicación </span> <i class="fa fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Mapa de Percentil de Temperatura Media</h6>
+                                <div id="map-percentil-temp" class="map-container">
+                                    <div class="map-loading-placeholder">Cargando mapa de temperatura...</div>
+                                </div>
+                                <div class="export-button-container">
+                                    <button class="btn btn-sm btn-primary export-pdf-btn" data-map-id="map-percentil-temp">
+                                        <span> Descargar Explicación </span> <i class="fa fa-arrow-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.export-pdf-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const mapId = this.getAttribute('data-map-id');
+
+
+                const pdfMapping = {
+                    'map-percentil-precip': 'FICHAS_INDICES_PS.pdf',
+                    'map-percentil-temp': 'FICHAS_INDICES_PT.pdf',
+                };
+                const pdfFileName = pdfMapping[mapId];
+
+                if (pdfFileName) {
+                    const pdfPath = `/pdf/${pdfFileName}`;
+
+                    const link = document.createElement('a');
+                    link.href = pdfPath;
+                    link.download = pdfFileName;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } else {
+                    console.error('No se encontró un PDF mapeado para el ID de mapa:', mapId);
+                    alert('No se encontró el archivo PDF explicativo para este mapa.');
+                }
+            });
+        });
+    });
+</script>

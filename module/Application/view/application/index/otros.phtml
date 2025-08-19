@@ -1,0 +1,59 @@
+<?php
+
+$this->headTitle('Otros Índices de Sequía');
+
+$this->inlineScript()
+    ->appendFile($this->basePath('/js/leaflet/leaflet.js'))
+    ->appendFile($this->basePath('/js/highcharts/highcharts.js'))
+    ->appendFile($this->basePath('/js/highcharts/map.js'))
+    ->appendFile($this->basePath('/js/highcharts/pattern-fill.js'))
+    ->appendFile($this->basePath('/js/turf/turf.min.js'))
+    ->appendFile($this->basePath('/js/jspdf/jspdf.umd.min.js'))
+    ->appendFile($this->basePath('/js/graph_index.js'))
+    ->appendFile($this->basePath('/js/descarga_index.js'))
+    ->appendFile($this->basePath('/js/highcharts-theme.js'))
+    ->appendFile($this->basePath('/js/otros.js'));
+?>
+
+<div class="container-fluid main-container">
+    <h1>Monitor de Sequías - Otros Índices (Región de Valparaíso)</h1>
+    <hr>
+
+    <div class="row">
+        <div class="col-md-2">
+            <?= $this->partial('application/partial/sidebar.phtml', ['activeRoute' => 'otros-indices']) ?>
+        </div>
+
+   <div class="col-md-10">
+                    <div class="card">
+                        <div class="card-header bg-cabezera text-white">
+                            <h5>Índices Regionales de Sequía</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <h5>Propagación temporal de la sequía SPI</h5>
+                                    <div id="container-spi" class="chart-container" style="height: 100vh;">
+                                        <div class="loading-placeholder">Cargando SPI...</div>
+                                    </div>
+                                    <div class="export-button-container">
+                                        <button id="descargar-spi-pdf" class="btn btn-primary mt-3">Descargar Explicación</button>                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <h5>Índice estandarizado de Evapotranspiración (SPEI)</h5>
+                                    <div id="container-spei" class="chart-container" style="height: 100vh;">
+                                        <div class="loading-placeholder">Cargando SPEI...</div>
+                                    </div>
+                                    <div class="export-button-container">
+                                        <button id="descargar-spei-pdf" class="btn btn-primary mt-3">Descargar Explicación</button>
+                                    </div>
+                                </div>
+                            </div>
+          
+
+                        </div>
+                    </div>
+                </div>
+    </div>
+</div>

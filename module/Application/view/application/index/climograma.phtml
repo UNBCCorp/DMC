@@ -1,0 +1,75 @@
+<?php // module/Application/view/application/index/monitor.phtml 
+?>
+
+<?php
+// Le decimos a la vista cuál es el título de esta página
+$this->headTitle('Monitor de Sequías - Climogramas ');
+
+// Añadimos los scripts JS específicos para esta página
+$this->inlineScript()
+    ->prependFile('https://climatologia.meteochile.gob.cl/js/bootstrap.min.js')
+    ->appendFile('https://climatologia.meteochile.gob.cl/js/MegaNavbarBS5.js')
+   ->appendFile($this->basePath('/js/leaflet/leaflet.js'))
+    ->appendFile($this->basePath('/js/highcharts/highcharts.js'))
+    ->appendFile($this->basePath('/js/highcharts/map.js'))
+    ->appendFile($this->basePath('/js/highcharts/pattern-fill.js'))
+    ->appendFile($this->basePath('/js/turf/turf.min.js'))
+    ->appendFile($this->basePath('/js/easyprint/bundle.min.js'))
+    ->appendFile($this->basePath('/js/mapClimograma.js'));
+?>
+<div class="container-fluid main-container">
+         <h1>Monitor de Sequías - Climogramas (Región de Valparaíso)</h1>
+         <hr>
+        <div class="row">
+        <div class="col-md-2">
+            <!-- Esta es la forma de incluir tu sidebar en Laminas -->
+            <?= $this->partial('application/partial/sidebar.phtml') ?>
+        </div>
+             <div class="col-md-10">
+                 <div id="seccion-climogramas" class="content-section active m-0">
+                      <div class="card">
+                         <div class="card-header bg-cabezera">
+                             <h5>Climogramas de la Región de Valparaíso</h5>
+                         </div>
+                         <div class="card-body">
+                             <div class="row">
+                                 <div class="col-lg-4 col-md-12 mb-4"style="padding:0px!important;">
+                                     <!-- <h6 class="section-title text-center">Climograma Regional</h6> -->
+                                     <div id="climogram-chart-container-fijo">
+                                        <div class="chart-loading-placeholder">Cargando climograma regional...</div>
+                                     </div>
+                                     <p class="text-center subtitle-note"><small id="climogram-fijo-subtitle">Promedio Valparaíso (Datos DEMO)</small></p>
+                                 </div>
+
+                                 <div class="col-lg-8 col-md-12">
+                                     <!-- <h6 class="section-title text-center">Climogramas por Estación</h6> -->
+                                     <div class="row">
+                                         <div class="col-md-6 mb-3" style="padding:0px!important;">
+                                             <div id="station-map-highcharts-container">
+                                                 <div class="map-loading-placeholder">Cargando mapa de estaciones...</div>
+                                             </div>
+                                             <p class="text-center subtitle-note"><small>Haz clic en una estación en el mapa para ver su climograma.</small></p>
+                                         </div>
+                                 
+                                         <div class="col-md-6 mb-3" style="padding:0px!important;">
+                                             <div id="select-station-prompt"> <p>Seleccione una estación en el mapa para visualizar su climograma detallado aquí.</p>
+                                             </div>
+                                 
+                                             <div id="climogram-dinamico-wrapper" style="display: none;">
+                                                 <div id="climogram-chart-container-dinamico"style="padding:0px!important;">
+                                                     </div>
+                                                 <div id="climogram-dinamico-subtitle" class="text-center subtitle-note">
+                                                     </div>
+                                             </div>
+                                         </div>
+                                     </div>
+                                 </div>
+                             </div>
+                             <hr>
+                            
+                         </div>
+                      </div>
+                 </div>
+            </div>
+        </div>
+    </div>

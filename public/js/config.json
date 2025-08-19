@@ -1,0 +1,24 @@
+{
+    "MAPA_COMUNA_A_ESTACIONES": {
+        "SAN FELIPE": ["E000320019"],
+        "PETORCA": ["E000V00035"],
+        "CABILDO": ["E000V00174", "E000V00033"],
+        "PAPUDO": ["E000V00034"],
+        "LA LIGUA": ["E000V00175"],
+        "PUTAENDO": ["E000V00041"],
+        "CASABLANCA": ["E000V00176", "E000V00029", "E000V00177"],
+        "PANQUEHUE": ["E000V00040"],
+        "QUINTERO": ["E000V00031"],
+        "CALERA": ["E000V00037"],
+        "LA CRUZ": ["E000320028"],
+        "PUCHUNCAVI": ["E000V00032"],
+        "QUILLOTA": ["E000V00036"],
+        "CONCON": ["E000V00030"],
+        "LIMACHE": ["E000V00042"],
+        "VALPARAISO": ["E000330002"],
+        "VINA DEL MAR": ["E000330007"],
+        "ALGARROBO": ["E000V00038"],
+        "CARTAGENA": ["E000V00039"],
+        "SANTO DOMINGO": ["E000330030"]
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "region": "Valparaíso",
+    "metadata": { "descripcion": "Índice Keetch-Byram (KBDI) - Indicador de sequedad del suelo", "fuente": "UMC" },
+    "anios": [ 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024],
+    "series": [
+      { "name": "Valparaíso", "color": "#2ECC71", "data": [120, 200, 350, 480, 600, 520, 450, 380, 290, 180] },
+      { "name": "Rodelillo", "color": "#2ECC71", "data": [150, 250, 400, 550, 650, 580, 500, 420, 320, 210] },
+      { "name": "San Felipe", "color": "#2ECC71", "data": [180, 280, 420, 580, 700, 620, 530, 450, 350, 240] }
+    ]
+  }

@@ -1,0 +1,124 @@
+/*
+    *creado: 2024-09-24
+    *base para el nuevo diseño del menú
+    *autor: Jorge Castillo H.
+*/
+
+:root {
+    --background-menu-color:  #2D4356;
+    --background-opcion-color : #84A7A1;
+    --color-opcion: #000;
+}
+
+.line-vl {
+    border-left: 1px solid #34879e;
+}
+
+.navbar .navbar-toggler {
+    border-color: #eeeeee !important;
+}
+
+.navbar .navbar-toggler .navbar-toggler-icon {
+    margin-top:25%;
+    color: #ffffff !important;
+}
+
+.navbar .navbar-toggler {
+    position: relative;
+    margin-right: 7em;
+}
+
+.navbar .navbar-collapse .navbar-nav .nav-item .dropdown-menu .dropdown-header {
+    color: #d6d3d3 !important;
+}
+
+.navbar .navbar-collapse .navbar-nav .nav-item .dropdown-menu {
+    background: var(--background-menu-color);
+    border-color: var(--background-opcion-color);
+    color: var(--color-opcion) !important;
+}
+
+.navbar .navbar-collapse .navbar-nav .nav-item .dropdown-menu .dropdown-item {
+    background: var(--background-menu-color);
+    border-color: var(--background-opcion-color);
+    color: #d6d3d3;
+    overflow: hidden !important;
+    width: 98%;
+}
+
+.navbar {
+    background: var(--background-menu-color);
+    border-color: var(--background-opcion-color);
+    color: #d6d3d3 !important;
+}
+
+.navbar-nav .nav-link {
+    padding-right: 0;
+    padding-left: 5px !important;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.nav-link, .navbar-brand {
+    color: #d6d3d3 !important;
+}
+
+.navbar-brand {
+    padding: 0.5em;
+    margin-left: 0.5rem !important;
+    margin-right: 0.5rem !important;
+}
+
+.dropdown-toggle::after {
+    float: none;
+}
+
+.dropdown-menu .dropdown-toggle::after {
+    float: right;
+}
+/* Aplica el estilo solo a los enlaces que son elementos de primer nivel */
+nav a {
+    background: var(--background-menu-color);
+    text-decoration: none;
+    border-radius: 5px;
+    border-left:  2px solid transparent;
+    border-right: 2px solid transparent;
+    padding: 15px 0;
+    margin: 3px;
+    margin-right: 20px;
+    font-weight: 800;
+    font-size: 14px;
+}
+
+/* Estilo para el hover solo en los enlaces del primer nivel */
+nav a:hover {
+    border-radius: 5px;
+    background-color: var(--background-opcion-color) !important;
+    color: var(--color-opcion)!important;
+    font-weight: bold !important;
+}
+
+/* Los enlaces dentro de submenús no heredan los estilos de los enlaces de primer nivel */
+nav .dropdown-menu a {
+    border-radius: 5px;
+    border-left:  3px solid transparent;
+    border-right: 3px solid transparent;
+    border: none;
+    padding: 5px;
+    padding-right: 12px;
+    font-size: 14px;
+    width: 100%;
+}
+
+nav .dropdown-menu a:hover {
+    border-radius: 5px;
+    background-color: var(--background-opcion-color) !important;
+    color: var(--color-opcion)!important;
+    font-weight:bold !important;
+}
+/*aerrrr que sale*/
+.navbar .dropdown-toggle.show {
+    background-color: var(--background-opcion-color) !important;
+    color: var(--color-opcion)!important;
+    font-weight:bold !important;
+}

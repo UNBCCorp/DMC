@@ -1,0 +1,144 @@
+<?php
+// Copiamos el contenido de clima.phtml manteniendo exactamente el mismo contenido
+$this->headTitle('Clima Regional');
+?>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <nav id="sidebarNav" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="fas fa-home"></i> Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/indice-combinado">
+                            <i class="fas fa-chart-line"></i> Índice Combinado
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/mapas-percentiles">
+                            <i class="fas fa-map"></i> Mapas de Percentiles
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/otros-indices">
+                            <i class="fas fa-chart-bar"></i> Otros Índices
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/clima-regional">
+                            <i class="fas fa-cloud-sun"></i> Clima Regional
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/climograma">
+                            <i class="fas fa-thermometer-half"></i> Climograma
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Tipos de Clima Regional</h1>
+            </div>
+
+            <div class="row">
+                <!-- Mapa Principal -->
+                <div class="col-lg-8 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Mapa de Climas por Comuna</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="map-clima-region-highcharts" style="height: 500px; position: relative;">
+                                <div class="map-loading-placeholder" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Cargando...</span>
+                                    </div>
+                                    <p class="mt-2">Cargando mapa de climas...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel de Información -->
+                <div class="col-lg-4 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Detalle por Comuna</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Comuna</th>
+                                            <th>Sigla Clima</th>
+                                            <th>Descripción</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="comunas-clima-detalle-body">
+                                        <tr>
+                                            <td colspan="3" class="text-center p-3">
+                                                Haz clic en una comuna para ver sus climas.
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Leyenda Fija -->
+                    <div class="card mt-3">
+                        <div class="card-header">
+                            <h6 class="card-title mb-0">Tipos de Clima Presentes</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Código</th>
+                                            <th>Descripción</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="clima-leyenda-fija-body">
+                                        <!-- Se llena dinámicamente -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        <h6><i class="fas fa-info-circle"></i> Clasificación Climática</h6>
+                        <p class="mb-0">
+                            El mapa muestra la clasificación climática de Köppen-Geiger para la Región de Valparaíso. 
+                            Cada color representa un tipo de clima diferente. Haz clic en una comuna para ver los tipos de clima presentes en su territorio.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Scripts específicos para esta página -->
+<script src="/js/turf/turf.min.js"></script>
+<script src="/js/highcharts/highmaps.js"></script>
+<script src="/js/highcharts/map.js"></script>
+<script src="/js/highcharts/pattern-fill.js"></script>
+<script src="/js/mapClima.js"></script>

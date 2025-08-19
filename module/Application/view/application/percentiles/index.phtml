@@ -1,0 +1,111 @@
+<?php
+// Copiamos el contenido de percentiles.phtml manteniendo exactamente el mismo contenido
+$this->headTitle('Mapas de Percentiles');
+?>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <nav id="sidebarNav" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="fas fa-home"></i> Inicio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/indice-combinado">
+                            <i class="fas fa-chart-line"></i> Índice Combinado
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/mapas-percentiles">
+                            <i class="fas fa-map"></i> Mapas de Percentiles
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/otros-indices">
+                            <i class="fas fa-chart-bar"></i> Otros Índices
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/clima-regional">
+                            <i class="fas fa-cloud-sun"></i> Clima Regional
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/climograma">
+                            <i class="fas fa-thermometer-half"></i> Climograma
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Mapas de Percentiles Climáticos</h1>
+            </div>
+
+            <div class="row">
+                <!-- Mapa de Precipitación -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Percentil de Precipitación</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="map-percentil-precip" style="height: 400px; position: relative;">
+                                <div class="map-loading-placeholder" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Cargando...</span>
+                                    </div>
+                                    <p class="mt-2">Cargando mapa de precipitación...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mapa de Temperatura -->
+                <div class="col-lg-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Percentil de Temperatura</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="map-percentil-temp" style="height: 400px; position: relative;">
+                                <div class="map-loading-placeholder" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Cargando...</span>
+                                    </div>
+                                    <p class="mt-2">Cargando mapa de temperatura...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        <h6><i class="fas fa-info-circle"></i> Información sobre los Percentiles</h6>
+                        <p class="mb-0">
+                            Los mapas muestran los percentiles de temperatura y precipitación para las comunas de la Región de Valparaíso. 
+                            Los percentiles indican qué tan extremos son los valores actuales comparados con el historial climático de cada comuna.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Scripts específicos para esta página -->
+<script src="/js/turf/turf.min.js"></script>
+<script src="/js/highcharts/highmaps.js"></script>
+<script src="/js/highcharts/map.js"></script>
+<script src="/js/mapasPercintil.js"></script>

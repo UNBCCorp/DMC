@@ -1,0 +1,21 @@
+<?php
+// module/Application/view/application/partial/sidebar.phtml
+
+// Recibimos la variable 'activeRoute' desde la vista que llama a este partial.
+// Si no se define, se usa una cadena vacía por defecto.
+$activeRoute = $activeRoute ?? '';
+?>
+<div class="card">
+    <div class="card-header bg-cabezera text-white">
+        <h5>Navegación</h5>
+        <small>Datos e imágenes obtenidos del sistema <strong>CASTEHR</strong></small>
+    </div>
+    <div class="list-group list-group-flush" id="sidebarNav">
+        <!-- Usamos el helper url() para generar los links y comparamos con $activeRoute para la clase 'active' -->
+        <a href="<?= $this->url('indice-combinado') ?>" class="list-group-item list-group-item-action <?= ($activeRoute === 'indice-combinado') ? 'active' : '' ?>">Índice combinado</a>
+        <a href="<?= $this->url('otros-indices') ?>" class="list-group-item list-group-item-action <?= ($activeRoute === 'otros-indices') ? 'active' : '' ?>">SPI y SPEI</a>
+        <a href="<?= $this->url('percentiles') ?>" class="list-group-item list-group-item-action <?= ($activeRoute === 'percentiles') ? 'active' : '' ?>">Mapas de percentiles</a>
+        <a href="<?= $this->url('climas-regional') ?>" class="list-group-item list-group-item-action <?= ($activeRoute === 'climas-regional') ? 'active' : '' ?>">Climas de la región</a>
+        <a href="<?= $this->url('climograma') ?>" class="list-group-item list-group-item-action <?= ($activeRoute === 'climograma') ? 'active' : '' ?>">Climogramas por comuna</a>
+    </div>
+</div>

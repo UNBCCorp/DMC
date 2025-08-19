@@ -1,0 +1,15 @@
+{
+    "region": "Valparaíso",
+    "metadata": { 
+      "descripcion": "Índice de Precipitación Normal (PPN) para Valparaíso", 
+      "fuente": "CASTEHR / DMC (Datos de ejemplo)" 
+    },
+    "anios": [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020],
+    "series": [
+      { 
+        "name": "PPN (%)", 
+        "color": "#20B2AA",
+        "data": [110, 125, 95, 80, 135, 105, 75, 65, 115, 140, 90]
+      }
+    ]
+  }

@@ -1,0 +1,2180 @@
+[
+  {
+    "id": 3,
+    "code1": "E000180005",
+    "name": "Arica",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-18.356000",
+    "longitude": "-70.340000",
+    "is_virtual": true
+  },
+  {
+    "id": 10,
+    "code1": "E000200006",
+    "name": "Iquique",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-20.549000",
+    "longitude": "-70.181000",
+    "is_virtual": true
+  },
+  {
+    "id": 14,
+    "code1": "E000220002",
+    "name": "Calama",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-22.498000",
+    "longitude": "-68.892000",
+    "is_virtual": true
+  },
+  {
+    "id": 17,
+    "code1": "E000230001",
+    "name": "Antofagasta",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-23.454000",
+    "longitude": "-70.445000",
+    "is_virtual": true
+  },
+  {
+    "id": 28,
+    "code1": "E000270008",
+    "name": "Desierto Atacama",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-27.254000",
+    "longitude": "-70.781000",
+    "is_virtual": true
+  },
+  {
+    "id": 29,
+    "code1": "E000270009",
+    "name": "Copiapo U Atacama",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-27.359000",
+    "longitude": "-70.353000",
+    "is_virtual": false
+  },
+  {
+    "id": 35,
+    "code1": "E000290004",
+    "name": "La Serena",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-29.914000",
+    "longitude": "-71.207000",
+    "is_virtual": true
+  },
+  {
+    "id": 45,
+    "code1": "E000320019",
+    "name": "San Felipe Esc. Agr\u00edcola",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-32.076000",
+    "longitude": "-70.707000",
+    "is_virtual": true
+  },
+  {
+    "id": 56,
+    "code1": "E000320028",
+    "name": "La Cruz INIA",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-32.828000",
+    "longitude": "-71.227000",
+    "is_virtual": true
+  },
+  {
+    "id": 61,
+    "code1": "E000330002",
+    "name": "Valpara\u00edso",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.023000",
+    "longitude": "-71.648000",
+    "is_virtual": true
+  },
+  {
+    "id": 62,
+    "code1": "E000330007",
+    "name": "Rodelillo",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.065000",
+    "longitude": "-71.556000",
+    "is_virtual": false
+  },
+  {
+    "id": 74,
+    "code1": "E000330019",
+    "name": "Tobalaba",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.455000",
+    "longitude": "-70.549000",
+    "is_virtual": false
+  },
+  {
+    "id": 73,
+    "code1": "E000330020",
+    "name": "Santiago DMC",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.445000",
+    "longitude": "-70.683000",
+    "is_virtual": true
+  },
+  {
+    "id": 69,
+    "code1": "E000330021",
+    "name": "Pudahuel",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.378000",
+    "longitude": "-70.787000",
+    "is_virtual": true
+  },
+  {
+    "id": 82,
+    "code1": "E000330030",
+    "name": "Santo Domingo ",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.656000",
+    "longitude": "-71.613000",
+    "is_virtual": false
+  },
+  {
+    "id": 81,
+    "code1": "E000330031",
+    "name": "Juan Fern\u00e1ndez",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.636000",
+    "longitude": "-78.833000",
+    "is_virtual": true
+  },
+  {
+    "id": 110,
+    "code1": "E000340031",
+    "name": "Curico",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-34.969000",
+    "longitude": "-71.217000",
+    "is_virtual": true
+  },
+  {
+    "id": 105,
+    "code1": "E000340044",
+    "name": "Chimbarongo",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-34.721000",
+    "longitude": "-71.020000",
+    "is_virtual": true
+  },
+  {
+    "id": 129,
+    "code1": "E000360011",
+    "name": "Chill\u00e1n",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-36.586000",
+    "longitude": "-72.037000",
+    "is_virtual": true
+  },
+  {
+    "id": 134,
+    "code1": "E000360019",
+    "name": "Concepci\u00f3n",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-36.781000",
+    "longitude": "-73.066000",
+    "is_virtual": true
+  },
+  {
+    "id": 147,
+    "code1": "E000370033",
+    "name": "Los \u00c1ngeles",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-37.397000",
+    "longitude": "-72.424000",
+    "is_virtual": true
+  },
+  {
+    "id": 166,
+    "code1": "E000380013",
+    "name": "Temuco",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-38.768000",
+    "longitude": "-72.460000",
+    "is_virtual": true
+  },
+  {
+    "id": 179,
+    "code1": "E000390006",
+    "name": "Valdivia AP. Pichoy",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-39.657000",
+    "longitude": "-73.087000",
+    "is_virtual": true
+  },
+  {
+    "id": 189,
+    "code1": "E000400009",
+    "name": "Osorno Ca\u00f1al Bajo AD.",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-40.614000",
+    "longitude": "-73.058000",
+    "is_virtual": true
+  },
+  {
+    "id": 199,
+    "code1": "E000410005",
+    "name": "Puerto Montt El Tepual",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-41.448000",
+    "longitude": "-73.096000",
+    "is_virtual": true
+  },
+  {
+    "id": 212,
+    "code1": "E000430002",
+    "name": "Futaleuf\u00fa AD.",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-43.189000",
+    "longitude": "-71.852000",
+    "is_virtual": true
+  },
+  {
+    "id": 216,
+    "code1": "E000430004",
+    "name": "Alto Palena AD.",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-43.612000",
+    "longitude": "-71.801000",
+    "is_virtual": true
+  },
+  {
+    "id": 221,
+    "code1": "E000450001",
+    "name": "Puerto Ays\u00e9n AD.",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-45.399000",
+    "longitude": "-72.677000",
+    "is_virtual": true
+  },
+  {
+    "id": 222,
+    "code1": "E000450004",
+    "name": "Coyhaique Tne. Vidal AD.",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-45.591000",
+    "longitude": "-72.102000",
+    "is_virtual": false
+  },
+  {
+    "id": 223,
+    "code1": "E000450005",
+    "name": "Balmaceda AD.",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-45.918000",
+    "longitude": "-71.678000",
+    "is_virtual": false
+  },
+  {
+    "id": 227,
+    "code1": "E000460001",
+    "name": "Chile Chico AD.",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-46.585000",
+    "longitude": "-71.685000",
+    "is_virtual": true
+  },
+  {
+    "id": 228,
+    "code1": "E000470001",
+    "name": "Cochrane Lord AD.",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-47.244000",
+    "longitude": "-72.583000",
+    "is_virtual": false
+  },
+  {
+    "id": 238,
+    "code1": "E000520006",
+    "name": "Punta Arenas Carlos Ib\u00e1\u00f1ez AP.",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-53.002000",
+    "longitude": "-70.839000",
+    "is_virtual": true
+  },
+  {
+    "id": 239,
+    "code1": "E000530005",
+    "name": "Porvenir Fuentes Mart\u00ednez AD.",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-53.254000",
+    "longitude": "-70.326000",
+    "is_virtual": false
+  },
+  {
+    "id": 242,
+    "code1": "E000550001",
+    "name": "Pto. Williams",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-54.932000",
+    "longitude": "-67.616000",
+    "is_virtual": true
+  },
+  {
+    "id": 4,
+    "code1": "E000V00001",
+    "name": "Camarones",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-19.011000",
+    "longitude": "-69.857000",
+    "is_virtual": false
+  },
+  {
+    "id": 2,
+    "code1": "E000V00002",
+    "name": "Putre",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-18.197000",
+    "longitude": "-69.554000",
+    "is_virtual": true
+  },
+  {
+    "id": 1,
+    "code1": "E000V00003",
+    "name": "Visviri",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-17.595000",
+    "longitude": "-69.478000",
+    "is_virtual": false
+  },
+  {
+    "id": 8,
+    "code1": "E000V00004",
+    "name": "Alto Hospicio",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-20.250000",
+    "longitude": "-70.117000",
+    "is_virtual": true
+  },
+  {
+    "id": 6,
+    "code1": "E000V00005",
+    "name": "Cami\u00f1a",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-19.313000",
+    "longitude": "-69.427000",
+    "is_virtual": true
+  },
+  {
+    "id": 5,
+    "code1": "E000V00006",
+    "name": "Colchane",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-19.276000",
+    "longitude": "-68.638000",
+    "is_virtual": true
+  },
+  {
+    "id": 7,
+    "code1": "E000V00007",
+    "name": "Huara",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-19.996000",
+    "longitude": "-69.767000",
+    "is_virtual": true
+  },
+  {
+    "id": 9,
+    "code1": "E000V00008",
+    "name": "Pica",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-20.501000",
+    "longitude": "-69.342000",
+    "is_virtual": true
+  },
+  {
+    "id": 15,
+    "code1": "E000V00009",
+    "name": "Sierra Gorda",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-22.892000",
+    "longitude": "-69.320000",
+    "is_virtual": false
+  },
+  {
+    "id": 22,
+    "code1": "E000V00010",
+    "name": "Taltal",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-25.411000",
+    "longitude": "-70.484000",
+    "is_virtual": true
+  },
+  {
+    "id": 11,
+    "code1": "E000V00011",
+    "name": "Ollag\u00fce",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-21.224000",
+    "longitude": "-68.255000",
+    "is_virtual": false
+  },
+  {
+    "id": 16,
+    "code1": "E000V00012",
+    "name": "San Pedro de Atacama",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-22.932000",
+    "longitude": "-68.213000",
+    "is_virtual": true
+  },
+  {
+    "id": 12,
+    "code1": "E000V00013",
+    "name": "Tocopilla",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-22.091000",
+    "longitude": "-70.200000",
+    "is_virtual": true
+  },
+  {
+    "id": 13,
+    "code1": "E000V00014",
+    "name": "Maria Elena",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-22.350000",
+    "longitude": "-69.666000",
+    "is_virtual": true
+  },
+  {
+    "id": 33,
+    "code1": "E000V00015",
+    "name": "Tierra Amarilla",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-28.976000",
+    "longitude": "-70.000000",
+    "is_virtual": true
+  },
+  {
+    "id": 25,
+    "code1": "E000V00016",
+    "name": "Cha\u00f1aral",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-26.332000",
+    "longitude": "-70.611000",
+    "is_virtual": true
+  },
+  {
+    "id": 26,
+    "code1": "E000V00017",
+    "name": "Diego de Almagro",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-26.391000",
+    "longitude": "-70.046000",
+    "is_virtual": true
+  },
+  {
+    "id": 32,
+    "code1": "E000V00018",
+    "name": "Alto del Carmen",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-28.768000",
+    "longitude": "-70.449000",
+    "is_virtual": true
+  },
+  {
+    "id": 31,
+    "code1": "E000V00019",
+    "name": "Huasco",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-28.463000",
+    "longitude": "-71.225000",
+    "is_virtual": true
+  },
+  {
+    "id": 37,
+    "code1": "E000V00020",
+    "name": "Andacollo",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-30.234000",
+    "longitude": "-71.082000",
+    "is_virtual": true
+  },
+  {
+    "id": 34,
+    "code1": "E000V00021",
+    "name": "L\u00e1 Higuera",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-29.372000",
+    "longitude": "-71.116000",
+    "is_virtual": true
+  },
+  {
+    "id": 36,
+    "code1": "E000V00022",
+    "name": "Vicu\u00f1a",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-30.031000",
+    "longitude": "-70.721000",
+    "is_virtual": false
+  },
+  {
+    "id": 43,
+    "code1": "E000V00023",
+    "name": "Illapel",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-31.633000",
+    "longitude": "-71.152000",
+    "is_virtual": true
+  },
+  {
+    "id": 42,
+    "code1": "E000V00024",
+    "name": "Canela Baja",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-31.390000",
+    "longitude": "-71.413000",
+    "is_virtual": true
+  },
+  {
+    "id": 44,
+    "code1": "E000V00025",
+    "name": "Salamanca",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-31.783000",
+    "longitude": "-70.970000",
+    "is_virtual": true
+  },
+  {
+    "id": 41,
+    "code1": "E000V00026",
+    "name": "Combarbal\u00e1",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-31.188000",
+    "longitude": "-70.999000",
+    "is_virtual": true
+  },
+  {
+    "id": 39,
+    "code1": "E000V00027",
+    "name": "Monte Patria",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-30.746000",
+    "longitude": "-70.937000",
+    "is_virtual": true
+  },
+  {
+    "id": 40,
+    "code1": "E000V00028",
+    "name": "Punitaqui",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-30.838000",
+    "longitude": "-71.256000",
+    "is_virtual": true
+  },
+  {
+    "id": 63,
+    "code1": "E000V00029",
+    "name": "Casablanca",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.083000",
+    "longitude": "-71.400000",
+    "is_virtual": false
+  },
+  {
+    "id": 59,
+    "code1": "E000V00030",
+    "name": "Conc\u00f3n",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-32.917000",
+    "longitude": "-71.517000",
+    "is_virtual": true
+  },
+  {
+    "id": 54,
+    "code1": "E000V00031",
+    "name": "Quintero",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-32.789000",
+    "longitude": "-71.526000",
+    "is_virtual": true
+  },
+  {
+    "id": 57,
+    "code1": "E000V00032",
+    "name": "Los Espinos",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-32.890000",
+    "longitude": "-70.382000",
+    "is_virtual": false
+  },
+  {
+    "id": 48,
+    "code1": "E000V00033",
+    "name": "Cabildo",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-32.362000",
+    "longitude": "-70.819000",
+    "is_virtual": true
+  },
+  {
+    "id": 49,
+    "code1": "E000V00034",
+    "name": "Papudo",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-32.505000",
+    "longitude": "-71.441000",
+    "is_virtual": true
+  },
+  {
+    "id": 46,
+    "code1": "E000V00035",
+    "name": "Petorca",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-32.251000",
+    "longitude": "-70.926000",
+    "is_virtual": false
+  },
+  {
+    "id": 58,
+    "code1": "E000V00036",
+    "name": "Quillota",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-32.893000",
+    "longitude": "-71.207000",
+    "is_virtual": true
+  },
+  {
+    "id": 55,
+    "code1": "E000V00037",
+    "name": "Calera",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-32.790000",
+    "longitude": "-71.173000",
+    "is_virtual": true
+  },
+  {
+    "id": 72,
+    "code1": "E000V00038",
+    "name": "Algarrobo",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.439000",
+    "longitude": "-71.624000",
+    "is_virtual": true
+  },
+  {
+    "id": 77,
+    "code1": "E000V00039",
+    "name": "Cartagena",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.543000",
+    "longitude": "-71.596000",
+    "is_virtual": true
+  },
+  {
+    "id": 53,
+    "code1": "E000V00040",
+    "name": "Panquehue",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-32.757000",
+    "longitude": "-70.809000",
+    "is_virtual": true
+  },
+  {
+    "id": 51,
+    "code1": "E000V00041",
+    "name": "Putaendo",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-32.594000",
+    "longitude": "-70.725000",
+    "is_virtual": true
+  },
+  {
+    "id": 60,
+    "code1": "E000V00042",
+    "name": "Limache",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-32.994000",
+    "longitude": "-71.261000",
+    "is_virtual": true
+  },
+  {
+    "id": 70,
+    "code1": "E000V00043",
+    "name": "Cerro Navia",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.420000",
+    "longitude": "-70.733000",
+    "is_virtual": false
+  },
+  {
+    "id": 75,
+    "code1": "E000V00044",
+    "name": "Huechuraba",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.467000",
+    "longitude": "-70.700000",
+    "is_virtual": false
+  },
+  {
+    "id": 78,
+    "code1": "E000V00045",
+    "name": "La Florida",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.545000",
+    "longitude": "-70.548000",
+    "is_virtual": true
+  },
+  {
+    "id": 68,
+    "code1": "E000V00046",
+    "name": "Lo Barnechea",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.353000",
+    "longitude": "-70.502000",
+    "is_virtual": true
+  },
+  {
+    "id": 76,
+    "code1": "E000V00047",
+    "name": "Maip\u00fa",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.517000",
+    "longitude": "-70.766000",
+    "is_virtual": true
+  },
+  {
+    "id": 80,
+    "code1": "E000V00048",
+    "name": "Puente Alto",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.617000",
+    "longitude": "-70.567000",
+    "is_virtual": true
+  },
+  {
+    "id": 83,
+    "code1": "E000V00049",
+    "name": "San Jos\u00e9 de Maipo",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.676000",
+    "longitude": "-70.089000",
+    "is_virtual": false
+  },
+  {
+    "id": 65,
+    "code1": "E000V00050",
+    "name": "Colina",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.147000",
+    "longitude": "-70.660000",
+    "is_virtual": true
+  },
+  {
+    "id": 64,
+    "code1": "E000V00051",
+    "name": "Tiltil",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.121000",
+    "longitude": "-70.834000",
+    "is_virtual": true
+  },
+  {
+    "id": 85,
+    "code1": "E000V00052",
+    "name": "Bu\u00edn",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.707000",
+    "longitude": "-70.707000",
+    "is_virtual": true
+  },
+  {
+    "id": 86,
+    "code1": "E000V00053",
+    "name": "Paine",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.862000",
+    "longitude": "-70.639000",
+    "is_virtual": true
+  },
+  {
+    "id": 91,
+    "code1": "E000V00054",
+    "name": "Alhu\u00e9",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-34.029000",
+    "longitude": "-70.995000",
+    "is_virtual": true
+  },
+  {
+    "id": 71,
+    "code1": "E000V00055",
+    "name": "Curacav\u00ed",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.439000",
+    "longitude": "-71.026000",
+    "is_virtual": true
+  },
+  {
+    "id": 88,
+    "code1": "E000V00056",
+    "name": "San Pedro",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.941000",
+    "longitude": "-71.394000",
+    "is_virtual": true
+  },
+  {
+    "id": 84,
+    "code1": "E000V00057",
+    "name": "El Monte",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.692000",
+    "longitude": "-71.101000",
+    "is_virtual": true
+  },
+  {
+    "id": 79,
+    "code1": "E000V00058",
+    "name": "Pe\u00f1aflor",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.608000",
+    "longitude": "-70.902000",
+    "is_virtual": true
+  },
+  {
+    "id": 92,
+    "code1": "E000V00059",
+    "name": "Rancagua",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-34.169000",
+    "longitude": "-70.772000",
+    "is_virtual": true
+  },
+  {
+    "id": 96,
+    "code1": "E000V00060",
+    "name": "Coinco",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-34.261000",
+    "longitude": "-70.948000",
+    "is_virtual": true
+  },
+  {
+    "id": 94,
+    "code1": "E000V00061",
+    "name": "Do\u00f1ihue",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-34.215000",
+    "longitude": "-70.997000",
+    "is_virtual": true
+  },
+  {
+    "id": 95,
+    "code1": "E000V00062",
+    "name": "Las Cabras",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-34.217000",
+    "longitude": "-71.300000",
+    "is_virtual": true
+  },
+  {
+    "id": 100,
+    "code1": "E000V00063",
+    "name": "Machal\u00ed",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-34.411000",
+    "longitude": "-70.210000",
+    "is_virtual": true
+  },
+  {
+    "id": 90,
+    "code1": "E000V00064",
+    "name": "Mostazal",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.983000",
+    "longitude": "-70.717000",
+    "is_virtual": true
+  },
+  {
+    "id": 98,
+    "code1": "E000V00065",
+    "name": "Rengo",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-34.322000",
+    "longitude": "-70.834000",
+    "is_virtual": true
+  },
+  {
+    "id": 97,
+    "code1": "E000V00066",
+    "name": "Requ\u00ednoa",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-34.279000",
+    "longitude": "-70.812000",
+    "is_virtual": true
+  },
+  {
+    "id": 99,
+    "code1": "E000V00067",
+    "name": "Pichilemu",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-34.394000",
+    "longitude": "-72.019000",
+    "is_virtual": true
+  },
+  {
+    "id": 89,
+    "code1": "E000V00068",
+    "name": "Navidad",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.959000",
+    "longitude": "-71.825000",
+    "is_virtual": true
+  },
+  {
+    "id": 102,
+    "code1": "E000V00069",
+    "name": "Paredones",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-34.645000",
+    "longitude": "-71.898000",
+    "is_virtual": true
+  },
+  {
+    "id": 104,
+    "code1": "E000V00070",
+    "name": "Lolol",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-34.714000",
+    "longitude": "-71.630000",
+    "is_virtual": true
+  },
+  {
+    "id": 101,
+    "code1": "E000V00071",
+    "name": "Peralillo",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-34.485000",
+    "longitude": "-71.463000",
+    "is_virtual": true
+  },
+  {
+    "id": 103,
+    "code1": "E000V00072",
+    "name": "Santa Cruz",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-34.691000",
+    "longitude": "-71.400000",
+    "is_virtual": true
+  },
+  {
+    "id": 124,
+    "code1": "E000V00073",
+    "name": "Parral",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-36.257000",
+    "longitude": "-71.548000",
+    "is_virtual": true
+  },
+  {
+    "id": 116,
+    "code1": "E000V00074",
+    "name": "Colb\u00fan",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-35.663000",
+    "longitude": "-71.454000",
+    "is_virtual": true
+  },
+  {
+    "id": 120,
+    "code1": "E000V00075",
+    "name": "Villa Alegre",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-35.753000",
+    "longitude": "-71.631000",
+    "is_virtual": true
+  },
+  {
+    "id": 112,
+    "code1": "E000V00076",
+    "name": "Curepto",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-35.128000",
+    "longitude": "-71.956000",
+    "is_virtual": true
+  },
+  {
+    "id": 117,
+    "code1": "E000V00077",
+    "name": "Empedrado",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-35.672000",
+    "longitude": "-72.082000",
+    "is_virtual": true
+  },
+  {
+    "id": 115,
+    "code1": "E000V00078",
+    "name": "Maule",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-35.533000",
+    "longitude": "-71.700000",
+    "is_virtual": true
+  },
+  {
+    "id": 114,
+    "code1": "E000V00079",
+    "name": "Pelarco",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-35.419000",
+    "longitude": "-71.467000",
+    "is_virtual": true
+  },
+  {
+    "id": 118,
+    "code1": "E000V00080",
+    "name": "R\u00edo Claro",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-35.699000",
+    "longitude": "-71.062000",
+    "is_virtual": true
+  },
+  {
+    "id": 119,
+    "code1": "E000V00081",
+    "name": "Chanco",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-35.707000",
+    "longitude": "-72.511000",
+    "is_virtual": true
+  },
+  {
+    "id": 121,
+    "code1": "E000V00082",
+    "name": "Pelluhue",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-35.836000",
+    "longitude": "-72.587000",
+    "is_virtual": true
+  },
+  {
+    "id": 109,
+    "code1": "E000V00083",
+    "name": "Huala\u00f1e",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-34.968000",
+    "longitude": "-71.832000",
+    "is_virtual": true
+  },
+  {
+    "id": 108,
+    "code1": "E000V00084",
+    "name": "Romeral",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-34.960000",
+    "longitude": "-71.125000",
+    "is_virtual": true
+  },
+  {
+    "id": 111,
+    "code1": "E000V00085",
+    "name": "Teno",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-35.000000",
+    "longitude": "-70.811000",
+    "is_virtual": false
+  },
+  {
+    "id": 107,
+    "code1": "E000V00086",
+    "name": "Vichuqu\u00e9n",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-34.855000",
+    "longitude": "-72.026000",
+    "is_virtual": true
+  },
+  {
+    "id": 123,
+    "code1": "E000V00087",
+    "name": "Cobquecura",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-36.133000",
+    "longitude": "-72.783000",
+    "is_virtual": true
+  },
+  {
+    "id": 127,
+    "code1": "E000V00088",
+    "name": "Coelemu",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-36.492000",
+    "longitude": "-72.699000",
+    "is_virtual": true
+  },
+  {
+    "id": 130,
+    "code1": "E000V00089",
+    "name": "R\u00e1nquil",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-36.625000",
+    "longitude": "-72.603000",
+    "is_virtual": false
+  },
+  {
+    "id": 126,
+    "code1": "E000V00090",
+    "name": "Treguaco",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-36.430000",
+    "longitude": "-72.640000",
+    "is_virtual": true
+  },
+  {
+    "id": 125,
+    "code1": "E000V00091",
+    "name": "\u00d1iqu\u00e9n",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-36.292000",
+    "longitude": "-71.900000",
+    "is_virtual": true
+  },
+  {
+    "id": 128,
+    "code1": "E000V00092",
+    "name": "San Fabi\u00e1n",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-36.560000",
+    "longitude": "-71.549000",
+    "is_virtual": true
+  },
+  {
+    "id": 136,
+    "code1": "E000V00093",
+    "name": "Pemuco",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-36.977000",
+    "longitude": "-72.099000",
+    "is_virtual": true
+  },
+  {
+    "id": 141,
+    "code1": "E000V00094",
+    "name": "Yungay",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-37.141000",
+    "longitude": "-72.012000",
+    "is_virtual": true
+  },
+  {
+    "id": 137,
+    "code1": "E000V00095",
+    "name": "Coronel",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-37.005000",
+    "longitude": "-73.140000",
+    "is_virtual": true
+  },
+  {
+    "id": 132,
+    "code1": "E000V00096",
+    "name": "Florida",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-36.697000",
+    "longitude": "-72.704000",
+    "is_virtual": true
+  },
+  {
+    "id": 139,
+    "code1": "E000V00097",
+    "name": "Lota",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-37.092000",
+    "longitude": "-73.155000",
+    "is_virtual": true
+  },
+  {
+    "id": 133,
+    "code1": "E000V00098",
+    "name": "Penco",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-36.733000",
+    "longitude": "-72.983000",
+    "is_virtual": true
+  },
+  {
+    "id": 131,
+    "code1": "E000V00099",
+    "name": "Tom\u00e9",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-36.672000",
+    "longitude": "-72.965000",
+    "is_virtual": true
+  },
+  {
+    "id": 145,
+    "code1": "E000V00100",
+    "name": "Arauco",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-37.305000",
+    "longitude": "-73.437000",
+    "is_virtual": true
+  },
+  {
+    "id": 154,
+    "code1": "E000V00101",
+    "name": "Ca\u00f1ete",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-37.892000",
+    "longitude": "-73.412000",
+    "is_virtual": true
+  },
+  {
+    "id": 155,
+    "code1": "E000V00102",
+    "name": "Contulmo",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-37.950000",
+    "longitude": "-73.097000",
+    "is_virtual": true
+  },
+  {
+    "id": 149,
+    "code1": "E000V00103",
+    "name": "Curanilahue",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-37.485000",
+    "longitude": "-73.330000",
+    "is_virtual": true
+  },
+  {
+    "id": 151,
+    "code1": "E000V00104",
+    "name": "Los \u00c1lamos",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-37.627000",
+    "longitude": "-73.462000",
+    "is_virtual": true
+  },
+  {
+    "id": 140,
+    "code1": "E000V00105",
+    "name": "Antuco",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-37.111000",
+    "longitude": "-71.245000",
+    "is_virtual": true
+  },
+  {
+    "id": 138,
+    "code1": "E000V00106",
+    "name": "Cabrero",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-37.035000",
+    "longitude": "-72.403000",
+    "is_virtual": true
+  },
+  {
+    "id": 143,
+    "code1": "E000V00107",
+    "name": "Laja",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-37.213000",
+    "longitude": "-72.328000",
+    "is_virtual": true
+  },
+  {
+    "id": 142,
+    "code1": "E000V00108",
+    "name": "Nacimiento",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-37.167000",
+    "longitude": "-72.946000",
+    "is_virtual": true
+  },
+  {
+    "id": 152,
+    "code1": "E000V00109",
+    "name": "Quilaco",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-37.685000",
+    "longitude": "-72.007000",
+    "is_virtual": true
+  },
+  {
+    "id": 150,
+    "code1": "E000V00110",
+    "name": "Quilleco",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-37.536000",
+    "longitude": "-71.875000",
+    "is_virtual": true
+  },
+  {
+    "id": 144,
+    "code1": "E000V00111",
+    "name": "Tucapel",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-37.293000",
+    "longitude": "-71.949000",
+    "is_virtual": true
+  },
+  {
+    "id": 156,
+    "code1": "E000V00112",
+    "name": "Alto Biob\u00edo",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-38.057000",
+    "longitude": "-71.435000",
+    "is_virtual": true
+  },
+  {
+    "id": 159,
+    "code1": "E000V00113",
+    "name": "Curacaut\u00edn",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-38.250000",
+    "longitude": "-71.233000",
+    "is_virtual": true
+  },
+  {
+    "id": 157,
+    "code1": "E000V00114",
+    "name": "Ercilla",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-38.146000",
+    "longitude": "-72.298000",
+    "is_virtual": true
+  },
+  {
+    "id": 165,
+    "code1": "E000V00115",
+    "name": "Lonquimay",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-38.732000",
+    "longitude": "-71.141000",
+    "is_virtual": true
+  },
+  {
+    "id": 153,
+    "code1": "E000V00116",
+    "name": "Reinaco",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-37.726000",
+    "longitude": "-72.605000",
+    "is_virtual": true
+  },
+  {
+    "id": 158,
+    "code1": "E000V00117",
+    "name": "Victoria",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-38.228000",
+    "longitude": "-72.273000",
+    "is_virtual": true
+  },
+  {
+    "id": 171,
+    "code1": "E000V00118",
+    "name": "Gorbea",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-39.103000",
+    "longitude": "-72.615000",
+    "is_virtual": true
+  },
+  {
+    "id": 174,
+    "code1": "E000V00119",
+    "name": "Loncoche",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-39.262000",
+    "longitude": "-71.868000",
+    "is_virtual": true
+  },
+  {
+    "id": 167,
+    "code1": "E000V00120",
+    "name": "Melipeuco",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-38.834000",
+    "longitude": "-71.683000",
+    "is_virtual": false
+  },
+  {
+    "id": 162,
+    "code1": "E000V00121",
+    "name": "Perquenco",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-38.435000",
+    "longitude": "-72.399000",
+    "is_virtual": true
+  },
+  {
+    "id": 170,
+    "code1": "E000V00122",
+    "name": "Pitrufqu\u00e9n",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-39.071000",
+    "longitude": "-72.922000",
+    "is_virtual": true
+  },
+  {
+    "id": 175,
+    "code1": "E000V00123",
+    "name": "Puc\u00f3n",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-39.289000",
+    "longitude": "-71.926000",
+    "is_virtual": true
+  },
+  {
+    "id": 172,
+    "code1": "E000V00124",
+    "name": "Tolt\u00e9n",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-39.165000",
+    "longitude": "-73.133000",
+    "is_virtual": true
+  },
+  {
+    "id": 173,
+    "code1": "E000V00125",
+    "name": "Villarrica",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-39.196000",
+    "longitude": "-72.261000",
+    "is_virtual": true
+  },
+  {
+    "id": 164,
+    "code1": "E000V00126",
+    "name": "Cholchol",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-38.675000",
+    "longitude": "-72.224000",
+    "is_virtual": true
+  },
+  {
+    "id": 169,
+    "code1": "E000V00127",
+    "name": "Cunco",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-39.007000",
+    "longitude": "-72.252000",
+    "is_virtual": true
+  },
+  {
+    "id": 168,
+    "code1": "E000V00128",
+    "name": "Freire",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-39.022000",
+    "longitude": "-72.787000",
+    "is_virtual": true
+  },
+  {
+    "id": 163,
+    "code1": "E000V00129",
+    "name": "Galvarino",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-38.446000",
+    "longitude": "-72.850000",
+    "is_virtual": true
+  },
+  {
+    "id": 180,
+    "code1": "E000V00130",
+    "name": "Los Lagos",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-39.863000",
+    "longitude": "-72.501000",
+    "is_virtual": false
+  },
+  {
+    "id": 178,
+    "code1": "E000V00131",
+    "name": "M\u00e1fil",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-39.632000",
+    "longitude": "-72.950000",
+    "is_virtual": true
+  },
+  {
+    "id": 182,
+    "code1": "E000V00132",
+    "name": "Paillaco",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-40.096000",
+    "longitude": "-72.927000",
+    "is_virtual": true
+  },
+  {
+    "id": 185,
+    "code1": "E000V00133",
+    "name": "La Uni\u00f3n",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-40.317000",
+    "longitude": "-73.024000",
+    "is_virtual": true
+  },
+  {
+    "id": 183,
+    "code1": "E000V00134",
+    "name": "Futrono",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-40.134000",
+    "longitude": "-72.415000",
+    "is_virtual": true
+  },
+  {
+    "id": 186,
+    "code1": "E000V00135",
+    "name": "R\u00edo Bueno",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-40.323000",
+    "longitude": "-72.979000",
+    "is_virtual": true
+  },
+  {
+    "id": 191,
+    "code1": "E000V00136",
+    "name": "R\u00edo Negro",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-40.765000",
+    "longitude": "-73.152000",
+    "is_virtual": true
+  },
+  {
+    "id": 194,
+    "code1": "E000V00137",
+    "name": "Puerto Octay",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-40.957000",
+    "longitude": "-72.886000",
+    "is_virtual": true
+  },
+  {
+    "id": 192,
+    "code1": "E000V00138",
+    "name": "Puyehue",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-40.861000",
+    "longitude": "-73.157000",
+    "is_virtual": true
+  },
+  {
+    "id": 187,
+    "code1": "E000V00139",
+    "name": "San Pablo",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-40.348000",
+    "longitude": "-73.308000",
+    "is_virtual": true
+  },
+  {
+    "id": 202,
+    "code1": "E000V00140",
+    "name": "Calbuco",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-41.938000",
+    "longitude": "-72.435000",
+    "is_virtual": true
+  },
+  {
+    "id": 203,
+    "code1": "E000V00141",
+    "name": "Cocham\u00f3",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-42.075000",
+    "longitude": "-71.865000",
+    "is_virtual": true
+  },
+  {
+    "id": 195,
+    "code1": "E000V00142",
+    "name": "Fresia",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-41.115000",
+    "longitude": "-73.377000",
+    "is_virtual": true
+  },
+  {
+    "id": 197,
+    "code1": "E000V00143",
+    "name": "Llanquihue",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-41.259000",
+    "longitude": "-73.009000",
+    "is_virtual": true
+  },
+  {
+    "id": 201,
+    "code1": "E000V00144",
+    "name": "Maull\u00edn",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-41.710000",
+    "longitude": "-73.672000",
+    "is_virtual": true
+  },
+  {
+    "id": 211,
+    "code1": "E000V00145",
+    "name": "Quinchao",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-42.883000",
+    "longitude": "-72.717000",
+    "is_virtual": true
+  },
+  {
+    "id": 210,
+    "code1": "E000V00146",
+    "name": "Chonchi",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-42.704000",
+    "longitude": "-73.789000",
+    "is_virtual": true
+  },
+  {
+    "id": 208,
+    "code1": "E000V00147",
+    "name": "Curaco de V\u00e9lez",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-42.404000",
+    "longitude": "-73.568000",
+    "is_virtual": true
+  },
+  {
+    "id": 209,
+    "code1": "E000V00148",
+    "name": "Puqueld\u00f3n",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-42.583000",
+    "longitude": "-73.633000",
+    "is_virtual": true
+  },
+  {
+    "id": 205,
+    "code1": "E000V00149",
+    "name": "Quemchi",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-42.157000",
+    "longitude": "-73.490000",
+    "is_virtual": true
+  },
+  {
+    "id": 215,
+    "code1": "E000V00150",
+    "name": "Chait\u00e9n",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-43.474000",
+    "longitude": "-72.126000",
+    "is_virtual": true
+  },
+  {
+    "id": 204,
+    "code1": "E000V00151",
+    "name": "Hualaihu\u00e9",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-42.100000",
+    "longitude": "-72.417000",
+    "is_virtual": true
+  },
+  {
+    "id": 218,
+    "code1": "E000V00152",
+    "name": "Cisnes",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-43.917000",
+    "longitude": "-72.387000",
+    "is_virtual": true
+  },
+  {
+    "id": 217,
+    "code1": "E000V00153",
+    "name": "Guaitecas",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-43.890000",
+    "longitude": "-73.740000",
+    "is_virtual": false
+  },
+  {
+    "id": 219,
+    "code1": "E000V00154",
+    "name": "Lago Verde",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-44.240000",
+    "longitude": "-71.847000",
+    "is_virtual": true
+  },
+  {
+    "id": 230,
+    "code1": "E000V00155",
+    "name": "O'Higgins",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-48.471000",
+    "longitude": "-72.560000",
+    "is_virtual": true
+  },
+  {
+    "id": 229,
+    "code1": "E000V00156",
+    "name": "Tortel",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-47.800000",
+    "longitude": "-73.536000",
+    "is_virtual": false
+  },
+  {
+    "id": 224,
+    "code1": "E000V00157",
+    "name": "R\u00edo Ib\u00e1\u00f1ez",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-46.278000",
+    "longitude": "-71.941000",
+    "is_virtual": false
+  },
+  {
+    "id": 233,
+    "code1": "E000V00158",
+    "name": "Torres Del Paine",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-51.184000",
+    "longitude": "-72.967000",
+    "is_virtual": true
+  },
+  {
+    "id": 234,
+    "code1": "E000V00159",
+    "name": "Laguna Blanca",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-52.309000",
+    "longitude": "-71.164000",
+    "is_virtual": true
+  },
+  {
+    "id": 236,
+    "code1": "E000V00160",
+    "name": "R\u00edo Verde",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-52.601000",
+    "longitude": "-71.505000",
+    "is_virtual": true
+  },
+  {
+    "id": 235,
+    "code1": "E000V00161",
+    "name": "San Gregorio",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-52.432000",
+    "longitude": "-70.361000",
+    "is_virtual": true
+  },
+  {
+    "id": 237,
+    "code1": "E000V00162",
+    "name": "Primavera",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-52.800000",
+    "longitude": "-69.270000",
+    "is_virtual": true
+  },
+  {
+    "id": 241,
+    "code1": "E000V00163",
+    "name": "Timaukel",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-54.051000",
+    "longitude": "-68.804000",
+    "is_virtual": true
+  },
+  {
+    "id": 20,
+    "code1": "E000V00164",
+    "name": "V1",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-24.510000",
+    "longitude": "-69.690000",
+    "is_virtual": true
+  },
+  {
+    "id": 19,
+    "code1": "E000V00165",
+    "name": "V2",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-23.940000",
+    "longitude": "-68.570000",
+    "is_virtual": true
+  },
+  {
+    "id": 18,
+    "code1": "E000V00166",
+    "name": "V3",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-23.600000",
+    "longitude": "-67.440000",
+    "is_virtual": false
+  },
+  {
+    "id": 21,
+    "code1": "E000V00167",
+    "name": "V4",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-25.000000",
+    "longitude": "-69.300000",
+    "is_virtual": true
+  },
+  {
+    "id": 23,
+    "code1": "E000V00168",
+    "name": "V5",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-25.700000",
+    "longitude": "-69.270000",
+    "is_virtual": true
+  },
+  {
+    "id": 24,
+    "code1": "E000V00169",
+    "name": "V6",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-26.250000",
+    "longitude": "-68.990000",
+    "is_virtual": true
+  },
+  {
+    "id": 27,
+    "code1": "E000V00170",
+    "name": "V7",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-27.070000",
+    "longitude": "-69.330000",
+    "is_virtual": true
+  },
+  {
+    "id": 30,
+    "code1": "E000V00171",
+    "name": "V8",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-27.980000",
+    "longitude": "-69.810000",
+    "is_virtual": false
+  },
+  {
+    "id": 38,
+    "code1": "E000V00172",
+    "name": "V9",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-30.380000",
+    "longitude": "-71.720000",
+    "is_virtual": true
+  },
+  {
+    "id": 47,
+    "code1": "E000V00174",
+    "name": "V11",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-32.343000",
+    "longitude": "-70.464000",
+    "is_virtual": true
+  },
+  {
+    "id": 50,
+    "code1": "E000V00175",
+    "name": "V12",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-32.540000",
+    "longitude": "-71.014000",
+    "is_virtual": true
+  },
+  {
+    "id": 52,
+    "code1": "E000V00176",
+    "name": "V13",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-32.618000",
+    "longitude": "-70.368000",
+    "is_virtual": true
+  },
+  {
+    "id": 66,
+    "code1": "E000V00177",
+    "name": "V14",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.230000",
+    "longitude": "-71.460000",
+    "is_virtual": true
+  },
+  {
+    "id": 67,
+    "code1": "E000V00178",
+    "name": "V15",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.287000",
+    "longitude": "-71.155000",
+    "is_virtual": true
+  },
+  {
+    "id": 87,
+    "code1": "E000V00179",
+    "name": "V16",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-33.878000",
+    "longitude": "-70.220000",
+    "is_virtual": true
+  },
+  {
+    "id": 93,
+    "code1": "E000V00180",
+    "name": "V17",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-34.203000",
+    "longitude": "-70.402000",
+    "is_virtual": true
+  },
+  {
+    "id": 106,
+    "code1": "E000V00181",
+    "name": "V18",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-34.781000",
+    "longitude": "-70.520000",
+    "is_virtual": false
+  },
+  {
+    "id": 113,
+    "code1": "E000V00182",
+    "name": "V19",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-35.398000",
+    "longitude": "-70.830000",
+    "is_virtual": true
+  },
+  {
+    "id": 122,
+    "code1": "E000V00183",
+    "name": "V20",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-36.060000",
+    "longitude": "-71.050000",
+    "is_virtual": true
+  },
+  {
+    "id": 135,
+    "code1": "E000V00184",
+    "name": "V21",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-36.880000",
+    "longitude": "-71.500000",
+    "is_virtual": false
+  },
+  {
+    "id": 146,
+    "code1": "E000V00185",
+    "name": "V22",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-37.323000",
+    "longitude": "-71.566000",
+    "is_virtual": true
+  },
+  {
+    "id": 148,
+    "code1": "E000V00186",
+    "name": "V23",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-37.418000",
+    "longitude": "-72.830000",
+    "is_virtual": false
+  },
+  {
+    "id": 161,
+    "code1": "E000V00187",
+    "name": "V24",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-38.414000",
+    "longitude": "-71.750000",
+    "is_virtual": true
+  },
+  {
+    "id": 160,
+    "code1": "E000V00188",
+    "name": "V25",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-38.207000",
+    "longitude": "-72.956000",
+    "is_virtual": true
+  },
+  {
+    "id": 176,
+    "code1": "E000V00189",
+    "name": "V26",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-39.373000",
+    "longitude": "-72.550000",
+    "is_virtual": true
+  },
+  {
+    "id": 177,
+    "code1": "E000V00190",
+    "name": "V27",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-39.390000",
+    "longitude": "-73.177000",
+    "is_virtual": true
+  },
+  {
+    "id": 181,
+    "code1": "E000V00191",
+    "name": "V28",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-39.880000",
+    "longitude": "-71.910000",
+    "is_virtual": true
+  },
+  {
+    "id": 188,
+    "code1": "E000V00192",
+    "name": "V29",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-40.520000",
+    "longitude": "-72.000000",
+    "is_virtual": true
+  },
+  {
+    "id": 184,
+    "code1": "E000V00193",
+    "name": "V30",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-40.168000",
+    "longitude": "-73.647000",
+    "is_virtual": true
+  },
+  {
+    "id": 190,
+    "code1": "E000V00194",
+    "name": "V31",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-40.623000",
+    "longitude": "-72.116000",
+    "is_virtual": false
+  },
+  {
+    "id": 193,
+    "code1": "E000V00195",
+    "name": "V32",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-40.873000",
+    "longitude": "-73.815000",
+    "is_virtual": true
+  },
+  {
+    "id": 198,
+    "code1": "E000V00196",
+    "name": "V33",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-41.359000",
+    "longitude": "-73.809000",
+    "is_virtual": true
+  },
+  {
+    "id": 196,
+    "code1": "E000V00197",
+    "name": "V34",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-41.142000",
+    "longitude": "-72.339000",
+    "is_virtual": true
+  },
+  {
+    "id": 200,
+    "code1": "E000V00198",
+    "name": "V35",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-41.579000",
+    "longitude": "-72.275000",
+    "is_virtual": false
+  },
+  {
+    "id": 206,
+    "code1": "E000V00199",
+    "name": "V36",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-42.285000",
+    "longitude": "-74.078000",
+    "is_virtual": true
+  },
+  {
+    "id": 213,
+    "code1": "E000V00200",
+    "name": "V37",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-43.208000",
+    "longitude": "-74.295000",
+    "is_virtual": false
+  },
+  {
+    "id": 207,
+    "code1": "E000V00201",
+    "name": "V38",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-42.355000",
+    "longitude": "-72.663000",
+    "is_virtual": true
+  },
+  {
+    "id": 214,
+    "code1": "E000V00202",
+    "name": "V39",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-43.364000",
+    "longitude": "-72.850000",
+    "is_virtual": true
+  },
+  {
+    "id": 220,
+    "code1": "E000V00203",
+    "name": "V40",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-44.729000",
+    "longitude": "-73.097000",
+    "is_virtual": true
+  },
+  {
+    "id": 226,
+    "code1": "E000V00204",
+    "name": "V41",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-46.569000",
+    "longitude": "-73.336000",
+    "is_virtual": true
+  },
+  {
+    "id": 225,
+    "code1": "E000V00205",
+    "name": "V42",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-46.355000",
+    "longitude": "-74.778000",
+    "is_virtual": true
+  },
+  {
+    "id": 231,
+    "code1": "E000V00206",
+    "name": "V43",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-48.958000",
+    "longitude": "-73.941000",
+    "is_virtual": true
+  },
+  {
+    "id": 232,
+    "code1": "E000V00207",
+    "name": "V44",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-51.070000",
+    "longitude": "-73.570000",
+    "is_virtual": true
+  },
+  {
+    "id": 240,
+    "code1": "E000V00208",
+    "name": "V45",
+    "institution": "Direcci\u00f3n Meteorol\u00f3gica de Chile(DMC)",
+    "latitude": "-53.800000",
+    "longitude": "-71.380000",
+    "is_virtual": false
+  }
+]

@@ -1,0 +1,91 @@
+<?php 
+?>
+
+<?php
+$this->headTitle('Clima Por Comuna - Región de Valparaíso');
+
+$this->inlineScript()
+    ->prependFile('https://climatologia.meteochile.gob.cl/js/bootstrap.min.js')
+    ->appendFile('https://climatologia.meteochile.gob.cl/js/MegaNavbarBS5.js')
+    ->appendFile($this->basePath('/js/leaflet/leaflet.js'))
+    ->appendFile($this->basePath('/js/highcharts/highcharts.js'))
+    ->appendFile($this->basePath('/js/highcharts/map.js'))
+    ->appendFile($this->basePath('/js/highcharts/pattern-fill.js'))
+    ->appendFile($this->basePath('/js/turf/turf.min.js'))
+    ->appendFile($this->basePath('/js/easyprint/bundle.min.js'))
+    ->appendFile($this->basePath('/js/mapClima.js'))
+?>
+<link rel="stylesheet" href="<?= $this->basePath('/css/nuevo.css') ?>">
+<div class="container-fluid main-container">
+      <h1>Monitor de Sequías - Clima de la Región de Valparaíso</h1>
+      <hr>
+      <div class="row">
+      <div class="col-md-2">
+            <?= $this->partial('application/partial/sidebar.phtml', ['activeRoute' => 'otros-indices']) ?>
+        </div>
+
+        <div class="col-md-10">
+          <div id="seccion-clima-region" class="content-section active m-0">
+            <div class="card">
+              <div class="card-header bg-cabezera text-white">
+                <h5>Climas de la Región de Valparaíso (Köppen Simplificado - DEMO)</h5>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <!-- Mapa -->
+                  <div class="col-lg-7 col-md-12 mb-3">
+                    <div id="map-clima-region-highcharts" style="min-height: 300px; position: relative;">
+                      <div class="map-loading-placeholder" style="text-align: center; padding-top: 200px;">
+                        Cargando mapa de climas...
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Leyenda -->
+                  <div class="card col-lg-5 col-md-12 legend-table-container px-0">
+                  <div class="card-header bg-cabezera text-white">Leyenda de Climas en la comuna</div>
+
+                  <div style="max-height: 350px; overflow-y: auto; border: 1px solid #dee2e6;">
+
+                        <table class="table table-striped table-sm table-bordered mb-0">
+                          <thead class="bg-cabezera text-white" style="position: sticky; top: 0; z-index: 1; background-color: #f8f9fa;">
+                            <tr>
+                              <th>Comuna</th>
+                              <th>Sigla Clima</th>
+                              <th>Descripción</th>
+                            </tr>
+                          </thead>
+                          <tbody id="comunas-clima-detalle-body">
+                            </tbody>
+                        </table>
+                      </div>
+                      <small class="text-muted d-block mt-2">
+                        Haz clic en una comuna en el mapa para ver su detalle climático específico.
+                      </small>
+
+                      <div class="card-header bg-cabezera text-white">Leyenda de Climas en la Región</div>
+                      <div style="max-height: 350px; overflow-y: auto; border: 1px solid #dee2e6;">
+                        <table class="table  table-striped table-sm table-bordered mb-0">
+                          <thead class="bg-cabezera text-white" style="position: sticky; top: 0; z-index: 1; background-color: #f8f9fa;">
+                            <tr>
+                              <th>Sigla</th>
+                              <th>Descripción Completa</th>
+                            </tr>
+                          </thead>
+                          <tbody id="clima-leyenda-fija-body">
+                            </tbody>
+                        </table>
+                      </div>
+
+                    <small class="text-muted d-block mt-2">
+                      Los climas asignados a las comunas son basados en la clasificación de Köppen simplificada.
+                    </small>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

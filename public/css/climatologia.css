@@ -1,0 +1,290 @@
+/* 
+    Created on : 16-12-2015, 11:00:42
+    Author     : llazcano
+*/
+
+:root {
+    --background-menu-color:  #2D4356 ;
+    --background-opcion-color : #84A7A1;
+    --color-opcion: #fff;
+  }
+  
+  
+  @font-face{
+      font-family: "TitilliumWeb";
+      src: url('../fonts/Titillium/TitilliumWeb-Regular.ttf') format('truetype');
+      font-weight: normal;
+      font-style:normal;
+  }
+  
+  *{
+      font-family: 'TitilliumWeb';    /* CON ESTO USO EL MISMO TIPO DE LETRA PARA TODO */
+  }
+  
+  .font-courier{
+      font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace;
+  }
+  
+  
+  
+  a {
+      text-decoration: none !important;
+  }
+  
+  /*
+      COLORES DE TEXTO  
+  */
+  .text-gris{
+      color: #c2c2c2 !important;
+  }
+  
+  .text-red{
+      color: #A94442 !important;
+  }
+  
+  .text-azul{
+      color: blue !important;
+  }
+  
+  .text-negro{
+      color: #000 !important;
+  }
+  
+  
+  /*
+      COLORES DE FONDO
+  */
+  
+  .bg-primary-bt3{
+      background-color: #337AB7 !important;
+  }
+  
+  .bg-danger-bt3{
+      background-color: #F2DEDE !important;
+  }
+  
+  .bg-pronostico-heladas{
+      background-color: #873D87 !important;
+  }
+  
+  .bg-success-bt3{
+      background-color: #DFF0D8 !important;
+  }
+  
+  .bg-estaciones-atrazada{
+    background-color:  #FFEFBF !important;
+  }
+  
+  .bg-gris{
+      background-color: #c2c2c2 !important;
+  }
+  
+  .bg-cabezera{
+    background-color: var(--background-menu-color) !important;
+    color: #fff;
+  }
+  
+  .bg-rotulo-tabla{
+      background-color: var(--background-opcion-color) !important;
+      color: #000000;
+  }
+  
+  .bg-olasCalor{
+      background-color: #ff5050 !important;;
+      color: #fff !important;
+  }
+  
+  .bg-olasFrio{
+      background-color:#0288D1 !important;;
+      color: #fff !important;
+  }
+  
+  .bg-menu{
+    background-color: var(--background-menu-color) !important;;
+    color: #fff !important;
+  }
+  
+  .bg-rayo15{
+      background-color:#00FFFD;
+  }
+  .bg-rayo30{
+      background-color:#01A9FF;
+  }
+  .bg-rayo45{
+      background-color:#0002FD;
+  }
+  .bg-rayo60{
+      background-color:#01029E;
+  }
+  
+  .bg-azultenue{
+      background-color: #CAEDFF;
+  }
+  
+  .text-requerimiento{
+      font-size: 12px;
+      color: #878787;
+  }
+  
+  .logoanimacion {
+    width: 110px;
+    height: 120px;
+    top: 1px;
+    left: 1px;
+    border: none;
+  }
+  
+  .logoanimacion img {
+    position: absolute;
+  }
+  
+  .top {
+    -webkit-animation-name: fade;
+            animation-name: fade;
+    -webkit-animation-timing-function: ease-in-out;
+            animation-timing-function: ease-in-out;
+    -webkit-animation-iteration-count: infinite;
+            animation-iteration-count: infinite;
+    -webkit-animation-duration: 7s;
+            animation-duration: 7s;
+    -webkit-animation-direction: alternate;
+            animation-direction: alternate;
+  }
+  
+  @-webkit-keyframes fade {
+    0% {
+      opacity: 1;
+    }
+    25% {
+      opacity: 1;
+    }
+    75% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  
+  @keyframes fade {
+    0% {
+      opacity: 1;
+    }
+    25% {
+      opacity: 1;
+    }
+    75% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
+  }  
+  
+  
+  .tabla_infoDMC th {
+    padding: 10px;
+    font-weight: bold;
+    font-size: 22px; 
+    text-align: left; 
+    border-bottom: 2px solid white;
+  
+  }
+  
+  .tabla_infoDMC td {
+    font-family: 'TitilliumWeb';  
+    padding: 10px;
+    font-size: 16px; 
+    text-align: left; 
+    vertical-align: top;
+    line-height: 1.8em;
+    border:none;
+    width: 25%;
+  }
+  
+  .linkIcono {
+    border: none;
+    text-decoration: none;
+    outline: none;
+    padding: 0px 0px;
+    color: #fff;    /* tema : color de links con iconos */
+  }
+  
+  a.linkIcono:hover {
+    color: #F66C62;    /* tema : color de links con iconos al pasar el mouse */
+  }
+  
+  .linkBarra {
+    border: none;
+    text-decoration: none;
+    outline: none;
+    padding: 0px 0px;
+    color: #fff;   /* tema : color letra de links */
+  }
+  
+  a.linkBarra:hover {
+    color: #F66C62;   /* tema : color al pasar el mouse sobre links */
+   
+  }
+  .botonGeneral {
+    background-color:#ededed;
+    border-radius:6px;
+    border:1px solid #878787;
+    display:inline-block;
+    color:#4d4c4d;
+    font-size:15px;
+    font-weight:normal;
+    padding: 3px 15px;
+    text-decoration:none;
+    box-shadow: 5px 5px 16px 0px rgba(0,0,0,0.2);
+  }
+  
+  .botonGeneral:hover {
+    background-color:#c2c2c2;
+  }
+  
+  /*Fijar cabecera Tabla*/
+  thead {
+      /* position: sticky; */
+      top: 0;
+      z-index: 10;
+  }
+  
+  .video-responsive {
+      position: relative;
+      padding-bottom: 56.25%; /* 16/9 ratio */
+      padding-top: 30px; /* IE6 workaround*/
+      height: 0;
+      overflow: hidden;
+      }
+      
+  .video-responsive iframe,
+  .video-responsive object,
+  .video-responsive embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  }
+  
+  
+  .text-height-0 {
+      line-height: 1!important;
+    }
+    .text-height-1 {
+      line-height: 1.5!important;
+    }
+    .text-height-2 {
+      line-height: 2!important;
+    }
+    .text-height-3 {
+      line-height: 2.5!important;
+    }
+    .text-height-4 {
+      line-height: 3!important;
+    }
+    .text-height-5 {
+      line-height: 3.5!important;
+    }
+  

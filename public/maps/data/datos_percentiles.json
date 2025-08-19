@@ -1,0 +1,246 @@
+{
+    "temperatura": {
+        "San Felipe": {
+            "percentil": 2.22,
+            "valor_actual": 5.27,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 45
+        },
+        "Petorca": {
+            "percentil": 74.29,
+            "valor_actual": 5.8,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "Cabildo": {
+            "percentil": 71.43,
+            "valor_actual": -3.3,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "Papudo": {
+            "percentil": 67.14,
+            "valor_actual": 11.7,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "La Ligua": {
+            "percentil": 67.14,
+            "valor_actual": 11.7,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "Putaendo": {
+            "percentil": 71.43,
+            "valor_actual": 9.0,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "Casablanca": {
+            "percentil": 71.43,
+            "valor_actual": -1.5,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "Panquehue": {
+            "percentil": 71.43,
+            "valor_actual": 9.0,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "Quintero": {
+            "percentil": 65.71,
+            "valor_actual": 16.2,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "La Calera": {
+            "percentil": 67.14,
+            "valor_actual": 11.7,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "La Cruz": {
+            "percentil": 2.22,
+            "valor_actual": 7.11,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 45
+        },
+        "Puchuncaví": {
+            "percentil": 71.43,
+            "valor_actual": -1.5,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "Quillota": {
+            "percentil": 67.14,
+            "valor_actual": 11.7,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "Concón": {
+            "percentil": 65.71,
+            "valor_actual": 16.2,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "Limache": {
+            "percentil": 67.14,
+            "valor_actual": 11.7,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "Valparaíso": {
+            "percentil": 2.22,
+            "valor_actual": 9.6,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 45
+        },
+        "Viña del Mar": {
+            "percentil": 2.22,
+            "valor_actual": 8.68,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 45
+        },
+        "Algarrobo": {
+            "percentil": 68.57,
+            "valor_actual": 15.0,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "Cartagena": {
+            "percentil": 62.86,
+            "valor_actual": 14.6,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "Santo Domingo": {
+            "percentil": 2.22,
+            "valor_actual": 7.15,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 45
+        }
+    },
+    "precipitacion": {
+        "San Felipe": {
+            "percentil": 48.89,
+            "valor_actual": 29.0,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 45
+        },
+        "Petorca": {
+            "percentil": 48.57,
+            "valor_actual": 40.84,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "Cabildo": {
+            "percentil": 62.86,
+            "valor_actual": 133.14,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "Papudo": {
+            "percentil": 17.14,
+            "valor_actual": 30.14,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "La Ligua": {
+            "percentil": 34.29,
+            "valor_actual": 43.15,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "Putaendo": {
+            "percentil": 68.57,
+            "valor_actual": 65.63,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "Casablanca": {
+            "percentil": 65.71,
+            "valor_actual": 151.3,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "Panquehue": {
+            "percentil": 37.14,
+            "valor_actual": 42.94,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "Quintero": {
+            "percentil": 14.29,
+            "valor_actual": 28.04,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "La Calera": {
+            "percentil": 20.0,
+            "valor_actual": 42.75,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "La Cruz": {
+            "percentil": 20.0,
+            "valor_actual": 17.8,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 45
+        },
+        "Puchuncaví": {
+            "percentil": 71.43,
+            "valor_actual": 98.96,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "Quillota": {
+            "percentil": 34.29,
+            "valor_actual": 57.89,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "Concón": {
+            "percentil": 11.43,
+            "valor_actual": 43.67,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "Limache": {
+            "percentil": 11.43,
+            "valor_actual": 39.42,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "Valparaíso": {
+            "percentil": 11.11,
+            "valor_actual": 6.6,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 45
+        },
+        "Viña del Mar": {
+            "percentil": 8.89,
+            "valor_actual": 9.2,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 45
+        },
+        "Algarrobo": {
+            "percentil": 51.43,
+            "valor_actual": 80.56,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "Cartagena": {
+            "percentil": 51.43,
+            "valor_actual": 72.79,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 35
+        },
+        "Santo Domingo": {
+            "percentil": 11.11,
+            "valor_actual": 12.4,
+            "ultimo_mes": "2025-06",
+            "datos_historicos_usados": 45
+        }
+    }
+}
