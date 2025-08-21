@@ -121,8 +121,8 @@ function crearOActualizarClimogramaDinamico(datosEstacion) {
     subtitle.innerHTML = `<small>Mostrando datos para ${datosEstacion.name}</small>`;
     
     const series = [
-        { name: 'Precipitación Total', type: 'column', data: datosEstacion.rr, tooltip: { valueSuffix: ' mm' } },
-        { name: 'Temperatura Mensual', type: 'spline', yAxis: 1, data: datosEstacion.tm, tooltip: { valueSuffix: ' °C' }, color: "#EB2B00" }
+        { name: 'Precipitación total', type: 'column', data: datosEstacion.rr, tooltip: { valueSuffix: ' mm' } },
+        { name: 'Temperatura media mensual', type: 'spline', yAxis: 1, data: datosEstacion.tm, tooltip: { valueSuffix: ' °C' }, color: "#EB2B00" }
     ];
 
     const chartOptions = {
@@ -204,8 +204,8 @@ async function inicializarClimogramaRegional(datosEstaciones) {
             ],
             tooltip: { shared: true },
             series: [
-                { name: 'Precipitación Total', type: 'column', data: avgPrecipData, tooltip: { valueSuffix: ' mm' } },
-                { name: 'Temperatura Mensual', type: 'spline', yAxis: 1, data: avgTempData, tooltip: { valueSuffix: ' °C' }, color: "#EB2B00" }
+                { name: 'Precipitación total', type: 'column', data: avgPrecipData, tooltip: { valueSuffix: ' mm' } },
+                { name: 'Temperatura media mensual', type: 'spline', yAxis: 1, data: avgTempData, tooltip: { valueSuffix: ' °C' }, color: "#EB2B00" }
             ],
             credits: { enabled: false }
         });
