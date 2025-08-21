@@ -1,201 +1,235 @@
-<?php
-// Vista para el monitor de sequía - copiamos el contenido de monitor.phtml
-$this->headTitle('Monitor de Sequía');
+<?php // module/Application/view/application/sequia/index.phtml 
 ?>
 
-<div class="container-fluid">
+<?php
+// Le decimos a la vista cuál es el título de esta página
+$this->headTitle('Monitor de Sequías');
+// En public/index.php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+// Añadimos los scripts JS específicos para esta página
+$this->inlineScript()
+    ->appendFile($this->basePath('/js/highcharts/highcharts.js'))
+    ->appendFile($this->basePath('/js/highcharts/map.js'))
+    ->appendFile($this->basePath('/js/highcharts/pattern-fill.js'))
+    ->appendFile($this->basePath('/js/turf/turf.min.js'))
+    ->appendFile($this->basePath('/js/easyprint/bundle.min.js'))
+    ->appendFile($this->basePath('/js/sequia.js?v=' . time()));
+?>
+
+<div class="container-fluid main-container">
+    <hr>
+    <div id="info-container">Cargando datos desde el backend...</div>
+    <h1 id="titulo-mayor"></h1>
+    <h3 id="titulo-menor"></h3>
+    <hr>
+    <div id="contenedor-tabla"></div>
+    <div id="contenedor-imagenes" class="row"></div>
     <div class="row">
-        <!-- Sidebar -->
-        <nav id="sidebarNav" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-            <div class="position-sticky pt-3">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">
-                            <i class="fas fa-home"></i> Inicio
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/indice-combinado">
-                            <i class="fas fa-chart-line"></i> Índice Combinado
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/mapas-percentiles">
-                            <i class="fas fa-map"></i> Mapas de Percentiles
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/otros-indices">
-                            <i class="fas fa-chart-bar"></i> Otros Índices
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/clima-regional">
-                            <i class="fas fa-cloud-sun"></i> Clima Regional
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/climograma">
-                            <i class="fas fa-thermometer-half"></i> Climograma
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+        <div class="col-md-2">
+            <?= $this->partial('application/partial/sidebar.phtml', ['activeRoute' => 'indice-combinado']) ?>
+        </div>
 
-        <!-- Main content -->
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Monitor de Sequía - Región de Valparaíso</h1>
-            </div>
-
-            <div class="row">
-                <!-- Mapa Principal -->
-                <div class="col-lg-8 mb-4">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="card-title mb-0">Condiciones Actuales de Sequía</h5>
-                        </div>
-                        <div class="card-body p-0">
-                            <div id="mapaValparaisoLeaflet" style="height: 500px; width: 100%;"></div>
-                        </div>
-                    </div>
+        <div class="col-md-10"style="padding-left: 0px;padding-right: 0px;">
+            <div class="card">
+                <div class="card-header bg-cabezera text-white">
+                    <strong>Porcentaje de afectación y categoría</strong>
                 </div>
-
-                <!-- Sidebar con información -->
-                <div class="col-lg-4 mb-4">
-                    <!-- Promedios Regionales -->
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <h6 class="card-title mb-0">Promedios Regionales</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-sm">
-                                    <tbody>
-                                        <tr><td><strong>SA:</strong></td><td id="avg-sa">-</td></tr>
-                                        <tr><td><strong>D0:</strong></td><td id="avg-d0">-</td></tr>
-                                        <tr><td><strong>D1:</strong></td><td id="avg-d1">-</td></tr>
-                                        <tr><td><strong>D2:</strong></td><td id="avg-d2">-</td></tr>
-                                        <tr><td><strong>D3:</strong></td><td id="avg-d3">-</td></tr>
-                                        <tr><td><strong>D4:</strong></td><td id="avg-d4">-</td></tr>
-                                    </tbody>
-                                </table>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="card col-md-3" style="padding-left: 0px;padding-right: 0px;">
+                            <div class="card-header bg-cabezera text-white">
+                                <h6>Promedio Regional</h6>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Gráfico de Serie Temporal Regional -->
-                    <div class="card">
-                        <div class="card-header">
-                            <h6 class="card-title mb-0">Evolución Regional (6 meses)</h6>
-                        </div>
-                        <div class="card-body">
-                            <div id="timeSeriesChartRegionalSidebar" style="height: 250px;"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Mapas de Persistencia -->
-            <div class="row mt-4">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title mb-0">Índices de Persistencia de Sequía (SPI)</h5>
-                        </div>
-                        <div class="card-body" id="persistencia-container">
-                            <div class="persistencia-map-grid">
-                                <div class="row">
-                                    <div class="col-md-2 col-sm-4 col-6 mb-3">
-                                        <div class="card">
-                                            <div class="card-header text-center py-2">
-                                                <small><strong>3 Meses</strong></small>
-                                            </div>
-                                            <div class="card-body p-1">
-                                                <div id="mapaPersistencia3m" style="height: 120px; cursor: pointer;"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2 col-sm-4 col-6 mb-3">
-                                        <div class="card">
-                                            <div class="card-header text-center py-2">
-                                                <small><strong>9 Meses</strong></small>
-                                            </div>
-                                            <div class="card-body p-1">
-                                                <div id="mapaPersistencia9m" style="height: 120px; cursor: pointer;"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2 col-sm-4 col-6 mb-3">
-                                        <div class="card">
-                                            <div class="card-header text-center py-2">
-                                                <small><strong>12 Meses</strong></small>
-                                            </div>
-                                            <div class="card-body p-1">
-                                                <div id="mapaPersistencia12m" style="height: 120px; cursor: pointer;"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2 col-sm-4 col-6 mb-3">
-                                        <div class="card">
-                                            <div class="card-header text-center py-2">
-                                                <small><strong>24 Meses</strong></small>
-                                            </div>
-                                            <div class="card-body p-1">
-                                                <div id="mapaPersistencia24m" style="height: 120px; cursor: pointer;"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2 col-sm-4 col-6 mb-3">
-                                        <div class="card">
-                                            <div class="card-header text-center py-2">
-                                                <small><strong>48 Meses</strong></small>
-                                            </div>
-                                            <div class="card-body p-1">
-                                                <div id="mapaPersistencia48m" style="height: 120px; cursor: pointer;"></div>
+                            <table class="table table-sm table-bordered" id="regional-avg-table">
+                                <thead>
+                                    <tr>
+                                        <th>Cat.</th>
+                                        <th>Descripción</th>
+                                        <th>%</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="background-color:#d9d9d9;">SA</td>
+                                        <td>Sin Sequía</td>
+                                        <td id="avg-sa">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background-color:#ffff00;">D0</td>
+                                        <td>Anorm. Seco</td>
+                                        <td id="avg-d0">10%</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background-color:#fcd37f;">D1</td>
+                                        <td>Sequía Mod.</td>
+                                        <td id="avg-d1">5%</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background-color:#ffaa00;">D2</td>
+                                        <td>Sequía Sev.</td>
+                                        <td id="avg-d2">0%</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background-color:#EA2B00;">D3</td>
+                                        <td>Sequía Ext.</td>
+                                        <td id="avg-d3">0%</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="background-color:#801300;">D4</td>
+                                        <td>Sequía Exc.</td>
+                                        <td id="avg-d4">0%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                           <div class="card">
+                                <div class="card-header bg-cabezera text-white">Serie de Tiempo Porcentaje de afectación</div>
+                                <div class="card-body">
+                                    <div id="timeSeriesChartRegionalSidebar" style="width:100%; height:350px;">
+                                        <div class="d-flex justify-content-center align-items-center h-100">
+                                            <div class="text-center">
+                                                <div class="spinner-border text-primary" role="status">
+                                                    <span class="visually-hidden">Cargando...</span>
+                                                </div>
+                                                <div class="mt-2">
+                                                    <small class="text-muted">Cargando gráfico temporal...</small>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                     
+                        <div class="card col-md-9">
+                            <div class="row">
+                            <div class="col-md-8" style="padding-left: 0px;padding-right: 0px;">
+                                <div class="card">
+                                    <div class="card-header d-flex justify-content-between align-items-center bg-cabezera text-white">
+                                        <h6>Categorías por Comuna (% Área D0-D4)</h6>
+                                        <div id="map-legend" class="legend d-inline-block">
+                                        <table class="table-legend">
+                                            <tr>
+                                                <td><span class="color-box" style="background:#d9d9d9;"></span> SS</td>
+                                                <td><span class="color-box" style="background:#ffff00;"></span> D0</td>
+                                                <td><span class="color-box" style="background:#fcd37f;"></span> D1</td>
+                                            </tr>
+                                            <tr>
+                                                <td><span class="color-box" style="background:#ffaa00;"></span> D2</td>
+                                                <td><span class="color-box" style="background:#EA2B00;"></span> D3</td>
+                                                <td><span class="color-box" style="background:#801300;"></span> D4</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div id="mapaValparaisoLeaflet" style="height: 600px;">
+                                            <div class="d-flex justify-content-center align-items-center h-100">
+                                                <div class="text-center">
+                                                    <div class="spinner-border text-primary" role="status">
+                                                        <span class="visually-hidden">Cargando...</span>
+                                                    </div>
+                                                    <div class="mt-2">
+                                                        <small class="text-muted">Cargando mapa de sequía...</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4" style="padding-left: 0px;padding-right: 0px;" >
+                                <div id="panel-detalle-comuna" class="card" style="display: none;">
+                                    <div class="card-header bg-cabezera text-white d-flex justify-content-between align-items-center">
+                                        <strong id="detalle-comuna-nombre">Detalle de Comuna</strong>
+                                        <button type="button" class="btn-close btn-close-white" id="cerrar-panel-detalle" aria-label="Close"></button>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="detalle-comuna-contenido"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </main>
+
+            <div class="card mt-3">
+                        <div class="card-header bg-cabezera text-white">
+                            <strong>Persistencia de la Sequía con SPI</strong>
+                        </div>
+                        <div class="card-body" id="persistencia-container">
+                            <div class="persistencia-map-grid">
+                                <div class="persistencia-map-item">
+                                    <p>3 meses</p>
+                                    <div id="mapaPersistencia3m" class="small-leaflet-map">
+                                        <div class="d-flex justify-content-center align-items-center h-100">
+                                            <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                                <span class="visually-hidden">Cargando...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                <div class="persistencia-map-item">
+                                    <p>9 meses</p>
+                                    <div id="mapaPersistencia9m" class="small-leaflet-map">
+                                        <div class="d-flex justify-content-center align-items-center h-100">
+                                            <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                                <span class="visually-hidden">Cargando...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="persistencia-map-item">
+                                    <p>12 meses</p>
+                                    <div id="mapaPersistencia12m" class="small-leaflet-map">
+                                        <div class="d-flex justify-content-center align-items-center h-100">
+                                            <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                                <span class="visually-hidden">Cargando...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="persistencia-map-item">
+                                    <p>24 meses</p>
+                                    <div id="mapaPersistencia24m" class="small-leaflet-map">
+                                        <div class="d-flex justify-content-center align-items-center h-100">
+                                            <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                                <span class="visually-hidden">Cargando...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="persistencia-map-item">
+                                    <p>48 meses</p>
+                                    <div id="mapaPersistencia48m" class="small-leaflet-map">
+                                        <div class="d-flex justify-content-center align-items-center h-100">
+                                            <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                                <span class="visually-hidden">Cargando...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="persistencia-map-item">
+                                    <p>Sin datos</p>
+                                    <div id="mapaPersistenciaSinDatos" class="small-leaflet-map">
+                                        <div class="d-flex justify-content-center align-items-center h-100">
+                                            <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                                <span class="visually-hidden">Cargando...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<!-- Panel de detalle de comuna (oculto por defecto) -->
-<div id="panel-detalle-comuna" class="position-fixed bg-white border rounded shadow-lg" style="display: none; top: 20px; right: 20px; width: 350px; max-height: 80vh; overflow-y: auto; z-index: 1000;">
-    <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h6 class="mb-0" id="detalle-comuna-nombre">Detalle Comuna</h6>
-            <button type="button" class="btn-close" id="cerrar-panel-detalle" aria-label="Cerrar"></button>
-        </div>
-        <div class="card-body" id="detalle-comuna-contenido">
-            <!-- Contenido dinámico -->
-        </div>
+<!-- Modal del Mapa -->
+<div id="mapModal" class="map-modal"> <div class="map-modal-content">
+        <span class="map-modal-close-button">&times;</span> <h3 id="modalMapTitle"></h3> <div id="modalMapContainer"></div> </div>
     </div>
-</div>
-
-<!-- Modal para mapas de persistencia -->
-<div id="mapModal" class="modal" style="display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);">
-    <div class="modal-content" style="background-color: #fefefe; margin: 5% auto; padding: 0; border: 1px solid #888; width: 90%; max-width: 1000px; height: 80%; border-radius: 8px;">
-        <div class="modal-header" style="padding: 15px; border-bottom: 1px solid #ddd; display: flex; justify-content: space-between; align-items: center;">
-            <h5 id="modalMapTitle" style="margin: 0;">Mapa de Persistencia</h5>
-            <button type="button" class="map-modal-close-button" style="background: none; border: none; font-size: 24px; cursor: pointer;">&times;</button>
-        </div>
-        <div class="modal-body" style="padding: 0; height: calc(100% - 60px);">
-            <div id="modalMapContainer" style="width: 100%; height: 100%;"></div>
-        </div>
-    </div>
-</div>
-
-<!-- Scripts específicos para esta página -->
-<script src="/js/turf/turf.min.js"></script>
-<script src="/js/leaflet/leaflet.js"></script>
-<script src="/js/highcharts/highcharts.js"></script>
-<script src="/js/easyprint/bundle.min.js"></script>
-<script type="module" src="/js/main.js"></script>

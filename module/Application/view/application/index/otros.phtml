@@ -9,10 +9,10 @@ $this->inlineScript()
     ->appendFile($this->basePath('/js/highcharts/pattern-fill.js'))
     ->appendFile($this->basePath('/js/turf/turf.min.js'))
     ->appendFile($this->basePath('/js/jspdf/jspdf.umd.min.js'))
-    ->appendFile($this->basePath('/js/graph_index.js'))
+    ->appendFile($this->basePath('/js/graph_index.js?v=' . time()))
     ->appendFile($this->basePath('/js/descarga_index.js'))
     ->appendFile($this->basePath('/js/highcharts-theme.js'))
-    ->appendFile($this->basePath('/js/otros.js'));
+;
 ?>
 
 <div class="container-fluid main-container">
@@ -33,7 +33,7 @@ $this->inlineScript()
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <h5>Propagación temporal de la sequía SPI</h5>
-                                    <div id="container-spi" class="chart-container" style="height: 100vh;">
+                                    <div id="container-spi" class="chart-container" style="height: 50vh;">
                                         <div class="loading-placeholder">Cargando SPI...</div>
                                     </div>
                                     <div class="export-button-container">
@@ -42,7 +42,7 @@ $this->inlineScript()
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <h5>Índice estandarizado de Evapotranspiración (SPEI)</h5>
-                                    <div id="container-spei" class="chart-container" style="height: 100vh;">
+                                    <div id="container-spei" class="chart-container" style="height: 50vh;">
                                         <div class="loading-placeholder">Cargando SPEI...</div>
                                     </div>
                                     <div class="export-button-container">

@@ -121,8 +121,8 @@ function crearOActualizarClimogramaDinamico(datosEstacion) {
     subtitle.innerHTML = `<small>Mostrando datos para ${datosEstacion.name}</small>`;
     
     const series = [
-        { name: 'Precipitación', type: 'column', data: datosEstacion.rr, tooltip: { valueSuffix: ' mm' } },
-        { name: 'Temperatura Media', type: 'spline', yAxis: 1, data: datosEstacion.tm, tooltip: { valueSuffix: ' °C' }, color: "#EB2B00" }
+        { name: 'Precipitación Total', type: 'column', data: datosEstacion.rr, tooltip: { valueSuffix: ' mm' } },
+        { name: 'Temperatura Mensual', type: 'spline', yAxis: 1, data: datosEstacion.tm, tooltip: { valueSuffix: ' °C' }, color: "#EB2B00" }
     ];
 
     const chartOptions = {
@@ -132,7 +132,7 @@ function crearOActualizarClimogramaDinamico(datosEstacion) {
             align: 'center' 
         },
         subtitle: {
-            text: 'Valores Medios Mensuales',
+            text: 'Precipitación Mensual y Temperatura media mensual',
             align: 'center' 
         },
         xAxis: [{ categories: meses, crosshair: true }],
@@ -194,7 +194,7 @@ async function inicializarClimogramaRegional(datosEstaciones) {
                 align: 'center' 
             },
             subtitle: {
-                text: 'Promedio Mensual de Precipitación y Temperatura',
+                text: 'Precipitación Mensual y Temperatura media mensual',
                 align: 'center'
             },
             xAxis: [{ categories: meses, crosshair: true }],
@@ -204,8 +204,8 @@ async function inicializarClimogramaRegional(datosEstaciones) {
             ],
             tooltip: { shared: true },
             series: [
-                { name: 'Precipitación Promedio', type: 'column', data: avgPrecipData, tooltip: { valueSuffix: ' mm' } },
-                { name: 'Temperatura Promedio', type: 'spline', yAxis: 1, data: avgTempData, tooltip: { valueSuffix: ' °C' }, color: "#EB2B00" }
+                { name: 'Precipitación Total', type: 'column', data: avgPrecipData, tooltip: { valueSuffix: ' mm' } },
+                { name: 'Temperatura Mensual', type: 'spline', yAxis: 1, data: avgTempData, tooltip: { valueSuffix: ' °C' }, color: "#EB2B00" }
             ],
             credits: { enabled: false }
         });

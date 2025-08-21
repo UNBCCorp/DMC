@@ -1,111 +1,121 @@
 <?php
-// Copiamos el contenido de percentiles.phtml manteniendo exactamente el mismo contenido
-$this->headTitle('Mapas de Percentiles');
+// Migración exacta del contenido visual del archivo original
+$this->headTitle('Mapas de Percentiles - Región de Valparaíso');
+
+// Scripts JS necesarios para esta página
+$this->inlineScript()
+    ->appendFile($this->basePath('/js/leaflet/leaflet.js'))
+    ->appendFile($this->basePath('/js/highcharts/highcharts.js'))
+    ->appendFile($this->basePath('/js/highcharts/map.js'))
+    ->appendFile($this->basePath('/js/highcharts/pattern-fill.js'))
+    ->appendFile('https://code.highcharts.com/modules/exporting.js')
+    ->appendFile('https://code.highcharts.com/modules/export-data.js')
+    ->appendFile($this->basePath('/js/turf/turf.min.js'))
+    ->appendFile($this->basePath('/js/easyprint/bundle.min.js'))
+    ->appendFile($this->basePath('/js/mapasPercintil.js'));
 ?>
-
-<div class="container-fluid">
+<div class="container-fluid main-container">
+    <h1>Monitor de Sequías - Mapas de Percentiles (Región de Valparaíso)</h1>
+    <hr>
     <div class="row">
-        <!-- Sidebar -->
-        <nav id="sidebarNav" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-            <div class="position-sticky pt-3">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">
-                            <i class="fas fa-home"></i> Inicio
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/indice-combinado">
-                            <i class="fas fa-chart-line"></i> Índice Combinado
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/mapas-percentiles">
-                            <i class="fas fa-map"></i> Mapas de Percentiles
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/otros-indices">
-                            <i class="fas fa-chart-bar"></i> Otros Índices
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/clima-regional">
-                            <i class="fas fa-cloud-sun"></i> Clima Regional
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/climograma">
-                            <i class="fas fa-thermometer-half"></i> Climograma
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+        <div class="col-md-2">
+            <?= $this->partial('application/partial/sidebar.phtml', ['activeRoute' => 'percentiles']) ?>
+        </div>
 
-        <!-- Main content -->
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Mapas de Percentiles Climáticos</h1>
-            </div>
-
-            <div class="row">
-                <!-- Mapa de Precipitación -->
-                <div class="col-lg-6 mb-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title mb-0">Percentil de Precipitación</h5>
-                        </div>
-                        <div class="card-body">
-                            <div id="map-percentil-precip" style="height: 400px; position: relative;">
-                                <div class="map-loading-placeholder" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-                                    <div class="spinner-border text-primary" role="status">
-                                        <span class="visually-hidden">Cargando...</span>
-                                    </div>
-                                    <p class="mt-2">Cargando mapa de precipitación...</p>
+        <div class="col-md-10">
+            <div id="seccion-mapas-percentiles" class="content-section active m-0">
+                <div class="card">
+                    <div class="card-header bg-cabezera text-white">
+                        <h5 id="titulo-tarjeta">Mapas de Percentiles - Región de Valparaíso</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Mapa de Percentil de Precipitación</h6>
+                                <div id="map-percentil-precip" class="map-container">
+                                    <div class="map-loading-placeholder">Cargando mapa de precipitación...</div>
+                                </div>
+                                <div class="export-button-container">
+                                    <button class="btn btn-sm btn-primary export-pdf-btn" data-map-id="map-percentil-precip">
+                                        <span> Ver Explicación </span> <i class="fa fa-external-link"></i>
+                                    </button>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Mapa de Temperatura -->
-                <div class="col-lg-6 mb-4">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title mb-0">Percentil de Temperatura</h5>
-                        </div>
-                        <div class="card-body">
-                            <div id="map-percentil-temp" style="height: 400px; position: relative;">
-                                <div class="map-loading-placeholder" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-                                    <div class="spinner-border text-primary" role="status">
-                                        <span class="visually-hidden">Cargando...</span>
-                                    </div>
-                                    <p class="mt-2">Cargando mapa de temperatura...</p>
+                            <div class="col-md-6">
+                                <h6>Mapa de Percentil de Temperatura Media</h6>
+                                <div id="map-percentil-temp" class="map-container">
+                                    <div class="map-loading-placeholder">Cargando mapa de temperatura...</div>
+                                </div>
+                                <div class="export-button-container">
+                                    <button class="btn btn-sm btn-primary export-pdf-btn" data-map-id="map-percentil-temp">
+                                        <span> Ver Explicación </span> <i class="fa fa-external-link"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div class="row mt-4">
-                <div class="col-12">
-                    <div class="alert alert-info">
-                        <h6><i class="fas fa-info-circle"></i> Información sobre los Percentiles</h6>
-                        <p class="mb-0">
-                            Los mapas muestran los percentiles de temperatura y precipitación para las comunas de la Región de Valparaíso. 
-                            Los percentiles indican qué tan extremos son los valores actuales comparados con el historial climático de cada comuna.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </main>
+        </div>
     </div>
 </div>
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+        // Obtener la fecha real de los datos de percentiles
+        async function actualizarTitulosConFechaReal() {
+            try {
+                const response = await fetch('/api/datos_percentiles');
+                const datosPercentiles = await response.json();
+                
+                // Obtener la fecha del primer dato disponible
+                const primerDatoTemp = Object.values(datosPercentiles.temperatura)[0];
+                if (primerDatoTemp && primerDatoTemp.ultimo_mes) {
+                    const [ano, mes] = primerDatoTemp.ultimo_mes.split('-');
+                    const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+                                  'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+                    const nombreMes = meses[parseInt(mes) - 1];
+                    
+                    // Actualizar el título de la tarjeta
+                    const tituloTarjeta = document.getElementById('titulo-tarjeta');
+                    tituloTarjeta.textContent = `Mapas de Percentiles - Región de Valparaíso - ${nombreMes}`;
+                }
+            } catch (error) {
+                console.error('Error al obtener la fecha de los datos:', error);
+                // Fallback a fecha actual si hay error
+                const fechaActual = new Date();
+                const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+                              'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+                const mesActual = meses[fechaActual.getMonth()];
+                const anoActual = fechaActual.getFullYear();
+                
+                const tituloTarjeta = document.getElementById('titulo-tarjeta');
+                tituloTarjeta.textContent = `Mapas de Percentiles - Región de Valparaíso ${mesActual} ${anoActual}`;
+            }
+        }
+        
+        // Ejecutar la función para actualizar títulos
+        actualizarTitulosConFechaReal();
+ 
+        document.querySelectorAll('.export-pdf-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const mapId = this.getAttribute('data-map-id');
 
-<!-- Scripts específicos para esta página -->
-<script src="/js/turf/turf.min.js"></script>
-<script src="/js/highcharts/highmaps.js"></script>
-<script src="/js/highcharts/map.js"></script>
-<script src="/js/mapasPercintil.js"></script>
+                const pdfMapping = {
+                    'map-percentil-precip': 'FICHAS_INDICES_PS.pdf',
+                    'map-percentil-temp': 'FICHAS_INDICES_PT.pdf',
+                };
+                const pdfFileName = pdfMapping[mapId];
+
+                if (pdfFileName) {
+                    const pdfPath = `/pdf/${pdfFileName}`;
+                    
+                    // Abrir el PDF en una nueva ventana/pestaña
+                    window.open(pdfPath, '_blank');
+                } else {
+                    console.error('No se encontró un PDF mapeado para el ID de mapa:', mapId);
+                    alert('No se encontró el archivo PDF explicativo para este mapa.');
+                }
+            });
+        });
+    });
+</script>

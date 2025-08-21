@@ -73,12 +73,21 @@ async function crearMapaPercentilesHighcharts(
             }],
             credits: {
                 enabled: true,
-                text: 'Datos: DMC-CASTEHR',
+                text: '',
                 href: '#'
             },
             exporting: {
-                enabled: false,
-                fallbackToExportServer: false
+                enabled: true,
+                fallbackToExportServer: false,
+                buttons: {
+                    contextButton: {
+                        menuItems: ['downloadJPEG']
+                    }
+                },
+                filename: `mapa_percentiles_${chartTitle.toLowerCase().replace(/\s+/g, '_')}_${new Date().toISOString().slice(0, 10)}`,
+                sourceWidth: 1200,
+                sourceHeight: 800,
+                scale: 2
             }
         });
 
@@ -108,13 +117,13 @@ const colorMasFrio = '#B5B2FF';
 const colorMuchoMasFrio = '#635BFF';
 const colorRecordFrio = '#2000FF';
 const tempColorClasses = [
-    { from: 98, color: colorRecordCalido, name: 'Récord cálido' },
+    { from: 98, color: colorRecordCalido, name: 'Extremadamente cálido' },
     { from: 90, to: 98, color: colorMuchoMasCalido, name: 'Mucho más cálido que el promedio' },
     { from: 75, to: 90, color: colorMasCalido, name: 'Más cálido que el promedio' },
     { from: 25, to: 75, color: colorCercanoPromedio, name: 'Cercano al promedio' },
     { from: 10, to: 25, color: colorMasFrio, name: 'Más frío que el promedio' },
     { from: 2, to: 10, color: colorMuchoMasFrio, name: 'Mucho más frío que el promedio' },
-    { to: 2, color: colorRecordFrio, name: 'Récord frío' }
+    { to: 2, color: colorRecordFrio, name: 'Extremadamente frío' }
 ];
 
 async function inicializarMapasDePercentiles() {

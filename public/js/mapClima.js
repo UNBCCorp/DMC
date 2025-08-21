@@ -125,10 +125,21 @@ function generarTablaDetalleComunasHTML(properties) {
   climasEnComuna.forEach((climaCode, index) => {
     const climaInfo = climaColorClasses.find(
       (c) => c.code.toUpperCase() === (climaCode || "").trim().toUpperCase()
-    ) || { name: "Descripción no encontrada" };
+    ) || { name: "Descripción no encontrada", color: "#cccccc" };
+    
+    // Obtener el color de fondo
+    let backgroundColor = "#cccccc"; // Color por defecto
+    if (climaInfo.color) {
+      if (typeof climaInfo.color === 'string') {
+        backgroundColor = climaInfo.color;
+      } else if (climaInfo.color.pattern && climaInfo.color.pattern.backgroundColor) {
+        backgroundColor = climaInfo.color.pattern.backgroundColor;
+      }
+    }
+    
     html += `<tr><td>${
       index === 0 ? nombreComuna : ""
-    }</td><td>${climaCode}</td><td>${climaInfo.name}</td></tr>`;
+    }</td><td><span class="d-inline-flex align-items-center"><span class="color-circle me-2" style="width: 12px; height: 12px; border-radius: 50%; background-color: ${backgroundColor}; display: inline-block; border: 1px solid #ccc;"></span><strong>${climaCode}</strong></span></td><td>${climaInfo.name}</td></tr>`;
   });
   detalleBody.innerHTML = html;
 }
@@ -158,7 +169,17 @@ function generarTablaLeyendaFija(climaFeatures) {
     a.code.localeCompare(b.code)
   );
   climasOrdenados.forEach((climaInfo) => {
-    html += `<tr><td>${climaInfo.code}</td><td>${climaInfo.name}</td></tr>`;
+    // Obtener el color de fondo
+    let backgroundColor = "#cccccc"; // Color por defecto
+    if (climaInfo.color) {
+      if (typeof climaInfo.color === 'string') {
+        backgroundColor = climaInfo.color;
+      } else if (climaInfo.color.pattern && climaInfo.color.pattern.backgroundColor) {
+        backgroundColor = climaInfo.color.pattern.backgroundColor;
+      }
+    }
+    
+    html += `<tr><td><span class="d-inline-flex align-items-center"><span class="color-circle me-2" style="width: 12px; height: 12px; border-radius: 50%; background-color: ${backgroundColor}; display: inline-block; border: 1px solid #ccc;"></span><strong>${climaInfo.code}</strong></span></td><td>${climaInfo.name}</td></tr>`;
   });
   leyendaBody.innerHTML = html;
 }
@@ -306,6 +327,22 @@ geoJsonComunasCorregido.features.forEach((comunaFeature) => {
         layout: "horizontal",
         align: "center",
         verticalAlign: "bottom",
+      },
+      exporting: {
+        enabled: true,
+        fallbackToExportServer: false,
+        buttons: {
+          contextButton: {
+            menuItems: ['downloadJPEG']
+          }
+        },
+        filename: function() {
+          const fecha = new Date().toISOString().split('T')[0];
+          return `mapa_clima_regional_${fecha}`;
+        }(),
+        sourceWidth: 1200,
+        sourceHeight: 800,
+        scale: 2
       },
       series: [
         {

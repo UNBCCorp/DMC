@@ -605,7 +605,7 @@ function inicializarMinimapa(containerId, geojsonData, propiedadColorKey, mapTit
     }
     
     mapContainer.addEventListener('click', function() {
-        openMapModal(`Persistencia ${mapTitle}`, geojsonData, propiedadColorKey, containerId.replace('mapaPersistencia', ''));
+        openMapModal(`Persistencia ${mapTitle} Con SPI`, geojsonData, propiedadColorKey, containerId.replace('mapaPersistencia', ''));
     });
 }
 
