@@ -10,6 +10,7 @@ $this->inlineScript()
     ->appendFile($this->basePath('/js/highcharts/pattern-fill.js'))
     ->appendFile('https://code.highcharts.com/modules/exporting.js')
     ->appendFile('https://code.highcharts.com/modules/export-data.js')
+    ->appendFile('https://code.highcharts.com/modules/offline-exporting.js')
     ->appendFile($this->basePath('/js/turf/turf.min.js'))
     ->appendFile($this->basePath('/js/easyprint/bundle.min.js'))
     ->appendFile($this->basePath('/js/mapasPercintil.js'));
@@ -96,6 +97,35 @@ $this->inlineScript()
         // Ejecutar la función para actualizar títulos
         actualizarTitulosConFechaReal();
  
+        // Funcionalidad para descargar mapas
+        document.querySelectorAll('.download-map-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const mapId = this.getAttribute('data-map-id');
+                
+                // Obtener la instancia del gráfico de Highcharts
+                const chart = Highcharts.charts.find(chart => 
+                    chart && chart.renderTo && chart.renderTo.id === mapId
+                );
+                
+                if (chart) {
+                    // Configurar opciones de exportación
+                    const exportOptions = {
+                        type: 'image/png',
+                        filename: mapId === 'map-percentil-precip' ? 
+                            'mapa_percentil_precipitacion' : 'mapa_percentil_temperatura',
+                        width: 1200,
+                        scale: 2
+                    };
+                    
+                    // Exportar el mapa
+                    chart.exportChart(exportOptions);
+                } else {
+                    console.error('No se encontró el gráfico de Highcharts para:', mapId);
+                    alert('Error: No se pudo encontrar el mapa para descargar.');
+                }
+            });
+        });
+
         document.querySelectorAll('.export-pdf-btn').forEach(button => {
             button.addEventListener('click', function() {
                 const mapId = this.getAttribute('data-map-id');

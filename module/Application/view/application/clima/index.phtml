@@ -10,8 +10,9 @@ $this->inlineScript()
     ->appendFile($this->basePath('/js/highcharts/highcharts.js'))
     ->appendFile($this->basePath('/js/highcharts/map.js'))
     ->appendFile($this->basePath('/js/highcharts/pattern-fill.js'))
-    ->appendScript('https://code.highcharts.com/modules/exporting.js')
-    ->appendScript('https://code.highcharts.com/modules/export-data.js')
+    ->appendFile('https://code.highcharts.com/modules/exporting.js')
+    ->appendFile('https://code.highcharts.com/modules/export-data.js')
+    ->appendFile('https://code.highcharts.com/modules/offline-exporting.js')
     ->appendFile($this->basePath('/js/turf/turf.min.js'))
     ->appendFile($this->basePath('/js/easyprint/bundle.min.js'))
     ->appendFile($this->basePath('/js/mapClima.js?v=' . time()));
@@ -34,8 +35,8 @@ $this->inlineScript()
               <div class="card-body">
                 <div class="row">
                   <!-- Mapa -->
-                  <div class="col-lg-7 col-md-12 mb-3">
-                    <div id="map-clima-region-highcharts" style="min-height: 300px; position: relative;">
+                  <div class="col-lg-7 col-md-12 mb-3"></div>
+                    <div id="map-clima-region-highcharts" style="min-height: 400px; position: relative;">
                       <div class="map-loading-placeholder" style="text-align: center; padding-top: 200px;">
                         Cargando mapa de climas...
                       </div>

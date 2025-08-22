@@ -25,6 +25,25 @@ const VALPARAISO_STATIONS = {
 };
 const MONTH_SCALE_TO_COLUMN_INDEX = { '3': 4, '9': 6, '12': 7, '24': 8, '48': 10 };
 
+// Función para buscar y cargar el archivo .txt más reciente (igual que en sequia.js)
+async function buscarYcargarTxtMasReciente(mesesAtras = 12) {
+    const hoy = new Date();
+    for (let i = 1; i <= mesesAtras; i++) {
+        const fecha = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+        fecha.setMonth(fecha.getMonth() - i);
+        const [ano, mes] = [fecha.getFullYear(), String(fecha.getMonth() + 1).padStart(2, '0')];
+        const url = `maps/data/salida/spi/txt/${ano}_${mes}_indices.txt`;
+        try {
+            const response = await fetch(url);
+            if (response.ok) {
+                const contenido = await response.text();
+                return { contenido, ano, mes };
+            }
+        } catch (e) { /* Silencio intencional */ }
+    }
+    throw new Error(`No se encontró ningún archivo de índices en los últimos ${mesesAtras} meses.`);
+}
+
 function calculateAverage(arr) {
     if (!arr || arr.length === 0) return null;
     const sum = arr.reduce((acc, val) => acc + val, 0);
@@ -72,7 +91,7 @@ function renderTimeSeriesChart(containerId, title, fechas, series) {
 
     // Usar un solo eje Y principal
     const yAxis = {
-        title: { text: 'Índice SPI', style: { color: '#333' } },
+        title: { text: 'Valor del Índice', style: { color: '#333' } },
         min: -3,
         max: 3,
         tickInterval: 0.5,
@@ -184,7 +203,9 @@ function renderTimeSeriesChart(containerId, title, fechas, series) {
             marginLeft: 80, 
             alignTicks: false,
             scrollablePlotArea: {
-                minWidth: Math.max(800, categoriasEjeX.length * 25), // Menos espacio entre puntos para gráfico más compacto
+                minWidth: categoriasEjeX.length <= 6 ? 
+                    Math.max(400, categoriasEjeX.length * 60) : // Para pocos puntos (SPI-3, etc.), más espacio por punto
+                    Math.max(800, categoriasEjeX.length * 25), // Para muchos puntos, menos espacio
                 scrollPositionX: 1 // Empezar al final (datos más recientes)
             }
         },
@@ -194,8 +215,8 @@ function renderTimeSeriesChart(containerId, title, fechas, series) {
             crosshair: true, 
             offset: 10,
             labels: {
-                rotation: -45,
-                step: Math.max(1, Math.floor(categoriasEjeX.length / 20)) // Mostrar cada N etiquetas para evitar sobreposición
+                rotation: categoriasEjeX.length <= 6 ? 0 : -45, // Sin rotación para pocos puntos
+                step: categoriasEjeX.length <= 6 ? 1 : Math.max(1, Math.floor(categoriasEjeX.length / 20)) // Mostrar todas las etiquetas para pocos puntos
             },
             tickInterval: 1
         },
@@ -257,33 +278,59 @@ function renderTimeSeriesChart(containerId, title, fechas, series) {
     if (placeholder) placeholder.style.display = 'none';
 }
 
-async function processAndRender(indexType, containerId, title) {
+async function processAndRender(indexType, containerId, title, escalaSeleccionada = '12') {
     const placeholder = document.querySelector(`#${containerId} .loading-placeholder`);
     try {
-        const anoInicio = 2019;
-        const anoActual = new Date().getFullYear();
-        const mesActual = new Date().getMonth() + 1;
+        // Primero, encontrar el archivo más reciente (igual que el mapa)
+        const archivoMasReciente = await buscarYcargarTxtMasReciente();
+        const { ano: anoReferencia, mes: mesReferencia } = archivoMasReciente;
         
-        const promesasFetch = [];
+        // Calcular cuántos meses hacia atrás mostrar según la escala
+        let mesesHaciaAtras;
+        switch(escalaSeleccionada) {
+            case '3':
+                mesesHaciaAtras = 3; // 3 meses para SPI-3
+                break;
+            case '9':
+                mesesHaciaAtras = 9; // 9 meses para SPI-9
+                break;
+            case '12':
+                mesesHaciaAtras = 12; // 12 meses para SPI-12
+                break;
+            case '24':
+                mesesHaciaAtras = 24; // 24 meses para SPI-24
+                break;
+            case '48':
+                mesesHaciaAtras = 48; // 48 meses para SPI-48
+                break;
+            default:
+                mesesHaciaAtras = parseInt(escalaSeleccionada);
+        }
+        
+        // Generar fechas desde el mes de referencia hacia atrás
         const fechasParaEjeX = [];
-
-        for (let ano = anoInicio; ano <= anoActual; ano++) {
-            for (let mes = 1; mes <= 12; mes++) {
-                if (ano === anoActual && mes > mesActual) {
-                    continue;
-                }
-                const mesFormateado = mes.toString().padStart(2, '0');
-                const fechaLabel = `${ano}-${mesFormateado}`;
-                fechasParaEjeX.push(fechaLabel);
-                
-                const url = `maps/data/salida/${indexType}/txt/${ano}_${mesFormateado}_indices.txt`;
-                promesasFetch.push(
-                    fetch(url)
-                        .then(response => response.ok ? response.text() : null)
-                        .then(text => ({ ano, mes, fechaLabel, text }))
-                        .catch(() => ({ ano, mes, fechaLabel, text: null }))
-                );
-            }
+        const promesasFetch = [];
+        
+        const fechaReferencia = new Date(parseInt(anoReferencia), parseInt(mesReferencia) - 1, 1);
+        
+        for (let i = mesesHaciaAtras - 1; i >= 0; i--) {
+            const fecha = new Date(fechaReferencia);
+            fecha.setMonth(fecha.getMonth() - i);
+            
+            const ano = fecha.getFullYear();
+            const mes = fecha.getMonth() + 1;
+            const mesFormateado = mes.toString().padStart(2, '0');
+            const fechaLabel = `${ano}-${mesFormateado}`;
+            
+            fechasParaEjeX.push(fechaLabel);
+            
+            const url = `maps/data/salida/${indexType}/txt/${ano}_${mesFormateado}_indices.txt`;
+            promesasFetch.push(
+                fetch(url)
+                    .then(response => response.ok ? response.text() : null)
+                    .then(text => ({ ano, mes, fechaLabel, text }))
+                    .catch(() => ({ ano, mes, fechaLabel, text: null }))
+            );
         }
 
         const resultadosMensuales = await Promise.all(promesasFetch);
@@ -298,9 +345,6 @@ async function processAndRender(indexType, containerId, title) {
                 }
             }
         });
-
-        // Usar solo SPI-12 para un gráfico más limpio
-        const escalaSeleccionada = '12';
         
         const datosParaSerie = [];
         fechasParaEjeX.forEach(fechaLabel => {
@@ -321,14 +365,16 @@ async function processAndRender(indexType, containerId, title) {
             }
         });
         
-
-        
         const seriesFinales = [{
             name: `${indexType.toUpperCase()}-${escalaSeleccionada}`,
             data: datosParaSerie
         }];
 
-        const nuevoTitulo = `${title.split('-')[0].trim()} - Datos Mensuales (${anoInicio} - ${anoActual})`;
+        const periodoMostrado = fechasParaEjeX.length > 0 ? 
+            `(${fechasParaEjeX[0]} a ${anoReferencia}-${mesReferencia})` : 
+            `(Datos no disponibles)`;
+        
+        const nuevoTitulo = `${title} ${periodoMostrado}`;
         renderTimeSeriesChart(containerId, nuevoTitulo, fechasParaEjeX, seriesFinales);
 
     } catch (error) {
@@ -338,6 +384,17 @@ async function processAndRender(indexType, containerId, title) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    processAndRender('spi', 'container-spi', 'SPI Promedio - Región de Valparaíso');
-    processAndRender('spei', 'container-spei', 'SPEI Promedio - Región de Valparaíso');
+    // Generar gráficos SPI para diferentes escalas temporales
+    processAndRender('spi', 'container-spi-3', 'SPI-3 Región de Valparaíso', '3');
+    processAndRender('spi', 'container-spi-9', 'SPI-9 Región de Valparaíso', '9');
+    processAndRender('spi', 'container-spi-12', 'SPI-12 Región de Valparaíso', '12');
+    processAndRender('spi', 'container-spi-24', 'SPI-24 Región de Valparaíso', '24');
+    processAndRender('spi', 'container-spi-48', 'SPI-48 Región de Valparaíso', '48');
+    
+    // Generar gráficos SPEI para diferentes escalas temporales
+    processAndRender('spei', 'container-spei-3', 'SPEI-3 Región de Valparaíso', '3');
+    processAndRender('spei', 'container-spei-9', 'SPEI-9 Región de Valparaíso', '9');
+    processAndRender('spei', 'container-spei-12', 'SPEI-12 Región de Valparaíso', '12');
+    processAndRender('spei', 'container-spei-24', 'SPEI-24 Región de Valparaíso', '24');
+    processAndRender('spei', 'container-spei-48', 'SPEI-48 Región de Valparaíso', '48');
 });

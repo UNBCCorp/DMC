@@ -115,7 +115,7 @@ function aplicarMascara(geojsonDataComunas, mapaParaMascara) {
 
 function getColorForIndex(indexValue) {
     if (indexValue === null || typeof indexValue === 'undefined' || isNaN(parseFloat(indexValue))) {
-        return '#B0B0B0';
+        return '#CCCCCC'; // Gris para sin datos
     }
     const val = parseFloat(indexValue);
 
@@ -127,9 +127,9 @@ function getColorForIndex(indexValue) {
     if (val < -2.5) return '#801300';
     if (val < -2.0) return '#EA2B00';
     if (val < -1.5) return '#ffaa00';
-    if (val < -1.0) return '#fcd37f';
+    if (val < -1.0) return '#fcd370';
     if (val < -0.5) return '#ffff00';
-    return '#d9d9d9'; // Valor por defecto para valores no categorizados
+    return '#FFFFFF'; // Blanco para rango Normal (-0.5 a 0.5)
 }
 
 function getColorSequia(valor) {
@@ -328,7 +328,7 @@ async function cargarDatosHistoricos() {
         fechaBase.setMonth(fechaBase.getMonth() - 1);
     }
 
-    const numMeses = 6;
+    const numMeses = 12;
     const promesas = [];
 
     const fetchMes = async (ano, mes) => {
@@ -388,7 +388,9 @@ function actualizarPanelDetalle(props) {
 
     if (!nombreComunaEl || !contenidoEl) return;
 
-    nombreComunaEl.textContent = props[PROPIEDAD_NOMBRE_COMUNA] || 'Detalle';
+    const nombreComuna = props[PROPIEDAD_NOMBRE_COMUNA] || 'Detalle';
+    const mesParaMostrar = mesActualDatos || obtenerMesActualDatos();
+    nombreComunaEl.textContent = `${nombreComuna} - ${mesParaMostrar}`;
     panelDetalle.style.display = 'block';
 
     const dataItems = ['SA', 'D0', 'D1', 'D2', 'D3', 'D4'];
@@ -409,7 +411,7 @@ function actualizarPanelDetalle(props) {
             </tbody>
         </table>
         <hr>
-        <h6>Serie de Tiempo (Últimos 6 meses)</h6>
+        <h6>Serie de Tiempo (Últimos 12 meses)</h6>
         <div class="time-series-container" style="width:100%; height:400px; margin-top:10px;" id="detalle-comuna-grafico">
         </div>
     `;
@@ -533,7 +535,7 @@ function crearGraficoRegionalConDatosReales(containerId) {
     }
 
     const categorias = ['SA', 'D0', 'D1', 'D2', 'D3', 'D4'];
-    const numMeses = 6;
+    const numMeses = 12;
     const promediosMensuales = {};
 
     for (const code in datosHistoricosGlobales) {
@@ -607,6 +609,47 @@ function inicializarMinimapa(containerId, geojsonData, propiedadColorKey, mapTit
     mapContainer.addEventListener('click', function() {
         openMapModal(`Persistencia ${mapTitle} Con SPI`, geojsonData, propiedadColorKey, containerId.replace('mapaPersistencia', ''));
     });
+}
+
+// Variable global para almacenar el mes actual de los datos
+let mesActualDatos = '';
+
+function obtenerMesActualDatos() {
+    const hoy = new Date();
+    const diaDeHoy = hoy.getDate();
+    const fechaObjetivo = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+    
+    if (diaDeHoy < 17) {
+        fechaObjetivo.setMonth(fechaObjetivo.getMonth() - 2);
+    } else {
+        fechaObjetivo.setMonth(fechaObjetivo.getMonth() - 1);
+    }
+    
+    const meses = [
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+    
+    return meses[fechaObjetivo.getMonth()];
+}
+
+function actualizarTituloConMes(ano, mes) {
+    const meses = [
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ];
+    
+    const nombreMes = meses[parseInt(mes) - 1];
+    mesActualDatos = nombreMes; // Guardar el mes para uso en otros lugares
+    
+    // Buscar el elemento h6 que contiene "Categorías por Comuna"
+    const h6Elements = document.querySelectorAll('h6');
+    for (let h6 of h6Elements) {
+        if (h6.textContent.includes('Categorías por Comuna')) {
+            h6.textContent = `Categorías por Comuna (% Área D0-D4) ${nombreMes}`;
+            break;
+        }
+    }
 }
 
 async function fetchAndMergeApiData(geojsonData) {
@@ -689,6 +732,7 @@ const mes = String(fechaObjetivo.getMonth() + 1).padStart(2, '0');
         }
     });
     actualizarPromediosRegionales(apiData);
+    actualizarTituloConMes(ano, mes);
     return true;
 }
 
@@ -743,7 +787,9 @@ function crearLeyendaPersistencia() {
         { code: 'Lig. Seco', range: '[-1.0 a -1.5)', color: '#fcd370' },
         { code: 'Seco', range: '[-1.5 a -2.0)', color: '#ffaa00' },
         { code: 'Muy Seco', range: '[-2.0 a -2.5)', color: '#EA2B00' },
-        { code: 'Ext. Seco', range: '<= -2.5', color: '#801300' }
+        { code: 'Ext. Seco', range: '<= -2.5', color: '#801300' },
+        // Sin datos
+        { code: 'Sin Datos', range: 'N/A', color: '#CCCCCC' }
     ];
 
     let legendHtml = '<div class="persistencia-legend mb-3">';
@@ -852,7 +898,7 @@ async function inicializarMapaSequiaValparaisoLeaflet() {
     }
 }
 
-async function buscarYcargarTxtMasReciente(mesesAtras = 6) {
+async function buscarYcargarTxtMasReciente(mesesAtras = 12) {
     const hoy = new Date();
     for (let i = 1; i <= mesesAtras; i++) {
         const fecha = new Date(hoy.getFullYear(), hoy.getMonth(), 1);

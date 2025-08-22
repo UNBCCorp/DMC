@@ -24,6 +24,14 @@ async function crearMapaPercentilesHighcharts(
             title: {
                 text: null
             },
+            exporting: {
+                enabled: true,
+                buttons: {
+                    contextButton: {
+                        enabled: false // Ocultar el botón de menú por defecto
+                    }
+                }
+            },
             mapNavigation: {
                 enabled: true,
                 enableDoubleClickZoomTo: true,
@@ -105,25 +113,28 @@ const precipColorClasses = [
     { to: 10, color: '#8c510a', name: '< 10 (Ext. Seco)' },
     { from: 10, to: 30, color: '#d8b365', name: '10-30 (Seco)' },
     { from: 30, to: 40, color: '#f6e8c3', name: '30-40 (Bajo Normal)' },
-    { from: 40, to: 60, color: '#c7eae5', name: '40-60 (Normal)' },
-    { from: 60, to: 70, color: '#5ab4ac', name: '60-70 (Sobre Normal)' },
-    { from: 70, color: '#01665e', name: '> 70 (Húmedo)' }
+    { from: 40, to: 60, color: '#f7f7f7', name: '40-60 (Normal)' },
+    { from: 60, to: 70, color: '#bcf2ed', name: '60-70 (Sobre Normal)' },
+    { from: 70, to: 90, color: '#00a79a', name: '70-90' },
+    { from: 90, to: 100, color: '#007c80', name: '> 90' },
+    { from: -999, to: -1, color: '#cccccc', name: 'Sin datos' }
 ];
 const colorRecordCalido = '#EB2B00';
 const colorMuchoMasCalido = '#EE685C';
 const colorMasCalido = '#F4B5B2';
-const colorCercanoPromedio = '#9d9d9dff';
+const colorCercanoPromedio = '#f7f7f7';
 const colorMasFrio = '#B5B2FF';
 const colorMuchoMasFrio = '#635BFF';
 const colorRecordFrio = '#2000FF';
 const tempColorClasses = [
-    { from: 98, color: colorRecordCalido, name: 'Extremadamente cálido' },
+    { from: 98, to: 100, color: colorRecordCalido, name: 'Extremadamente cálido' },
     { from: 90, to: 98, color: colorMuchoMasCalido, name: 'Mucho más cálido que el promedio' },
     { from: 75, to: 90, color: colorMasCalido, name: 'Más cálido que el promedio' },
     { from: 25, to: 75, color: colorCercanoPromedio, name: 'Cercano al promedio' },
     { from: 10, to: 25, color: colorMasFrio, name: 'Más frío que el promedio' },
     { from: 2, to: 10, color: colorMuchoMasFrio, name: 'Mucho más frío que el promedio' },
-    { to: 2, color: colorRecordFrio, name: 'Extremadamente frío' }
+    { from: 0, to: 2, color: colorRecordFrio, name: 'Extremadamente frío' },
+    { from: -999, to: -1, color: '#cccccc', name: 'Sin datos' }
 ];
 
 async function inicializarMapasDePercentiles() {
@@ -149,7 +160,8 @@ async function inicializarMapasDePercentiles() {
                 feature.properties.percentil_precip = datosPrecip.percentil;
                 feature.properties.valor_precip = datosPrecip.valor_actual; 
             } else {
-                feature.properties.percentil_precip = null; // Sin dato
+                feature.properties.percentil_precip = -999; // Valor especial para sin datos
+                feature.properties.valor_precip = null;
             }
 
             const datosTemp = datosPercentiles.temperatura[nombreComuna];
@@ -157,7 +169,8 @@ async function inicializarMapasDePercentiles() {
                 feature.properties.percentil_temp = datosTemp.percentil;
                 feature.properties.valor_temp = datosTemp.valor_actual;
             } else {
-                feature.properties.percentil_temp = null; // Sin dato
+                feature.properties.percentil_temp = -999; // Valor especial para sin datos
+                feature.properties.valor_temp = null;
             }
         });
 

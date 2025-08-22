@@ -82,23 +82,6 @@ $this->inlineScript()
                                     </tr>
                                 </tbody>
                             </table>
-                           <div class="card">
-                                <div class="card-header bg-cabezera text-white">Serie de Tiempo Porcentaje de afectación</div>
-                                <div class="card-body">
-                                    <div id="timeSeriesChartRegionalSidebar" style="width:100%; height:350px;">
-                                        <div class="d-flex justify-content-center align-items-center h-100">
-                                            <div class="text-center">
-                                                <div class="spinner-border text-primary" role="status">
-                                                    <span class="visually-hidden">Cargando...</span>
-                                                </div>
-                                                <div class="mt-2">
-                                                    <small class="text-muted">Cargando gráfico temporal...</small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                      
                         <div class="card col-md-9">
@@ -156,6 +139,25 @@ $this->inlineScript()
                 </div>
             </div>
 
+            <!-- Card con mapa que se muestra por debajo de Promedio Regional y Categorías por Comuna -->
+            <div class="card mt-3">
+                <div class="card-header bg-cabezera text-white">Serie de Tiempo Porcentaje de afectación</div>
+                <div class="card-body">
+                    <div id="timeSeriesChartRegionalSidebar" style="width:100%; height:350px;">
+                        <div class="d-flex justify-content-center align-items-center h-100">
+                            <div class="text-center">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Cargando...</span>
+                                </div>
+                                <div class="mt-2">
+                                    <small class="text-muted">Cargando gráfico temporal...</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="card mt-3">
                         <div class="card-header bg-cabezera text-white">
                             <strong>Persistencia de la Sequía con SPI</strong>
@@ -205,16 +207,6 @@ $this->inlineScript()
                                 <div class="persistencia-map-item">
                                     <p>48 meses</p>
                                     <div id="mapaPersistencia48m" class="small-leaflet-map">
-                                        <div class="d-flex justify-content-center align-items-center h-100">
-                                            <div class="spinner-border spinner-border-sm text-primary" role="status">
-                                                <span class="visually-hidden">Cargando...</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="persistencia-map-item">
-                                    <p>Sin datos</p>
-                                    <div id="mapaPersistenciaSinDatos" class="small-leaflet-map">
                                         <div class="d-flex justify-content-center align-items-center h-100">
                                             <div class="spinner-border spinner-border-sm text-primary" role="status">
                                                 <span class="visually-hidden">Cargando...</span>
