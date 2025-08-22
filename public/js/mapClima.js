@@ -25,7 +25,7 @@ const climaColorClasses = [
     numericalValue: 3,
     color: {
       pattern: {
-        backgroundColor: "#5C8944",
+        backgroundColor: "#3d572e",
         path: {
           d: "M 1.5 1.5 L 1.5 1.5",
           stroke: "#000000",
@@ -43,7 +43,7 @@ const climaColorClasses = [
     numericalValue: 4,
     color: {
       pattern: {
-        backgroundColor: "#B4D79D",
+        backgroundColor: "#82a36c",
         path: {
           d: "M 1.5 1.5 L 1.5 1.5",
           stroke: "#000000",
@@ -61,7 +61,7 @@ const climaColorClasses = [
     numericalValue: 5,
     color: {
       pattern: {
-        backgroundColor: "#7B8EF5",
+        backgroundColor: "#6074e4",
         path: {
           d: "M 1.5 1.5 L 1.5 1.5",
           stroke: "#000000",
@@ -79,7 +79,7 @@ const climaColorClasses = [
     numericalValue: 6,
     color: {
       pattern: {
-        backgroundColor: "#AA66CD",
+        backgroundColor: "#954bbb",
         path: {
           d: "M 1.5 1.5 L 1.5 1.5",
           stroke: "#000000",
@@ -227,6 +227,8 @@ function unificarGeometriasPorComuna(geojson) {
   };
 }
 
+let mapaClimaLeaflet = null;
+
 async function inicializarMapaClima() {
   const containerId = "map-clima-region-highcharts";
   const placeholder = document.querySelector(
@@ -295,7 +297,7 @@ geoJsonComunasCorregido.features.forEach((comunaFeature) => {
       })
     );
 
-    Highcharts.mapChart(containerId, {
+    const climaChart = Highcharts.mapChart(containerId, {
         chart: {
         map: geoJsonComunasCorregido,
         height: "100%",
@@ -310,6 +312,14 @@ geoJsonComunasCorregido.features.forEach((comunaFeature) => {
         },
         },
       title: { text: null },
+      exporting: {
+        enabled: true,
+        buttons: {
+          contextButton: {
+            enabled: false // Ocultar el botón de menú por defecto
+          }
+        }
+      },
       mapNavigation: { enabled: true },
       colorAxis: {
         dataClasses: climaColorClasses.map((clase) => ({
