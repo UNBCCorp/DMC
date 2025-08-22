@@ -202,12 +202,13 @@ function renderTimeSeriesChart(containerId, title, fechas, series) {
             zoomType: 'x', 
             marginLeft: 80, 
             alignTicks: false,
-            scrollablePlotArea: {
-                minWidth: categoriasEjeX.length <= 6 ? 
-                    Math.max(400, categoriasEjeX.length * 60) : // Para pocos puntos (SPI-3, etc.), más espacio por punto
-                    Math.max(800, categoriasEjeX.length * 25), // Para muchos puntos, menos espacio
+            scrollablePlotArea: categoriasEjeX.length >= 48 ? {
+                minWidth: categoriasEjeX.length * 30, // Más espacio para SPI-48
                 scrollPositionX: 1 // Empezar al final (datos más recientes)
-            }
+            } : categoriasEjeX.length >= 12 ? {
+                minWidth: Math.max(800, categoriasEjeX.length * 25), // Espaciado normal para SPI-12, SPI-24
+                scrollPositionX: 1
+            } : undefined // Sin scroll para SPI-3, SPI-9
         },
         title: { text: title },
         xAxis: { 
@@ -215,10 +216,19 @@ function renderTimeSeriesChart(containerId, title, fechas, series) {
             crosshair: true, 
             offset: 10,
             labels: {
-                rotation: categoriasEjeX.length <= 6 ? 0 : -45, // Sin rotación para pocos puntos
-                step: categoriasEjeX.length <= 6 ? 1 : Math.max(1, Math.floor(categoriasEjeX.length / 20)) // Mostrar todas las etiquetas para pocos puntos
+                rotation: categoriasEjeX.length <= 9 ? 0 : -45, // Sin rotación para pocos puntos (SPI-3, SPI-9)
+                step: categoriasEjeX.length <= 9 ? 1 : Math.max(1, Math.floor(categoriasEjeX.length / 20)), // Mostrar todas las etiquetas para pocos puntos
+                style: {
+                    fontSize: categoriasEjeX.length <= 3 ? '12px' : '11px' // Texto más grande para SPI-3
+                }
             },
-            tickInterval: 1
+            tickInterval: 1,
+            // Para gráficos con pocos puntos, centrar y comprimir el área de datos
+            min: categoriasEjeX.length <= 3 ? -0.5 : undefined,
+            max: categoriasEjeX.length <= 3 ? categoriasEjeX.length - 0.5 : undefined,
+            tickPositions: categoriasEjeX.length <= 3 ? 
+                [0, 1, 2] : // Posiciones fijas para SPI-3
+                undefined
         },
         yAxis: yAxis,
         tooltip: {
