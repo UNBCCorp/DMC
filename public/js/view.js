@@ -1,8 +1,6 @@
 // js/view.js
-import * as config from './config.js';
-// js/view.js
 // Archivo: js/view.js
-class View {
+window.View = class View {
     constructor() {
         // Contenedores principales
         this.mapContainer = document.getElementById('mapaValparaisoLeaflet');
@@ -83,6 +81,20 @@ class View {
     // Métodos privados de la vista
     _estiloPorSequia(feature) {
         const props = feature.properties;
+        
+        // Verificar si tenemos datos de categorías de sequía
+        const tieneCategoriasSequia = ['SA', 'D0', 'D1', 'D2', 'D3', 'D4'].some(cat => 
+            props[cat] !== null && props[cat] !== undefined && !isNaN(parseFloat(props[cat]))
+        );
+        
+        if (!tieneCategoriasSequia) {
+            console.warn('Comuna sin datos de sequía:', props.COMUNA);
+            return {
+                fillColor: this.COLORES_SEQUIA.DEFAULT,
+                weight: 1, opacity: 1, color: '#666', fillOpacity: 0.7
+            };
+        }
+        
         let categoriaDominante = 'SA';
         let maxValor = -1;
 
@@ -93,6 +105,8 @@ class View {
                 categoriaDominante = cat;
             }
         });
+
+        console.log(`Comuna ${props.COMUNA}: categoría dominante ${categoriaDominante} (${maxValor}%)`);
 
         return {
             fillColor: this.COLORES_SEQUIA[categoriaDominante] || this.COLORES_SEQUIA.DEFAULT,
@@ -144,14 +158,55 @@ class View {
         };
     }
     mostrarPanelDetalle(comunaProps, historialComuna) {
-        document.getElementById('detalle-comuna-nombre').textContent = comunaProps.COMUNA;
-        let tablaHtml = `<table class="table table-sm">`;
-        ['SA', 'D0', 'D1', 'D2', 'D3', 'D4'].forEach(cat => {
-            tablaHtml += `<tr><td><strong>${cat}:</strong></td><td>${comunaProps[cat] ?? 'N/A'}%</td></tr>`;
+        const nombreComuna = comunaProps.COMUNA || 'Comuna desconocida';
+        document.getElementById('detalle-comuna-nombre').textContent = nombreComuna;
+        
+        console.log('Mostrando panel para comuna:', nombreComuna, comunaProps);
+        
+        // Crear tabla con información de la comuna
+        let tablaHtml = `
+            <div class="mb-3">
+                <h6>Categorías de Sequía (%)</h6>
+                <table class="table table-sm table-bordered">
+                    <thead>
+                        <tr><th>Cat.</th><th>Descripción</th><th>%</th></tr>
+                    </thead>
+                    <tbody>
+        `;
+        
+        const categorias = [
+            { code: 'SA', desc: 'Sin Afectación', color: '#d9d9d9' },
+            { code: 'D0', desc: 'Anorm. Seco', color: '#ffff00' },
+            { code: 'D1', desc: 'Sequía Moderada', color: '#fcd37f' },
+            { code: 'D2', desc: 'Sequía Severa', color: '#ffaa00' },
+            { code: 'D3', desc: 'Sequía Extrema', color: '#E60000' },
+            { code: 'D4', desc: 'Sequía Excepcional', color: '#730000' }
+        ];
+        
+        categorias.forEach(cat => {
+            const valor = comunaProps[cat.code];
+            const valorFormateado = (valor !== null && valor !== undefined && !isNaN(parseFloat(valor))) 
+                ? `${parseFloat(valor).toFixed(1)}%` 
+                : 'N/A';
+            
+            tablaHtml += `
+                <tr>
+                    <td style="background-color:${cat.color}; text-align:center; font-weight:bold;">${cat.code}</td>
+                    <td>${cat.desc}</td>
+                    <td><strong>${valorFormateado}</strong></td>
+                </tr>
+            `;
         });
-        tablaHtml += `</table><div id="detalle-comuna-grafico" style="width:100%; height:250px;"></div>`;
+        
+        tablaHtml += `</tbody></table>`;
+        
+        tablaHtml += `
+            </div>
+            <div id="detalle-comuna-grafico" style="width:100%; height:250px;"></div>
+        `;
+        
         document.getElementById('detalle-comuna-contenido').innerHTML = tablaHtml;
-        this._crearGraficoComunal(historialComuna);
+        this._crearGraficoComunal(comunaProps, historialComuna);
         this.panelDetalle.style.display = 'block';
     }
 
@@ -171,10 +226,18 @@ class View {
     _crearGraficoComunal(comunaProps, historialComuna) {
         if (this.detalleChartInstance) this.detalleChartInstance.destroy();
 
-        if (!historialComuna || historialComuna.length === 0) {
-            document.getElementById('detalle-comuna-grafico').innerHTML = '<p class="text-center small p-2">No hay datos históricos.</p>';
+        const graficoContainer = document.getElementById('detalle-comuna-grafico');
+        if (!graficoContainer) {
+            console.warn('Contenedor del gráfico no encontrado');
             return;
         }
+
+        if (!historialComuna || historialComuna.length === 0) {
+            graficoContainer.innerHTML = '<p class="text-center small p-2">No hay datos históricos disponibles para esta comuna.</p>';
+            return;
+        }
+
+        console.log('Creando gráfico para:', comunaProps.COMUNA, 'con', historialComuna.length, 'registros históricos');
 
         const categorias = ['SA', 'D0', 'D1', 'D2', 'D3', 'D4'];
         const labels = historialComuna.map(r => new Date(r.fecha).toLocaleDateString('es-ES', { month: 'short', year: '2-digit' }));
@@ -331,4 +394,4 @@ class View {
     }
 }
 
-export default View;
+// Exportado como window.View
