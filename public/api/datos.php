@@ -80,6 +80,9 @@ function getDatosSequiaActual() {
     $mes = $fechaObjetivo->format('m');
     $apiUrl = API_BASE_URL . "$ano/$mes";
     
+    error_log("=== CARGA DE DATOS DE SEQUÍA ===");
+    error_log("URL de API: $apiUrl");
+    
     // Usamos cURL para más control sobre la petición
     $ch = curl_init($apiUrl);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -91,13 +94,19 @@ function getDatosSequiaActual() {
     if ($httpCode === 200 && $response) {
         $data = json_decode($response, true);
         if (!empty($data['datos'])) {
+            error_log("API exitosa. Datos obtenidos: " . count($data['datos']) . " registros");
             return $data['datos'];
         }
     }
     
+    error_log("API falló (HTTP: $httpCode). Usando respaldo local.");
+    
     // Si la API falla, usamos el respaldo local
     $fallbackData = json_decode(file_get_contents(FALLBACK_API_PATH), true);
-    return $fallbackData['datos'];
+    $datosRespaldo = $fallbackData['datos'];
+    error_log("Respaldo cargado: " . count($datosRespaldo) . " registros");
+    
+    return $datosRespaldo;
 }
 
 /**
@@ -220,19 +229,68 @@ function getDatosPersistencia($mesesAtras = 6) {
  * Función principal para fusionar todas las fuentes de datos en el GeoJSON.
  */
 function fusionarDatos($geojsonData, $datosSequia, $datosPersistencia) {
+    // Log para depuración
+    error_log("=== INICIO FUSIÓN DE DATOS ===");
+    error_log("Cantidad de datos de sequía: " . count($datosSequia));
+    error_log("Cantidad de features en GeoJSON: " . count($geojsonData['features']));
+    
     // Crear mapas para búsqueda eficiente (clave => valor)
-    $mapaSequia = array_column($datosSequia, null, 'Code');
-    $mapaComunaAEstaciones = json_decode(file_get_contents(BASE_PATH . '/js/config.json'), true)['MAPA_COMUNA_A_ESTACIONES'];
+    // Crear el mapa con ambos formatos de código (con y sin cero inicial)
+    $mapaSequia = [];
+    foreach ($datosSequia as $item) {
+        $code = (string)$item['Code'];
+        $mapaSequia[$code] = $item;
+        // También agregar con cero inicial si no lo tiene
+        if (strlen($code) === 4) {
+            $mapaSequia['0' . $code] = $item;
+        }
+        // Log de los primeros códigos para depuración
+        if (count($mapaSequia) <= 5) {
+            error_log("Código de sequía: " . $code . " -> SA: " . ($item['SA'] ?? 'N/A'));
+        }
+    }
+    
+    // Verificar si existe el archivo de configuración
+    $configPath = BASE_PATH . '/js/config.json';
+    if (!file_exists($configPath)) {
+        error_log("ADVERTENCIA: No se encontró el archivo config.json en: " . $configPath);
+        $mapaComunaAEstaciones = [];
+    } else {
+        $configData = json_decode(file_get_contents($configPath), true);
+        $mapaComunaAEstaciones = $configData['MAPA_COMUNA_A_ESTACIONES'] ?? [];
+    }
 
     $periodosPersistencia = ['p_3m', 'p_9m', 'p_12m', 'p_24m', 'p_48m'];
+    $fusionesExitosas = 0;
 
     foreach ($geojsonData['features'] as &$feature) {
         $props = &$feature['properties'];
         $cutCom = (string)$props['CUT_COM'];
         
         // 1. Fusionar datos de sequía actual
+        // Intentar con el código original y también sin el cero inicial
+        $codigoParaBuscar = $cutCom;
+        if (strlen($cutCom) === 5 && $cutCom[0] === '0') {
+            $codigoParaBuscar = substr($cutCom, 1);
+        }
+        
+        $fusionado = false;
         if (isset($mapaSequia[$cutCom])) {
             $props = array_merge($props, $mapaSequia[$cutCom]);
+            $fusionado = true;
+            $fusionesExitosas++;
+        } elseif (isset($mapaSequia[$codigoParaBuscar])) {
+            $props = array_merge($props, $mapaSequia[$codigoParaBuscar]);
+            $fusionado = true;
+            $fusionesExitosas++;
+        }
+        
+        // Log para las primeras features
+        if ($fusionesExitosas <= 3) {
+            error_log("Feature CUT_COM: $cutCom, Código buscado: $codigoParaBuscar, Fusionado: " . ($fusionado ? 'SÍ' : 'NO'));
+            if ($fusionado) {
+                error_log("  -> SA: " . ($props['SA'] ?? 'N/A') . ", D0: " . ($props['D0'] ?? 'N/A'));
+            }
         }
         
         // 2. Fusionar datos de persistencia
@@ -257,5 +315,9 @@ function fusionarDatos($geojsonData, $datosSequia, $datosPersistencia) {
             }
         }
     }
+    
+    error_log("=== FIN FUSIÓN DE DATOS ===");
+    error_log("Total de fusiones exitosas: $fusionesExitosas de " . count($geojsonData['features']) . " features");
+    
     return $geojsonData;
 }

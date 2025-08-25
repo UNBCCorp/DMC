@@ -1,5 +1,5 @@
 // Archivo: js/model.js
-class Model {
+window.Model = class Model {
     constructor() {
         this.datos = null;
     }
@@ -20,4 +20,4 @@ class Model {
     getDatosHistoricosComunales() { return this.datos?.datosHistoricosComunales; }
     getDatosSidebar() { return this.datos?.datosSidebar; }
 }
-export default Model;
+// Exportado como window.Model

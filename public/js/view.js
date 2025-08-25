@@ -2,10 +2,13 @@
 // Archivo: js/view.js
 window.View = class View {
     constructor() {
-        // Contenedores principales
-        this.mapContainer = document.getElementById('mapaValparaisoLeaflet');
-        this.panelDetalle = document.getElementById('panel-detalle-comuna');
-        this.modalMapContainer = document.getElementById('modalMapContainer');
+        // Contenedores principales - inicializar de forma segura
+        this.mapContainer = null;
+        this.panelDetalle = null;
+        this.modalMapContainer = null;
+        
+        // Inicializar contenedores cuando el DOM esté listo
+        this._initializeContainers();
 
         // Instancias
         this.mapa = null;
@@ -17,6 +20,25 @@ window.View = class View {
 
         // Constantes de estilo
         this.COLORES_SEQUIA = { 'SA': '#d9d9d9', 'D0': '#ffff00', 'D1': '#fcd37f', 'D2': '#ffaa00', 'D3': '#E60000', 'D4': '#730000', 'DEFAULT': '#B0B0B0' };
+    }
+    
+    _initializeContainers() {
+        // Esperar a que el DOM esté completamente cargado
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => this._getContainers());
+        } else {
+            this._getContainers();
+        }
+    }
+    
+    _getContainers() {
+        this.mapContainer = document.getElementById('mapaValparaisoLeaflet');
+        this.panelDetalle = document.getElementById('panel-detalle-comuna');
+        this.modalMapContainer = document.getElementById('modalMapContainer');
+        
+        if (!this.mapContainer) {
+            console.error('Contenedor del mapa no encontrado: mapaValparaisoLeaflet');
+        }
     }
     ocultarModalMapa() { document.getElementById('mapModal').style.display = 'none'; }
     resaltarComuna(layer) { layer.setStyle({ weight: 3, color: '#333' }); layer.bringToFront(); this.infoControl.update(layer.feature.properties); }
@@ -212,7 +234,15 @@ window.View = class View {
 
     ocultarPanelDetalle() {
         this.panelDetalle.style.display = 'none';
-        if (this.detalleChartInstance) this.detalleChartInstance.destroy();
+        // Destruir gráfico de forma segura
+        if (this.detalleChartInstance && typeof this.detalleChartInstance.destroy === 'function') {
+            try {
+                this.detalleChartInstance.destroy();
+            } catch (error) {
+                console.warn('Error al destruir gráfico al ocultar panel:', error);
+            }
+            this.detalleChartInstance = null;
+        }
     }
     bindEvents(handlerCerrarPanel, handlerCerrarModal) {
         document.getElementById('cerrar-panel-detalle')?.addEventListener('click', handlerCerrarPanel);
@@ -224,7 +254,15 @@ window.View = class View {
     }
     
     _crearGraficoComunal(comunaProps, historialComuna) {
-        if (this.detalleChartInstance) this.detalleChartInstance.destroy();
+        // Destruir gráfico anterior de forma segura
+        if (this.detalleChartInstance && typeof this.detalleChartInstance.destroy === 'function') {
+            try {
+                this.detalleChartInstance.destroy();
+            } catch (error) {
+                console.warn('Error al destruir gráfico anterior:', error);
+            }
+            this.detalleChartInstance = null;
+        }
 
         const graficoContainer = document.getElementById('detalle-comuna-grafico');
         if (!graficoContainer) {
@@ -332,8 +370,15 @@ window.View = class View {
             const el = document.getElementById(`avg-${cat.toLowerCase()}`);
             if (el) el.textContent = `${datosSidebar.promedios[cat]}%`;
         }
-        // Crear gráfico regional
-        if (this.regionalChartInstance) this.regionalChartInstance.destroy();
+        // Crear gráfico regional - destruir anterior de forma segura
+        if (this.regionalChartInstance && typeof this.regionalChartInstance.destroy === 'function') {
+            try {
+                this.regionalChartInstance.destroy();
+            } catch (error) {
+                console.warn('Error al destruir gráfico regional anterior:', error);
+            }
+            this.regionalChartInstance = null;
+        }
         const seriesData = Object.keys(this.COLORES_SEQUIA).filter(k => k !== 'DEFAULT').map(cat => ({
             name: cat,
             color: this.COLORES_SEQUIA[cat],
@@ -359,38 +404,72 @@ window.View = class View {
         }
 
         // Verificar si el contenedor ya tiene un mapa inicializado
-        if (this.mapContainer._leaflet_id) {
+        if (this.mapContainer && this.mapContainer._leaflet_id) {
             console.log('Limpiando contenedor del mapa...');
             this.mapContainer._leaflet_id = undefined;
             this.mapContainer.innerHTML = '';
         }
 
-        // Verificar que el contenedor esté disponible
+        // Verificar que el contenedor esté disponible y visible
         if (!this.mapContainer || !L) {
             console.error("El contenedor del mapa o Leaflet no está disponible.");
             return;
         }
 
+        // Verificar que el contenedor tenga dimensiones válidas
+        if (this.mapContainer.offsetWidth === 0 || this.mapContainer.offsetHeight === 0) {
+            console.warn('El contenedor del mapa no tiene dimensiones válidas. Reintentando...');
+            setTimeout(() => this.renderizarMapaPrincipal(geojsonData, onComunaMouseover, onComunaMouseout, onComunaClick), 100);
+            return;
+        }
+
         console.log('Inicializando nuevo mapa...');
-        this.mapa = L.map(this.mapContainer).setView([-33.0, -71.2], 8);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.mapa);
-        this._crearControlInfo();
-        this.infoControl.addTo(this.mapa);
-        this.geoJsonLayer = L.geoJson(geojsonData, {
-            style: (feature) => this._estiloPorSequia(feature),
-            onEachFeature: (feature, layer) => {
-                layer.on({
-                    mouseover: (e) => onComunaMouseover(e.target),
-                    mouseout: (e) => onComunaMouseout(e.target),
-                    click: (e) => {
-                        L.DomEvent.stopPropagation(e);
-                        onComunaClick(e.target);
-                    }
-                });
-            }
-        }).addTo(this.mapa);
-        this.mapa.fitBounds(this.geoJsonLayer.getBounds());
-        this.mapa.on('click', onComunaClick); // Para cerrar el panel al hacer clic fuera
+        
+        try {
+            this.mapa = L.map(this.mapContainer, {
+                zoomControl: true,
+                minZoom: 7,
+                maxZoom: 12
+            }).setView([-33.0, -71.2], 8);
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> contributors'
+            }).addTo(this.mapa);
+            
+            this._crearControlInfo();
+            this.infoControl.addTo(this.mapa);
+            
+            this.geoJsonLayer = L.geoJson(geojsonData, {
+                style: (feature) => this._estiloPorSequia(feature),
+                onEachFeature: (feature, layer) => {
+                    layer.on({
+                        mouseover: (e) => {
+                            L.DomEvent.stopPropagation(e);
+                            onComunaMouseover(e.target);
+                        },
+                        mouseout: (e) => {
+                            L.DomEvent.stopPropagation(e);
+                            onComunaMouseout(e.target);
+                        },
+                        click: (e) => {
+                            L.DomEvent.stopPropagation(e);
+                            onComunaClick(e.target);
+                        }
+                    });
+                }
+            }).addTo(this.mapa);
+            
+            this.mapa.fitBounds(this.geoJsonLayer.getBounds());
+            this.mapa.on('click', (e) => {
+                L.DomEvent.stopPropagation(e);
+                onComunaClick(null); // Para cerrar el panel al hacer clic fuera
+            });
+            
+            console.log('Mapa inicializado correctamente');
+            
+        } catch (error) {
+            console.error('Error al inicializar el mapa:', error);
+        }
     }
 }
 
