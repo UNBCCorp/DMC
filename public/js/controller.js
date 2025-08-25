@@ -1,7 +1,5 @@
-import Model from './model.js';
-import View from './view.js';
 // Archivo: js/controller.js
-class Controller {
+window.Controller = class Controller {
     constructor(model, view) {
         this.model = model;
         this.view = view;
@@ -44,7 +42,8 @@ class Controller {
         this.view.bloquearCapa(layer);
         
         const cutCom = layer.feature.properties.CUT_COM;
-        const historial = this.model.getDatosHistoricosComunales()[cutCom] || [];
+        const datosHistoricos = this.model.getDatosHistoricosComunales();
+        const historial = (datosHistoricos && datosHistoricos[cutCom]) ? datosHistoricos[cutCom] : [];
         this.view.mostrarPanelDetalle(layer.feature.properties, historial);
     }
     
@@ -56,4 +55,4 @@ class Controller {
         }
     }
 }
-export default Controller;
+// Exportado como window.Controller
