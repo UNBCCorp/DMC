@@ -16,6 +16,9 @@ class Controller {
             
             if (!geojsonData || !datosSidebar) throw new Error("Datos insuficientes del backend.");
 
+            console.log('Datos GeoJSON recibidos:', geojsonData);
+            console.log('Verificando datos de persistencia en primera feature:', geojsonData.features[0]?.properties);
+
             this.view.renderizarMapaPrincipal(geojsonData, this.handleComunaMouseover, this.handleComunaMouseout, this.handleComunaClick);
             this.view.renderizarSidebar(datosSidebar);
             this.view.renderizarMinimapas(geojsonData, this.handleMinimapClick);

@@ -113,6 +113,36 @@ class View {
                 : 'Pase el mouse sobre una comuna';
         };
     }
+
+    _getColorForIndex(indexValue) {
+        if (indexValue === null || typeof indexValue === 'undefined' || isNaN(parseFloat(indexValue))) {
+            return '#CCCCCC'; // Gris para sin datos
+        }
+        const val = parseFloat(indexValue);
+
+        if (val >= 2.5) return '#005954';
+        if (val >= 2.0) return '#338b85';
+        if (val >= 1.5) return '#5dc1b9';
+        if (val >= 1.0) return '#9ce0db';
+        if (val >= 0.5) return '#d5ffff';
+        if (val < -2.5) return '#801300';
+        if (val < -2.0) return '#EA2B00';
+        if (val < -1.5) return '#ffaa00';
+        if (val < -1.0) return '#fcd370';
+        if (val < -0.5) return '#ffff00';
+        
+        return '#d5ffff'; // Valor por defecto para el rango -0.5 a 0.5
+    }
+
+    _estiloPersistencia(feature, propiedadPersistencia) {
+        return {
+            fillColor: this._getColorForIndex(feature.properties[propiedadPersistencia]),
+            weight: 0.5,
+            opacity: 1,
+            color: '#888',
+            fillOpacity: 0.8
+        };
+    }
     mostrarPanelDetalle(comunaProps, historialComuna) {
         document.getElementById('detalle-comuna-nombre').textContent = comunaProps.COMUNA;
         let tablaHtml = `<table class="table table-sm">`;
@@ -175,6 +205,7 @@ class View {
         });
     }
     renderizarMinimapas(geojsonData, onMinimapClick) {
+        console.log('Iniciando renderizado de minimapas...');
         const periodos = [
             { id: 'mapaPersistencia3m', clave: 'p_3m', titulo: '3 Meses' },
             { id: 'mapaPersistencia9m', clave: 'p_9m', titulo: '9 Meses' },
@@ -182,13 +213,54 @@ class View {
             { id: 'mapaPersistencia24m', clave: 'p_24m', titulo: '24 Meses' },
             { id: 'mapaPersistencia48m', clave: 'p_48m', titulo: '48 Meses' },
         ];
+        
         periodos.forEach(p => {
             const container = document.getElementById(p.id);
-            if (container._leaflet_id) L.DomUtil.remove(container); // Limpiar mapa anterior si existe
-            const map = L.map(p.id, { zoomControl: false, attributionControl: false, scrollWheelZoom: false, dragging: false });
-            L.geoJson(geojsonData, { style: f => this._estiloPersistencia(f, p.clave) }).addTo(map);
-            map.fitBounds(map.getBounds().pad(0.05));
-            container.addEventListener('click', () => onMinimapClick(p.titulo, geojsonData, p.clave));
+            if (!container) {
+                console.warn(`Contenedor ${p.id} no encontrado`);
+                return;
+            }
+            
+            console.log(`Procesando minimapa ${p.id} con clave ${p.clave}`);
+            
+            // Verificar si hay datos de persistencia para esta clave
+            const tieneDatos = geojsonData.features.some(f => 
+                f.properties[p.clave] !== null && 
+                f.properties[p.clave] !== undefined
+            );
+            console.log(`Minimapa ${p.id} tiene datos:`, tieneDatos);
+            
+            // Limpiar contenido anterior (incluyendo spinner)
+            container.innerHTML = '';
+            
+            // Limpiar mapa anterior si existe
+            if (container._leaflet_id) {
+                console.log(`Limpiando minimapa existente: ${p.id}`);
+                container._leaflet_id = undefined;
+            }
+            
+            try {
+                const map = L.map(p.id, { zoomControl: false, attributionControl: false, scrollWheelZoom: false, dragging: false });
+                const geoJsonLayer = L.geoJson(geojsonData, { 
+                    style: f => this._estiloPersistencia(f, p.clave) 
+                }).addTo(map);
+                
+                // Verificar que el geoJsonLayer tenga bounds válidos antes de ajustar
+                if (geoJsonLayer.getBounds().isValid()) {
+                    map.fitBounds(geoJsonLayer.getBounds().pad(0.05));
+                } else {
+                    // Fallback: centrar en Valparaíso si no hay bounds válidos
+                    map.setView([-33.0, -71.2], 8);
+                }
+                
+                container.addEventListener('click', () => onMinimapClick(p.titulo, geojsonData, p.clave));
+                console.log(`Minimapa ${p.id} inicializado correctamente`);
+                
+            } catch (error) {
+                console.error(`Error inicializando minimapa ${p.id}:`, error);
+                // Mostrar mensaje de error en lugar del spinner
+                container.innerHTML = '<div class="d-flex justify-content-center align-items-center h-100"><small class="text-muted">Error al cargar</small></div>';
+            }
         });
     }
     renderizarSidebar(datosSidebar) {
@@ -214,9 +286,33 @@ class View {
         });
     }
     renderizarMapaPrincipal(geojsonData, onComunaMouseover, onComunaMouseout, onComunaClick) {
+        // Verificar si ya existe un mapa y limpiarlo
+        if (this.mapa) {
+            console.log('Limpiando mapa existente...');
+            this.mapa.remove();
+            this.mapa = null;
+            this.geoJsonLayer = null;
+            this.infoControl = null;
+        }
+
+        // Verificar si el contenedor ya tiene un mapa inicializado
+        if (this.mapContainer._leaflet_id) {
+            console.log('Limpiando contenedor del mapa...');
+            this.mapContainer._leaflet_id = undefined;
+            this.mapContainer.innerHTML = '';
+        }
+
+        // Verificar que el contenedor esté disponible
+        if (!this.mapContainer || !L) {
+            console.error("El contenedor del mapa o Leaflet no está disponible.");
+            return;
+        }
+
+        console.log('Inicializando nuevo mapa...');
         this.mapa = L.map(this.mapContainer).setView([-33.0, -71.2], 8);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.mapa);
-        this._crearControlInfo().addTo(this.mapa);
+        this._crearControlInfo();
+        this.infoControl.addTo(this.mapa);
         this.geoJsonLayer = L.geoJson(geojsonData, {
             style: (feature) => this._estiloPorSequia(feature),
             onEachFeature: (feature, layer) => {

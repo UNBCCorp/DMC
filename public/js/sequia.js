@@ -1035,6 +1035,12 @@ async function cargarDatosDesdeTxtYMostrarPersistencia(geojsonData) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+    // Verificar si el nuevo sistema MVC está activo
+    if (window.Model && window.View && window.Controller) {
+        console.log('Sistema MVC detectado. Desactivando inicialización de sequia.js');
+        return;
+    }
+    
     if (document.getElementById('mapaValparaisoLeaflet')) {
         inicializarMapaSequiaValparaisoLeaflet();
     } else {

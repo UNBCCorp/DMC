@@ -169,10 +169,33 @@ function getDatosPersistencia($mesesAtras = 6) {
 
     $lineas = explode("\n", trim($contenidoTxt));
     $cabeceraRaw = array_shift($lineas);
-    $cabecera = array_map(function($h) {
-        $hLimpia = trim($h);
-        return is_numeric($hLimpia) ? "p_{$hLimpia}m" : $hLimpia;
-    }, explode(',', $cabeceraRaw));
+    
+    // Parsear la cabecera especial que tiene formato "meses:1,3,6,9,12,24,36,48"
+    $cabecera = [];
+    $columnas = explode(',', $cabeceraRaw);
+    
+    for ($i = 0; $i < count($columnas); $i++) {
+        $col = trim($columnas[$i]);
+        if (strpos($col, 'meses:') === 0) {
+            // Extraer los números después de "meses:" y procesar el resto de las columnas
+            $mesesStr = substr($col, 6); // Quitar "meses:"
+            $primerMes = trim($mesesStr);
+            $cabecera[] = "p_{$primerMes}m";
+            
+            // Procesar las siguientes columnas como meses adicionales
+            for ($j = $i + 1; $j < count($columnas); $j++) {
+                $mes = trim($columnas[$j]);
+                if (is_numeric($mes)) {
+                    $cabecera[] = "p_{$mes}m";
+                } else {
+                    break;
+                }
+            }
+            break;
+        } else {
+            $cabecera[] = $col;
+        }
+    }
     
     $datosParseados = [];
     foreach ($lineas as $linea) {
