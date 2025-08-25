@@ -1,6 +1,8 @@
 // js/view.js
+import * as config from './config.js';
+// js/view.js
 // Archivo: js/view.js
-window.View = class View {
+class View {
     constructor() {
         // Contenedores principales
         this.mapContainer = document.getElementById('mapaValparaisoLeaflet');
@@ -118,22 +120,18 @@ window.View = class View {
         }
         const val = parseFloat(indexValue);
 
-        // Valores húmedos/lluviosos (SPI positivo)
-        if (val >= 2.5) return '#005954';  // Ext. Lluvioso
-        if (val >= 2.0) return '#338b85';  // Muy Lluvioso
-        if (val >= 1.5) return '#5dc1b9';  // Lluvioso
-        if (val >= 1.0) return '#9ce0db';  // Lig. Lluvioso
-        if (val >= 0.5) return '#d5ffff';  // Normal Lluvioso
+        if (val >= 2.5) return '#005954';
+        if (val >= 2.0) return '#338b85';
+        if (val >= 1.5) return '#5dc1b9';
+        if (val >= 1.0) return '#9ce0db';
+        if (val >= 0.5) return '#d5ffff';
+        if (val < -2.5) return '#801300';
+        if (val < -2.0) return '#EA2B00';
+        if (val < -1.5) return '#ffaa00';
+        if (val < -1.0) return '#fcd370';
+        if (val < -0.5) return '#ffff00';
         
-        // Valores secos (SPI negativo)
-        if (val <= -2.5) return '#801300'; // Ext. Seco
-        if (val <= -2.0) return '#EA2B00'; // Muy Seco
-        if (val <= -1.5) return '#ffaa00'; // Seco
-        if (val <= -1.0) return '#fcd370'; // Lig. Seco
-        if (val <= -0.5) return '#ffff00'; // Normal Seco
-        
-        // Rango Normal (-0.5 a 0.5)
-        return '#FFFFFF'; // Blanco para rango Normal
+        return '#d5ffff'; // Valor por defecto para el rango -0.5 a 0.5
     }
 
     _estiloPersistencia(feature, propiedadPersistencia) {
@@ -266,28 +264,17 @@ window.View = class View {
         });
     }
     renderizarSidebar(datosSidebar) {
-        if (!datosSidebar || !datosSidebar.promedios) {
-            console.warn('Datos del sidebar no disponibles');
-            return;
-        }
-        
         // Actualizar tabla de promedios
         for (const cat in datosSidebar.promedios) {
             const el = document.getElementById(`avg-${cat.toLowerCase()}`);
             if (el) el.textContent = `${datosSidebar.promedios[cat]}%`;
         }
         // Crear gráfico regional
-        if (!datosSidebar.historico || !datosSidebar.historico.series) {
-            console.warn('Datos históricos no disponibles para el gráfico');
-            return;
-        }
-        
         if (this.regionalChartInstance) this.regionalChartInstance.destroy();
-        const categorias = ['SA', 'D0', 'D1', 'D2', 'D3', 'D4'];
-        const seriesData = categorias.map(cat => ({
+        const seriesData = Object.keys(this.COLORES_SEQUIA).filter(k => k !== 'DEFAULT').map(cat => ({
             name: cat,
             color: this.COLORES_SEQUIA[cat],
-            data: datosSidebar.historico.series[cat] || []
+            data: datosSidebar.historico.series[cat]
         }));
         this.regionalChartInstance = Highcharts.chart('timeSeriesChartRegionalSidebar', {
             chart: { type: 'area' }, title: { text: null },
@@ -344,4 +331,4 @@ window.View = class View {
     }
 }
 
-// Exportado como window.View
+export default View;

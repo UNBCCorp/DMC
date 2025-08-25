@@ -13,7 +13,8 @@ $this->inlineScript()
     ->appendFile($this->basePath('/js/highcharts/map.js'))
     ->appendFile($this->basePath('/js/highcharts/pattern-fill.js'))
     ->appendFile($this->basePath('/js/turf/turf.min.js'))
-    ->appendFile($this->basePath('/js/easyprint/bundle.min.js'));
+    ->appendFile($this->basePath('/js/easyprint/bundle.min.js'))
+    ->appendFile($this->basePath('/js/sequia.js?v=' . time()));
 ?>
 
 <div class="container-fluid main-container">
@@ -247,20 +248,15 @@ $this->inlineScript()
             
             console.log('Cargando scripts del controller...');
             
-                // Cargar scripts en orden con cache busting
-            const timestamp = Date.now();
-            await loadScript('/js/model.js?v=' + timestamp);
+            // Cargar scripts en orden
+            await loadScript('/js/model.js');
             console.log('Model cargado');
             
-            await loadScript('/js/view.js?v=' + timestamp);
+            await loadScript('/js/view.js');
             console.log('View cargado');
             
-            await loadScript('/js/controller.js?v=' + timestamp);
+            await loadScript('/js/controller.js');
             console.log('Controller cargado');
-            
-            // Cargar sequia.js después del sistema MVC
-            await loadScript('/js/sequia.js?v=' + timestamp);
-            console.log('Sequia.js cargado');
             
             // Verificar que las clases estén disponibles
             if (!window.Model || !window.View || !window.Controller) {
