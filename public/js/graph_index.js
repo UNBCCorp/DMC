@@ -179,18 +179,16 @@ function renderTimeSeriesChart(containerId, title, fechas, series) {
         });
     });
 
-    // Crear categorías del eje X con formato más legible
+    // Crear categorías del eje X con nombres completos de meses
     const categoriasEjeX = fechasConDatos.map(fecha => {
         const [ano, mes] = fecha.split('-');
         const nombresMeses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
                              'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-        const nombreMesCorto = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 
-                               'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'][parseInt(mes) - 1];
         const nombreMesCompleto = nombresMeses[parseInt(mes) - 1];
         
-        // Para el tooltip usaremos el nombre completo, para el eje X el corto
+        // Usar nombres completos tanto para el eje X como para el tooltip
         return {
-            corto: `${nombreMesCorto} ${ano}`,
+            corto: `${nombreMesCompleto} ${ano}`,
             completo: `${nombreMesCompleto} ${ano}`,
             fecha: fecha
         };
@@ -202,13 +200,11 @@ function renderTimeSeriesChart(containerId, title, fechas, series) {
             zoomType: 'x', 
             marginLeft: 80, 
             alignTicks: false,
-            scrollablePlotArea: categoriasEjeX.length >= 48 ? {
-                minWidth: categoriasEjeX.length * 30, // Más espacio para SPI-48
+            // Para historial completo, siempre usar scroll horizontal
+            scrollablePlotArea: {
+                minWidth: Math.max(1200, categoriasEjeX.length * 25), // Puntos más cercanos entre sí
                 scrollPositionX: 1 // Empezar al final (datos más recientes)
-            } : categoriasEjeX.length >= 12 ? {
-                minWidth: Math.max(800, categoriasEjeX.length * 25), // Espaciado normal para SPI-12, SPI-24
-                scrollPositionX: 1
-            } : undefined // Sin scroll para SPI-3, SPI-9
+            }
         },
         title: { text: title },
         xAxis: { 
@@ -216,19 +212,13 @@ function renderTimeSeriesChart(containerId, title, fechas, series) {
             crosshair: true, 
             offset: 10,
             labels: {
-                rotation: categoriasEjeX.length <= 9 ? 0 : -45, // Sin rotación para pocos puntos (SPI-3, SPI-9)
-                step: categoriasEjeX.length <= 9 ? 1 : Math.max(1, Math.floor(categoriasEjeX.length / 20)), // Mostrar todas las etiquetas para pocos puntos
+                rotation: -45, // Rotar para mejor legibilidad
+                step: 1, // Mostrar TODAS las etiquetas mensuales consecutivas
                 style: {
-                    fontSize: categoriasEjeX.length <= 3 ? '12px' : '11px' // Texto más grande para SPI-3
+                    fontSize: '8px' // Texto más pequeño para que quepan todas
                 }
             },
-            tickInterval: 1,
-            // Para gráficos con pocos puntos, centrar y comprimir el área de datos
-            min: categoriasEjeX.length <= 3 ? -0.5 : undefined,
-            max: categoriasEjeX.length <= 3 ? categoriasEjeX.length - 0.5 : undefined,
-            tickPositions: categoriasEjeX.length <= 3 ? 
-                [0, 1, 2] : // Posiciones fijas para SPI-3
-                undefined
+            tickInterval: 1
         },
         yAxis: yAxis,
         tooltip: {
@@ -291,44 +281,19 @@ function renderTimeSeriesChart(containerId, title, fechas, series) {
 async function processAndRender(indexType, containerId, title, escalaSeleccionada = '12') {
     const placeholder = document.querySelector(`#${containerId} .loading-placeholder`);
     try {
-        // Primero, encontrar el archivo más reciente (igual que el mapa)
-        const archivoMasReciente = await buscarYcargarTxtMasReciente();
-        const { ano: anoReferencia, mes: mesReferencia } = archivoMasReciente;
+        // Buscar todos los archivos disponibles en el historial completo
+        // Empezamos desde enero 2020 hasta la fecha más reciente disponible
+        const fechaInicio = new Date(2020, 0, 1); // Enero 2020
+        const fechaFin = new Date(); // Fecha actual
         
-        // Calcular cuántos meses hacia atrás mostrar según la escala
-        let mesesHaciaAtras;
-        switch(escalaSeleccionada) {
-            case '3':
-                mesesHaciaAtras = 3; // 3 meses para SPI-3
-                break;
-            case '9':
-                mesesHaciaAtras = 9; // 9 meses para SPI-9
-                break;
-            case '12':
-                mesesHaciaAtras = 12; // 12 meses para SPI-12
-                break;
-            case '24':
-                mesesHaciaAtras = 24; // 24 meses para SPI-24
-                break;
-            case '48':
-                mesesHaciaAtras = 48; // 48 meses para SPI-48
-                break;
-            default:
-                mesesHaciaAtras = parseInt(escalaSeleccionada);
-        }
-        
-        // Generar fechas desde el mes de referencia hacia atrás
         const fechasParaEjeX = [];
         const promesasFetch = [];
         
-        const fechaReferencia = new Date(parseInt(anoReferencia), parseInt(mesReferencia) - 1, 1);
-        
-        for (let i = mesesHaciaAtras - 1; i >= 0; i--) {
-            const fecha = new Date(fechaReferencia);
-            fecha.setMonth(fecha.getMonth() - i);
-            
-            const ano = fecha.getFullYear();
-            const mes = fecha.getMonth() + 1;
+        // Generar todas las fechas desde el inicio hasta el final
+        const fechaActual = new Date(fechaInicio);
+        while (fechaActual <= fechaFin) {
+            const ano = fechaActual.getFullYear();
+            const mes = fechaActual.getMonth() + 1;
             const mesFormateado = mes.toString().padStart(2, '0');
             const fechaLabel = `${ano}-${mesFormateado}`;
             
@@ -341,55 +306,85 @@ async function processAndRender(indexType, containerId, title, escalaSeleccionad
                     .then(text => ({ ano, mes, fechaLabel, text }))
                     .catch(() => ({ ano, mes, fechaLabel, text: null }))
             );
+            
+            // Avanzar al siguiente mes
+            fechaActual.setMonth(fechaActual.getMonth() + 1);
         }
 
+        console.log(`Buscando historial completo para ${indexType.toUpperCase()}-${escalaSeleccionada}: ${fechasParaEjeX.length} archivos`);
+        
         const resultadosMensuales = await Promise.all(promesasFetch);
 
-        // Procesar datos mensualmente
+        // Procesar datos mensualmente - usar solo la columna específica de la escala
         const datosMensuales = {};
+        let archivosEncontrados = 0;
+        
         resultadosMensuales.forEach(resultado => {
             if (resultado.text) {
+                archivosEncontrados++;
                 const valoresRegionales = getRegionalValuesFromFile(resultado.text, VALPARAISO_STATIONS);
-                if (valoresRegionales) {
-                    datosMensuales[resultado.fechaLabel] = valoresRegionales;
+                if (valoresRegionales && valoresRegionales[escalaSeleccionada]) {
+                    datosMensuales[resultado.fechaLabel] = valoresRegionales[escalaSeleccionada];
                 }
             }
         });
         
+        console.log(`Archivos encontrados: ${archivosEncontrados} de ${fechasParaEjeX.length}`);
+        
+        // Crear serie de datos con todo el historial disponible
         const datosParaSerie = [];
+        const fechasConDatos = [];
+        
         fechasParaEjeX.forEach(fechaLabel => {
-            const datosMes = datosMensuales[fechaLabel];
-            if (datosMes && datosMes[escalaSeleccionada]) {
-                const promedioMes = calculateAverage(datosMes[escalaSeleccionada]);
+            const valoresEscala = datosMensuales[fechaLabel];
+            if (valoresEscala && valoresEscala.length > 0) {
+                const promedioMes = calculateAverage(valoresEscala);
                 if (promedioMes !== null && !isNaN(promedioMes)) {
                     datosParaSerie.push({
                         y: promedioMes,
                         name: fechaLabel,
-                        fecha: fechaLabel // Mantener la fecha original para referencia
+                        fecha: fechaLabel
                     });
+                    fechasConDatos.push(fechaLabel);
                 } else {
                     datosParaSerie.push(null);
+                    fechasConDatos.push(fechaLabel);
                 }
             } else {
                 datosParaSerie.push(null);
+                fechasConDatos.push(fechaLabel);
             }
         });
         
+        // Filtrar datos nulos del inicio y final para un gráfico más limpio
+        let primerIndiceConDatos = datosParaSerie.findIndex(dato => dato !== null);
+        let ultimoIndiceConDatos = datosParaSerie.length - 1 - datosParaSerie.slice().reverse().findIndex(dato => dato !== null);
+        
+        if (primerIndiceConDatos === -1) {
+            throw new Error(`No se encontraron datos para ${indexType.toUpperCase()}-${escalaSeleccionada}`);
+        }
+        
+        const datosLimpios = datosParaSerie.slice(primerIndiceConDatos, ultimoIndiceConDatos + 1);
+        const fechasLimpias = fechasConDatos.slice(primerIndiceConDatos, ultimoIndiceConDatos + 1);
+        
         const seriesFinales = [{
-            name: `${indexType.toUpperCase()}-${escalaSeleccionada}`,
-            data: datosParaSerie
+            name: `${indexType.toUpperCase()}-${escalaSeleccionada} (Promedio Regional)`,
+            data: datosLimpios
         }];
 
-        const periodoMostrado = fechasParaEjeX.length > 0 ? 
-            `(${fechasParaEjeX[0]} a ${anoReferencia}-${mesReferencia})` : 
+        const periodoMostrado = fechasLimpias.length > 0 ? 
+            `(${fechasLimpias[0]} a ${fechasLimpias[fechasLimpias.length - 1]})` : 
             `(Datos no disponibles)`;
         
-        const nuevoTitulo = `${title} ${periodoMostrado}`;
-        renderTimeSeriesChart(containerId, nuevoTitulo, fechasParaEjeX, seriesFinales);
+        const nuevoTitulo = `${title} - Historial Completo ${periodoMostrado}`;
+        
+        console.log(`Renderizando ${indexType.toUpperCase()}-${escalaSeleccionada}: ${datosLimpios.filter(d => d !== null).length} puntos de datos`);
+        
+        renderTimeSeriesChart(containerId, nuevoTitulo, fechasLimpias, seriesFinales);
 
     } catch (error) {
         console.error(`Error procesando ${indexType}:`, error);
-        if (placeholder) placeholder.innerHTML = `<p style="color:red;">Error al procesar datos para ${title}.</p>`;
+        if (placeholder) placeholder.innerHTML = `<p style="color:red;">Error al procesar datos para ${title}: ${error.message}</p>`;
     }
 }
 
