@@ -158,7 +158,11 @@ class SequiaController extends AbstractActionController
             $mapaEstaciones[$estacionObj['Estacion']] = $estacionObj;
         }
         
-        $periodos = array_filter($cabecera, fn($h) => str_starts_with($h, 'p_'));
+            $periodos = array_filter($cabecera, function($h) {
+        // Verificamos si la cabecera comienza con 'p_'
+        // Usamos substr en vez de str_starts_with por compatibilidad con PHP < 8
+        return substr($h, 0, 2) === 'p_';
+        });
         return ['mapa' => $mapaEstaciones, 'periodos' => array_values($periodos)];
     }
 
