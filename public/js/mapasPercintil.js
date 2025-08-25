@@ -114,9 +114,9 @@ const precipColorClasses = [
     { from: 10, to: 30, color: '#d8b365', name: '10-30 (Seco)' },
     { from: 30, to: 40, color: '#f6e8c3', name: '30-40 (Bajo Normal)' },
     { from: 40, to: 60, color: '#f7f7f7', name: '40-60 (Normal)' },
-    { from: 60, to: 70, color: '#bcf2ed', name: '60-70 (Sobre Normal)' },
-    { from: 70, to: 90, color: '#00a79a', name: '70-90' },
-    { from: 90, to: 100, color: '#007c80', name: '> 90' },
+    { from: 60, to: 70, color: '#bcf2ed', name: '60-70 (Ligeramente Lluvioso)' },
+    { from: 70, to: 90, color: '#00a79a', name: '70-90 (Lluvioso)' },
+    { from: 90, to: 100, color: '#007c80', name: '> 90 (Ext. Lluvioso)' },
     { from: -999, to: -1, color: '#cccccc', name: 'Sin datos' }
 ];
 const colorRecordCalido = '#EB2B00';

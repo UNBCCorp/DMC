@@ -2,25 +2,25 @@ let selectedComunaPoint = null;
 
 const climaColorClasses = [
   {
-    name: "Semiárido Cálido",
+    name: "Seco, Estepa, caluroso",
     code: "BSh",
     color: "#D6C29D",
     numericalValue: 0,
   },
   {
-    name: "Mediterráneo Costero",
+    name: "Subtropical, verano seco y fresco",
     code: "Csb",
     color: "#00A884",
     numericalValue: 1,
   },
   {
-    name: "Mediterráneo Continental",
+    name: "Templado, verano seco y fresco",
     code: "Dsb",
     color: "#5C8944",
     numericalValue: 2,
   },
   {
-    name: "Alta Montaña - Dsb",
+    name: "Templado, verano seco y fresco ",
     code: "H-Dsb",
     numericalValue: 3,
     color: {
@@ -38,7 +38,7 @@ const climaColorClasses = [
     },
   },
   {
-    name: "Alta Montaña - Dsbc",
+    name: "Templado, verano seco y fresco (continental)",
     code: "H-Dsbc",
     numericalValue: 4,
     color: {
@@ -56,7 +56,7 @@ const climaColorClasses = [
     },
   },
   {
-    name: "Alta Montaña - Es",
+    name: "Boreal, verano seco",
     code: "H-Es",
     numericalValue: 5,
     color: {
@@ -74,7 +74,7 @@ const climaColorClasses = [
     },
   },
   {
-    name: "Alta Montaña - Fts",
+    name: "Polar, tundra, verano seco",
     code: "H-Fts",
     numericalValue: 6,
     color: {
