@@ -43,7 +43,21 @@ window.Controller = class Controller {
         
         const cutCom = layer.feature.properties.CUT_COM;
         const datosHistoricos = this.model.getDatosHistoricosComunales();
-        const historial = (datosHistoricos && datosHistoricos[cutCom]) ? datosHistoricos[cutCom] : [];
+        let historial = [];
+        
+        if (datosHistoricos) {
+            // Buscar con el código completo (05101)
+            if (datosHistoricos[cutCom]) {
+                historial = datosHistoricos[cutCom];
+            } 
+            // Si no se encuentra y el código tiene 5 dígitos con cero inicial, buscar sin el cero (5101)
+            else if (cutCom.length === 5 && cutCom[0] === '0') {
+                const codigoSinCero = cutCom.substring(1);
+                if (datosHistoricos[codigoSinCero]) {
+                    historial = datosHistoricos[codigoSinCero];
+                }
+            }
+        }
         
         console.log('Clic en comuna:', layer.feature.properties.COMUNA, 'CUT_COM:', cutCom);
         console.log('Datos históricos disponibles:', !!datosHistoricos);

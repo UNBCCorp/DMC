@@ -40,7 +40,7 @@ class SequiaController extends AbstractActionController
             }
 
             // 2. OBTENER DATOS HISTÓRICOS (ÚLTIMOS 6 MESES)
-            $datosHistoricos = $this->getDatosHistoricos($fechaBase, 6);
+            $datosHistoricos = $this->getDatosHistoricos($fechaBase, 12);
 
             // 3. OBTENER DATOS DE PERSISTENCIA (SPI DESDE .TXT)
             $datosPersistencia = $this->getDatosPersistencia();
@@ -68,7 +68,6 @@ class SequiaController extends AbstractActionController
             ]);
 
         } catch (\Exception $e) {
-            $this->getResponse()->setStatusCode(500);
             return new JsonModel(['success' => false, 'message' => $e->getMessage()]);
         }
     }
@@ -76,16 +75,33 @@ class SequiaController extends AbstractActionController
     // --- MÉTODOS PRIVADOS DE PROCESAMIENTO ---
 
     private function fusionarDatos($geojsonData, $datosSequia, $datosPersistencia) {
-        $mapaSequia = array_column($datosSequia, null, 'Code');
+        // Crear mapa con ambos formatos de código (4 y 5 dígitos)
+        $mapaSequia = [];
+        foreach ($datosSequia as $item) {
+            $code = (string)$item['Code'];
+            $mapaSequia[$code] = $item;
+            // También agregar con cero inicial si no lo tiene (4 dígitos -> 5 dígitos)
+            if (strlen($code) === 4) {
+                $mapaSequia['0' . $code] = $item;
+            }
+        }
+        
         $mapaComunaAEstaciones = json_decode(file_get_contents(getcwd() . '/public/js/config.json'), true)['MAPA_COMUNA_A_ESTACIONES'];
 
         foreach ($geojsonData['features'] as &$feature) {
             $props = &$feature['properties'];
             $cutCom = (string)($props['CUT_COM'] ?? '');
             
-            // Fusionar datos de sequía actual
+            // Fusionar datos de sequía actual - intentar ambos formatos
+            $codigoParaBuscar = $cutCom;
+            if (strlen($cutCom) === 5 && $cutCom[0] === '0') {
+                $codigoParaBuscar = substr($cutCom, 1); // Quitar cero inicial para buscar versión de 4 dígitos
+            }
+            
             if (isset($mapaSequia[$cutCom])) {
                 $props = array_merge($props, $mapaSequia[$cutCom]);
+            } elseif (isset($mapaSequia[$codigoParaBuscar])) {
+                $props = array_merge($props, $mapaSequia[$codigoParaBuscar]);
             }
 
             // Fusionar datos de persistencia
@@ -118,8 +134,17 @@ class SequiaController extends AbstractActionController
                 foreach ($datosMes as $comuna) {
                     $codigo = (string)$comuna['Code'];
                     $comuna['fecha'] = $fechaFetch->format('Y-m-d');
+                    
+                    // Guardar con el código original
                     if (!isset($historicos[$codigo])) $historicos[$codigo] = [];
                     $historicos[$codigo][] = $comuna;
+                    
+                    // También guardar con cero inicial si es código de 4 dígitos
+                    if (strlen($codigo) === 4) {
+                        $codigoConCero = '0' . $codigo;
+                        if (!isset($historicos[$codigoConCero])) $historicos[$codigoConCero] = [];
+                        $historicos[$codigoConCero][] = $comuna;
+                    }
                 }
             }
         }
