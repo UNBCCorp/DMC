@@ -8,7 +8,7 @@ class SequiaDataService
 {
     private function fetchApiData($ano, $mes)
     {
-        $url = "https://prodatos.meteochile.gob.cl/intranet/caster/getdp3/{$ano}/{$mes}";
+        $url = "https://climatologia.meteochile.gob.cl/application/serviciosb/getMonitorSequia/{$ano}/{$mes}";
         
         $curl = curl_init($url);
         curl_setopt_array($curl, [
