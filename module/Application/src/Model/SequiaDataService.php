@@ -8,7 +8,7 @@ class SequiaDataService
 {
     private function fetchApiData($ano, $mes)
     {
-        $url = "https://climatologia.meteochile.gob.cl/application/serviciosb/getMonitorSequia/{$ano}/{$mes}";
+        $url = "https://prodatos.meteochile.gob.cl/intranet/caster/getdp3/{$ano}/{$mes}";
         
         $curl = curl_init($url);
         curl_setopt_array($curl, [
@@ -31,11 +31,11 @@ class SequiaDataService
         }
         
         // Si la API falla, usar el respaldo local
-        $fallbackPath = getcwd() . '/public/maps/data/dummy_api_data.json';
-        if (file_exists($fallbackPath)) {
-            $fallbackData = json_decode(file_get_contents($fallbackPath), true);
-            return $fallbackData['datos'] ?? null;
-        }
+        // $fallbackPath = getcwd() . '/public/maps/data/dummy_api_data.json';
+        // if (file_exists($fallbackPath)) {
+        //     $fallbackData = json_decode(file_get_contents($fallbackPath), true);
+        //     return $fallbackData['datos'] ?? null;
+        // }
         
         return null;
     }
