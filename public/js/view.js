@@ -198,7 +198,7 @@ window.View = class View {
         
         const categorias = [
             { code: 'SA', desc: 'Sin Afectación', color: '#d9d9d9' },
-            { code: 'D0', desc: 'Anorm. Seco', color: '#ffff00' },
+            { code: 'D0', desc: 'Anormalmente Seco', color: '#ffff00' },
             { code: 'D1', desc: 'Sequía Moderada', color: '#fcd37f' },
             { code: 'D2', desc: 'Sequía Severa', color: '#ffaa00' },
             { code: 'D3', desc: 'Sequía Extrema', color: '#E60000' },
