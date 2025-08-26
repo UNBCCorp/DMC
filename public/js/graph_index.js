@@ -282,8 +282,8 @@ async function processAndRender(indexType, containerId, title, escalaSeleccionad
     const placeholder = document.querySelector(`#${containerId} .loading-placeholder`);
     try {
         // Buscar todos los archivos disponibles en el historial completo
-        // Empezamos desde enero 2020 hasta la fecha más reciente disponible
-        const fechaInicio = new Date(2020, 0, 1); // Enero 2020
+        // Empezamos desde enero 2019 hasta la fecha más reciente disponible
+        const fechaInicio = new Date(2019, 0, 1); // Enero 2019
         const fechaFin = new Date(); // Fecha actual
         
         const fechasParaEjeX = [];
@@ -373,10 +373,10 @@ async function processAndRender(indexType, containerId, title, escalaSeleccionad
         }];
 
         const periodoMostrado = fechasLimpias.length > 0 ? 
-            `(${fechasLimpias[0]} a ${fechasLimpias[fechasLimpias.length - 1]})` : 
-            `(Datos no disponibles)`;
+            `${fechasLimpias[0]} a ${fechasLimpias[fechasLimpias.length - 1]}` : 
+            `Datos no disponibles`;
         
-        const nuevoTitulo = `${title} - Historial Completo ${periodoMostrado}`;
+        const nuevoTitulo = `${title} - Período: ${periodoMostrado}`;
         
         console.log(`Renderizando ${indexType.toUpperCase()}-${escalaSeleccionada}: ${datosLimpios.filter(d => d !== null).length} puntos de datos`);
         
