@@ -48,13 +48,54 @@ window.View = class View {
         document.getElementById('modalMapTitle').textContent = `Persistencia ${titulo}`;
         if (this.currentModalMapInstance) this.currentModalMapInstance.remove();
         this.modalMapContainer.innerHTML = '';
+        
+        // Asegurar que el contenedor modal tenga el ancho correcto
+        this.modalMapContainer.style.cssText = `
+            width: 100% !important;
+            height: calc(100% - 40px) !important;
+            display: flex !important;
+            flex-direction: column !important;
+            box-sizing: border-box !important;
+        `;
+        
+        // Crear contenedor para el mapa con estilos específicos
+        const mapWrapper = document.createElement('div');
+        mapWrapper.style.cssText = `
+            height: 450px !important;
+            width: 100% !important;
+            position: relative !important;
+            display: block !important;
+            box-sizing: border-box !important;
+            flex-shrink: 0 !important;
+        `;
+        this.modalMapContainer.appendChild(mapWrapper);
+        
         document.getElementById('mapModal').style.display = 'block';
+        
+        // Usar un timeout más largo para asegurar que el DOM esté completamente renderizado
         setTimeout(() => {
-            this.currentModalMapInstance = L.map(this.modalMapContainer, { center: [-33.0, -71.2], zoom: 8 });
+            this.currentModalMapInstance = L.map(mapWrapper, { 
+                center: [-33.0, -71.2], 
+                zoom: 8,
+                preferCanvas: false
+            });
+            
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.currentModalMapInstance);
             const layer = L.geoJson(geojsonData, { style: f => this._estiloPersistencia(f, clave) }).addTo(this.currentModalMapInstance);
-            this.currentModalMapInstance.fitBounds(layer.getBounds().pad(0.1));
-        }, 10);
+            
+            // Agregar el control de leyenda flotante
+            const leyendaControl = this._crearControlLeyenda();
+            leyendaControl.addTo(this.currentModalMapInstance);
+            
+            // Forzar que Leaflet recalcule el tamaño del mapa
+            this.currentModalMapInstance.invalidateSize();
+            
+            // Ajustar bounds después de invalidar el tamaño
+            setTimeout(() => {
+                this.currentModalMapInstance.fitBounds(layer.getBounds().pad(0.1));
+            }, 100);
+            
+        }, 50);
     }
 
     renderizarMapa(geojsonData, onComunaMouseover, onComunaMouseout, onComunaClick) {
@@ -178,6 +219,62 @@ window.View = class View {
             color: '#888',
             fillOpacity: 0.8
         };
+    }
+
+    _crearControlLeyenda() {
+        const leyenda = [
+            { rango: '≥ 2.5', color: '#005954', descripcion: 'Ext. lluvioso' },
+            { rango: '2.0-2.4', color: '#338b85', descripcion: 'Muy lluvioso' },
+            { rango: '1.5-1.9', color: '#5dc1b9', descripcion: 'Lluvioso' },
+            { rango: '1.0-1.4', color: '#9ce0db', descripcion: 'Lig. lluvioso' },
+            { rango: '0.5-0.9', color: '#d5ffff', descripcion: 'Normal +' },
+            { rango: '-0.5-0.4', color: '#d5ffff', descripcion: 'Normal' },
+            { rango: '-1.0--0.5', color: '#ffff00', descripcion: 'Normal -' },
+            { rango: '-1.5--1.0', color: '#fcd370', descripcion: 'Lig. seco' },
+            { rango: '-2.0--1.5', color: '#ffaa00', descripcion: 'Seco' },
+            { rango: '-2.5--2.0', color: '#EA2B00', descripcion: 'Muy seco' },
+            { rango: '< -2.5', color: '#801300', descripcion: 'Ext. seco' }
+        ];
+
+        // Crear control personalizado de Leaflet
+        const LeyendaControl = L.Control.extend({
+            onAdd: function(map) {
+                const div = L.DomUtil.create('div', 'leyenda-control');
+                div.style.cssText = `
+                    background: rgba(255, 255, 255, 0.95);
+                    border: 2px solid rgba(0,0,0,0.2);
+                    border-radius: 5px;
+                    padding: 8px;
+                    font-size: 10px;
+                    line-height: 1.2;
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                    max-width: 160px;
+                `;
+                
+                let html = '<div style="font-weight: bold; margin-bottom: 5px; font-size: 11px; color: #333;">SPI</div>';
+                
+                leyenda.forEach(item => {
+                    html += `<div style="display: flex; align-items: center; margin-bottom: 2px;">
+                                <div style="width: 12px; height: 10px; background-color: ${item.color}; border: 1px solid #999; margin-right: 4px; flex-shrink: 0;"></div>
+                                <span style="font-size: 9px; color: #333; white-space: nowrap;">${item.rango} ${item.descripcion}</span>
+                             </div>`;
+                });
+                
+                div.innerHTML = html;
+                
+                // Prevenir que los eventos del mouse en la leyenda afecten el mapa
+                L.DomEvent.disableClickPropagation(div);
+                L.DomEvent.disableScrollPropagation(div);
+                
+                return div;
+            },
+            
+            options: {
+                position: 'topright'
+            }
+        });
+        
+        return new LeyendaControl();
     }
     mostrarPanelDetalle(comunaProps, historialComuna) {
         const nombreComuna = comunaProps.COMUNA || 'Comuna desconocida';
