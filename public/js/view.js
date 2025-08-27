@@ -278,7 +278,12 @@ window.View = class View {
     }
     mostrarPanelDetalle(comunaProps, historialComuna) {
         const nombreComuna = comunaProps.COMUNA || 'Comuna desconocida';
-        document.getElementById('detalle-comuna-nombre').textContent = nombreComuna;
+        
+        // Obtener el mes correspondiente a los datos usando la función utilitaria
+        const { mesNombre } = window.Controller.obtenerMesDatos();
+        
+        // Actualizar título con comuna y mes
+        document.getElementById('detalle-comuna-nombre').textContent = `${nombreComuna} - ${mesNombre}`;
         
         console.log('Mostrando panel para comuna:', nombreComuna, comunaProps);
         

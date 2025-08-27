@@ -75,8 +75,8 @@ async function crearMapaPercentilesHighcharts(
                 },
                 tooltip: {
                     pointFormat: `<b>{point.name}</b><br/>` +
-                                 `Percentil: {point.value:.1f}%<br/>` +
-                                 `Valor: {point.valor_real:.1f} ${tooltipValueSuffix}`
+                                 `Percentil: {#if (eq point.valor_real -999,0)}Sin datos{else}{point.value:.1f}%{/if}<br/>` +
+                                 `Valor: {#if (eq point.valor_real -999,0)}Sin datos{else}{point.valor_real:.1f} ${tooltipValueSuffix}{/if}`
                 }
             }],
             credits: {

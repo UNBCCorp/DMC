@@ -21,8 +21,47 @@ window.Controller = class Controller {
             this.view.renderizarSidebar(datosSidebar);
             this.view.renderizarMinimapas(geojsonData, this.handleMinimapClick);
             this.view.bindEvents(this.handleCerrarPanel, this.handleCerrarModal);
+            
+            // Actualizar título con el mes correspondiente a los datos
+            this.actualizarTituloConMes();
         } catch (error) {
             console.error("Error crítico en la inicialización:", error);
+        }
+    }
+
+    // Función utilitaria para obtener el mes de los datos
+    static obtenerMesDatos() {
+        const hoy = new Date();
+        const diaDeHoy = hoy.getDate();
+        const fechaObjetivo = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+        
+        // Misma lógica que en el backend para determinar el mes de los datos
+        if (diaDeHoy < 17) {
+            fechaObjetivo.setMonth(fechaObjetivo.getMonth() - 2);
+        } else {
+            fechaObjetivo.setMonth(fechaObjetivo.getMonth() - 1);
+        }
+        
+        const meses = [
+            'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+            'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+        ];
+        
+        return {
+            mesNombre: meses[fechaObjetivo.getMonth()],
+            ano: fechaObjetivo.getFullYear(),
+            fecha: fechaObjetivo
+        };
+    }
+
+    // Función para actualizar el título con el mes de los datos
+    actualizarTituloConMes() {
+        const { mesNombre } = Controller.obtenerMesDatos();
+        
+        // Actualizar el título
+        const tituloElement = document.getElementById('titulo-afectacion-categoria');
+        if (tituloElement) {
+            tituloElement.textContent = `Porcentaje de afectación y categoría - ${mesNombre}`;
         }
     }
 
