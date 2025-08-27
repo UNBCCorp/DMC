@@ -4,11 +4,10 @@
 // Headers de respuesta
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
-
+ // Incluir la lógica de datos.php
+require_once 'datos.php';
 try {
-    // Incluir la lógica de datos.php
-    require_once 'datos.php';
-    
+       
     // La lógica principal ya está en datos.php, pero necesitamos reformatear la respuesta
     // para que coincida con lo que espera el sistema MVC
     
@@ -45,7 +44,10 @@ try {
         ]
     ];
 
-    echo json_encode($respuesta);
+    header('Content-Type: application/json');
+    header('Access-Control-Allow-Origin: *');
+    if (ob_get_length()) ob_clean();
+    echo json_encode($respuesta, JSON_UNESCAPED_UNICODE);
 
 } catch (Exception $e) {
     http_response_code(500);
