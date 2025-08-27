@@ -16,10 +16,10 @@ define('FALLBACK_API_PATH', BASE_PATH . '/maps/data/dummy_api_data.json');
 // HEADERS DE RESPUESTA
 // -------------------
 // Indicamos que la respuesta será en formato JSON.
-header('Content-Type: application/json');
+//header('Content-Type: application/json');
 // Permitimos el acceso desde cualquier origen (CORS), útil para desarrollo.
 // En producción, podrías restringirlo a tu dominio: header('Access-Control-Allow-Origin: https://tu-sitio.com');
-header('Access-Control-Allow-Origin: *');
+//header('Access-Control-Allow-Origin: *');
 
 // -------------------
 // LÓGICA PRINCIPAL
@@ -52,7 +52,7 @@ try {
     ];
 
     // 6. Enviar la respuesta como JSON
-    echo json_encode($respuesta);
+//    echo json_encode($respuesta);
 
 } catch (Exception $e) {
     // En caso de error, enviar una respuesta de error clara.
