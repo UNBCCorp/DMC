@@ -405,11 +405,11 @@ window.View = class View {
     renderizarMinimapas(geojsonData, onMinimapClick) {
         console.log('Iniciando renderizado de minimapas...');
         const periodos = [
-            { id: 'mapaPersistencia3m', clave: 'p_3m', titulo: '3 Meses' },
-            { id: 'mapaPersistencia9m', clave: 'p_9m', titulo: '9 Meses' },
-            { id: 'mapaPersistencia12m', clave: 'p_12m', titulo: '12 Meses' },
-            { id: 'mapaPersistencia24m', clave: 'p_24m', titulo: '24 Meses' },
-            { id: 'mapaPersistencia48m', clave: 'p_48m', titulo: '48 Meses' },
+            { id: 'mapaPersistencia3m', clave: 'p_3m', titulo: '3 Meses con SPI' },
+            { id: 'mapaPersistencia9m', clave: 'p_9m', titulo: '9 Meses con SPI' },
+            { id: 'mapaPersistencia12m', clave: 'p_12m', titulo: '12 Meses con SPI' },
+            { id: 'mapaPersistencia24m', clave: 'p_24m', titulo: '24 Meses con SPI' },
+            { id: 'mapaPersistencia48m', clave: 'p_48m', titulo: '48 Meses con SPI' },
         ];
         
         periodos.forEach(p => {
