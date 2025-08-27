@@ -40,7 +40,25 @@ window.View = class View {
             console.error('Contenedor del mapa no encontrado: mapaValparaisoLeaflet');
         }
     }
-    ocultarModalMapa() { document.getElementById('mapModal').style.display = 'none'; }
+    ocultarModalMapa() { 
+        document.getElementById('mapModal').style.display = 'none'; 
+        
+        // Restaurar scroll del body
+        document.body.style.overflow = '';
+        document.documentElement.style.overflow = '';
+        
+        // Limpiar listener de redimensionamiento
+        if (this.modalResizeHandler) {
+            window.removeEventListener('resize', this.modalResizeHandler);
+            this.modalResizeHandler = null;
+        }
+        
+        // Limpiar instancia del mapa modal
+        if (this.currentModalMapInstance) {
+            this.currentModalMapInstance.remove();
+            this.currentModalMapInstance = null;
+        }
+    }
     resaltarComuna(layer) { layer.setStyle({ weight: 3, color: '#333' }); layer.bringToFront(); this.infoControl.update(layer.feature.properties); }
     resetearResaltado(layer) { this.geoJsonLayer.resetStyle(layer); this.infoControl.update(); }
     bloquearCapa(layer) { layer.setStyle({ weight: 4, color: '#000' }); layer.bringToFront(); }
@@ -49,35 +67,163 @@ window.View = class View {
         if (this.currentModalMapInstance) this.currentModalMapInstance.remove();
         this.modalMapContainer.innerHTML = '';
         
-        // Asegurar que el contenedor modal tenga el ancho correcto
+        // Obtener dimensiones del viewport
+        const viewportHeight = window.innerHeight;
+        const viewportWidth = window.innerWidth;
+        
+        // Configurar el modal principal para pantallas pequeñas
+        const modal = document.getElementById('mapModal');
+        const modalContent = modal.querySelector('.map-modal-content');
+        
+        if (viewportWidth < 768) { // Pantallas pequeñas
+            modal.style.cssText = `
+                display: block !important;
+                position: fixed !important;
+                z-index: 2000 !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                height: 100% !important;
+                overflow: hidden !important;
+                background-color: rgba(0, 0, 0, 0.8) !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            `;
+            
+            modalContent.style.cssText = `
+                background-color: #fefefe !important;
+                margin: 0 !important;
+                padding: 10px !important;
+                border: none !important;
+                width: 100% !important;
+                height: 100% !important;
+                position: relative !important;
+                display: flex !important;
+                flex-direction: column !important;
+                box-sizing: border-box !important;
+                border-radius: 0 !important;
+                overflow: hidden !important;
+            `;
+            
+            // Mejorar botón de cerrar para móviles
+            const closeButton = modal.querySelector('.map-modal-close-button');
+            if (closeButton) {
+                closeButton.style.cssText = `
+                    position: absolute !important;
+                    top: 10px !important;
+                    right: 15px !important;
+                    font-size: 24px !important;
+                    font-weight: bold !important;
+                    color: #333 !important;
+                    cursor: pointer !important;
+                    z-index: 2001 !important;
+                    background: rgba(255, 255, 255, 0.9) !important;
+                    border-radius: 50% !important;
+                    width: 35px !important;
+                    height: 35px !important;
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                    line-height: 1 !important;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
+                `;
+            }
+        } else {
+            // Pantallas grandes - usar estilos normales
+            modal.style.cssText = `
+                display: block !important;
+                position: fixed !important;
+                z-index: 2000 !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                height: 100% !important;
+                overflow: auto !important;
+                background-color: rgba(0, 0, 0, 0.5) !important;
+            `;
+            
+            modalContent.style.cssText = `
+                background-color: #fefefe !important;
+                margin: 5% auto !important;
+                padding: 20px !important;
+                border: 1px solid #888 !important;
+                width: 85% !important;
+                max-width: 900px !important;
+                height: 80% !important;
+                position: relative !important;
+                display: flex !important;
+                flex-direction: column !important;
+                border-radius: 8px !important;
+            `;
+            
+            // Estilo normal del botón de cerrar para pantallas grandes
+            const closeButton = modal.querySelector('.map-modal-close-button');
+            if (closeButton) {
+                closeButton.style.cssText = `
+                    position: absolute !important;
+                    top: 10px !important;
+                    right: 25px !important;
+                    font-size: 28px !important;
+                    font-weight: bold !important;
+                    color: #aaa !important;
+                    cursor: pointer !important;
+                    z-index: 2001 !important;
+                    line-height: 1 !important;
+                `;
+            }
+        }
+        
+        // Configurar el contenedor del mapa
         this.modalMapContainer.style.cssText = `
             width: 100% !important;
-            height: calc(100% - 40px) !important;
+            flex: 1 !important;
             display: flex !important;
             flex-direction: column !important;
             box-sizing: border-box !important;
+            overflow: hidden !important;
+            min-height: 0 !important;
         `;
         
-        // Crear contenedor para el mapa con estilos específicos
+        // Crear contenedor para el mapa con estilos responsivos
         const mapWrapper = document.createElement('div');
+        
+        // Calcular altura del mapa
+        let mapHeight;
+        if (viewportWidth < 768) {
+            // En pantallas pequeñas, usar toda la altura disponible menos header
+            mapHeight = viewportHeight - 80; // 80px para título y padding
+        } else {
+            // En pantallas grandes, usar altura calculada
+            mapHeight = Math.min(450, viewportHeight * 0.6);
+        }
+        
         mapWrapper.style.cssText = `
-            height: 450px !important;
+            height: ${mapHeight}px !important;
             width: 100% !important;
             position: relative !important;
             display: block !important;
             box-sizing: border-box !important;
-            flex-shrink: 0 !important;
+            flex: 1 !important;
+            min-height: 0 !important;
         `;
         this.modalMapContainer.appendChild(mapWrapper);
         
-        document.getElementById('mapModal').style.display = 'block';
+        // Agregar estilos adicionales para prevenir scroll en móviles
+        if (viewportWidth < 768) {
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
+        }
         
         // Usar un timeout más largo para asegurar que el DOM esté completamente renderizado
         setTimeout(() => {
             this.currentModalMapInstance = L.map(mapWrapper, { 
                 center: [-33.0, -71.2], 
                 zoom: 8,
-                preferCanvas: false
+                preferCanvas: false,
+                zoomControl: viewportWidth >= 768, // Solo mostrar controles de zoom en pantallas grandes
+                touchZoom: true,
+                doubleClickZoom: true,
+                scrollWheelZoom: viewportWidth >= 768 // Solo scroll zoom en pantallas grandes
             });
             
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(this.currentModalMapInstance);
@@ -87,15 +233,114 @@ window.View = class View {
             const leyendaControl = this._crearControlLeyenda();
             leyendaControl.addTo(this.currentModalMapInstance);
             
-            // Forzar que Leaflet recalcule el tamaño del mapa
-            this.currentModalMapInstance.invalidateSize();
-            
-            // Ajustar bounds después de invalidar el tamaño
-            setTimeout(() => {
-                this.currentModalMapInstance.fitBounds(layer.getBounds().pad(0.1));
-            }, 100);
-            
-        }, 50);
+                         // Forzar que Leaflet recalcule el tamaño del mapa
+             this.currentModalMapInstance.invalidateSize();
+             
+             // Ajustar bounds después de invalidar el tamaño
+             setTimeout(() => {
+                 this.currentModalMapInstance.fitBounds(layer.getBounds().pad(0.1));
+             }, 100);
+             
+             // Agregar listener para redimensionamiento de ventana
+             const resizeHandler = () => {
+                 if (this.currentModalMapInstance) {
+                     // Recalcular dimensiones
+                     const newViewportHeight = window.innerHeight;
+                     const newViewportWidth = window.innerWidth;
+                     
+                     // Reconfigurar modal si cambió el tipo de pantalla
+                     const modal = document.getElementById('mapModal');
+                     const modalContent = modal.querySelector('.map-modal-content');
+                     
+                     if (newViewportWidth < 768) {
+                         // Pantalla pequeña
+                         modal.style.cssText = `
+                             display: block !important;
+                             position: fixed !important;
+                             z-index: 2000 !important;
+                             left: 0 !important;
+                             top: 0 !important;
+                             width: 100% !important;
+                             height: 100% !important;
+                             overflow: hidden !important;
+                             background-color: rgba(0, 0, 0, 0.8) !important;
+                             padding: 0 !important;
+                             margin: 0 !important;
+                         `;
+                         
+                         modalContent.style.cssText = `
+                             background-color: #fefefe !important;
+                             margin: 0 !important;
+                             padding: 10px !important;
+                             border: none !important;
+                             width: 100% !important;
+                             height: 100% !important;
+                             position: relative !important;
+                             display: flex !important;
+                             flex-direction: column !important;
+                             box-sizing: border-box !important;
+                             border-radius: 0 !important;
+                             overflow: hidden !important;
+                         `;
+                         
+                         // Ajustar altura del mapa
+                         const mapWrapper = this.modalMapContainer.querySelector('div');
+                         if (mapWrapper) {
+                             mapWrapper.style.height = `${newViewportHeight - 80}px`;
+                         }
+                     } else {
+                         // Pantalla grande
+                         modal.style.cssText = `
+                             display: block !important;
+                             position: fixed !important;
+                             z-index: 2000 !important;
+                             left: 0 !important;
+                             top: 0 !important;
+                             width: 100% !important;
+                             height: 100% !important;
+                             overflow: auto !important;
+                             background-color: rgba(0, 0, 0, 0.5) !important;
+                         `;
+                         
+                         modalContent.style.cssText = `
+                             background-color: #fefefe !important;
+                             margin: 5% auto !important;
+                             padding: 20px !important;
+                             border: 1px solid #888 !important;
+                             width: 85% !important;
+                             max-width: 900px !important;
+                             height: 80% !important;
+                             position: relative !important;
+                             display: flex !important;
+                             flex-direction: column !important;
+                             border-radius: 8px !important;
+                         `;
+                         
+                         // Ajustar altura del mapa
+                         const mapWrapper = this.modalMapContainer.querySelector('div');
+                         if (mapWrapper) {
+                             const newMapHeight = Math.min(450, newViewportHeight * 0.6);
+                             mapWrapper.style.height = `${newMapHeight}px`;
+                         }
+                     }
+                     
+                     // Invalidar tamaño del mapa después de los cambios
+                     setTimeout(() => {
+                         this.currentModalMapInstance.invalidateSize();
+                     }, 100);
+                 }
+             };
+             
+             // Remover listener anterior si existe
+             if (this.modalResizeHandler) {
+                 window.removeEventListener('resize', this.modalResizeHandler);
+             }
+             
+             // Agregar nuevo listener
+             this.modalResizeHandler = resizeHandler;
+             window.addEventListener('resize', this.modalResizeHandler);
+             
+         }, 50);
     }
 
     renderizarMapa(geojsonData, onComunaMouseover, onComunaMouseout, onComunaClick) {
