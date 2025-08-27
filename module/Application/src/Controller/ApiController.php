@@ -6,6 +6,7 @@ namespace Application\Controller;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\JsonModel;
 use Application\Model\ApiDataService;
+use Application\Model\SequiaDataService;
 
 class ApiController extends AbstractActionController {
     

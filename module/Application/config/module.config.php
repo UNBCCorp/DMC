@@ -97,7 +97,7 @@ return [
                     'route'    => '/api/datos_percentiles',
                     'defaults' => [
                         'controller' => Controller\PercentilesController::class,
-                        'action'     => 'datosPercentiles',
+                        'action'     => 'datos',
                     ],
                 ],
             ],
@@ -133,10 +133,7 @@ return [
                 $service = $container->get(\Application\Model\ApiDataService::class);
                 return new \Application\Controller\ApiController($service);
             },
-            \Application\Controller\PercentilesController::class => function($container) {
-                $service = $container->get(\Application\Model\PercentilesDataService::class);
-                return new \Application\Controller\PercentilesController($service);
-            },
+            \Application\Controller\PercentilesController::class => \Laminas\ServiceManager\Factory\InvokableFactory::class,
             \Application\Controller\ClimaController::class => function($container) {
                 $service = $container->get(\Application\Model\ClimaDataService::class);
                 return new \Application\Controller\ClimaController($service);
@@ -150,7 +147,6 @@ return [
     'service_manager' => [
         'factories' => [
             Model\ApiDataService::class => InvokableFactory::class,
-            Model\PercentilesDataService::class => InvokableFactory::class,
             Model\ClimaDataService::class => InvokableFactory::class,
             Model\SequiaDataService::class => InvokableFactory::class,
             Model\DataManagerService::class => InvokableFactory::class,

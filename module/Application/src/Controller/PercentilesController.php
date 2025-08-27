@@ -1,47 +1,44 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Application\Controller;
 
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\JsonModel;
-use Laminas\View\Model\ViewModel;
-use Application\Model\PercentilesDataService;
 
 class PercentilesController extends AbstractActionController
 {
-    private $percentilesService;
-
-    public function __construct(PercentilesDataService $percentilesService)
+    /**
+     * Endpoint para obtener datos de percentiles
+     * Reemplaza a /public/api/datos_percentiles.php
+     */
+    public function datosAction()
     {
-        $this->percentilesService = $percentilesService;
-    }
+        $ruta_archivo_json = getcwd() . '/public/maps/data/datos_percentiles.json';
 
-    public function indexAction()
-    {
-        return new ViewModel();
-    }
-
-    public function datosPercentilesAction()
-    {
-        try {
-            $datos = $this->percentilesService->getDatosPercentiles();
+        if (file_exists($ruta_archivo_json)) {
+            // Configurar headers de respuesta
+            $response = $this->getResponse();
+            $headers = $response->getHeaders();
+            $headers->addHeaderLine('Content-Type', 'application/json; charset=utf-8');
             
-            if ($datos === null) {
-                $this->getResponse()->setStatusCode(503);
-                return new JsonModel([
-                    'error' => 'Los datos de los mapas aún no están disponibles. Por favor, intente más tarde.'
-                ]);
-            }
-
-            return new JsonModel($datos);
-
-        } catch (\Exception $e) {
-            $this->getResponse()->setStatusCode(500);
+            // Leer y devolver el contenido del archivo
+            $content = file_get_contents($ruta_archivo_json);
+            $data = json_decode($content, true);
+            
+            return new JsonModel($data);
+        } else {
+            $this->getResponse()->setStatusCode(503);
             return new JsonModel([
-                'error' => 'Error interno del servidor: ' . $e->getMessage()
+                'error' => 'Los datos de los mapas aún no están disponibles. Por favor, intente más tarde.'
             ]);
         }
+    }
+    
+    /**
+     * Acción para mostrar la vista de percentiles
+     */
+    public function indexAction()
+    {
+        return [];
     }
 }

@@ -31,11 +31,11 @@ class SequiaDataService
         }
         
         // Si la API falla, usar el respaldo local
-        // $fallbackPath = getcwd() . '/public/maps/data/dummy_api_data.json';
-        // if (file_exists($fallbackPath)) {
-        //     $fallbackData = json_decode(file_get_contents($fallbackPath), true);
-        //     return $fallbackData['datos'] ?? null;
-        // }
+        $fallbackPath = getcwd() . '/public/maps/data/dummy_api_data.json';
+        if (file_exists($fallbackPath)) {
+            $fallbackData = json_decode(file_get_contents($fallbackPath), true);
+            return $fallbackData['datos'] ?? null;
+        }
         
         return null;
     }
