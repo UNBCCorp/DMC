@@ -1,0 +1,126 @@
+[2025-08-28 01:45:36] [INFO] === INICIO DE SINCRONIZACIÓN DE ÍNDICES ===
+[2025-08-28 01:45:36] [INFO] Timestamp: 2025-08-28T01:45:36+00:00
+[2025-08-28 01:45:36] [INFO] --- Procesando índices spei ---
+[2025-08-28 01:45:36] [INFO] Origen: C:/Program Files/Git/ruta/completa/al/directorio/spei
+[2025-08-28 01:45:36] [INFO] Destino: D:\UNBCCorp\DMC-front/public/maps/data/salida/spei/txt
+[2025-08-28 01:45:36] [INFO] Patrón: *.txt
+[2025-08-28 01:45:36] [ERROR] ERROR: Directorio origen no existe: C:/Program Files/Git/ruta/completa/al/directorio/spei
+[2025-08-28 01:45:36] [INFO] spei - Archivos copiados: 0
+[2025-08-28 01:45:36] [INFO] spei - Errores: 1
+[2025-08-28 01:45:36] [INFO] --- Procesando índices spi ---
+[2025-08-28 01:45:36] [INFO] Origen: C:/Program Files/Git/ruta/completa/al/directorio/spi
+[2025-08-28 01:45:36] [INFO] Destino: D:\UNBCCorp\DMC-front/public/maps/data/salida/spi/txt
+[2025-08-28 01:45:36] [INFO] Patrón: *.txt
+[2025-08-28 01:45:36] [ERROR] ERROR: Directorio origen no existe: C:/Program Files/Git/ruta/completa/al/directorio/spi
+[2025-08-28 01:45:36] [INFO] spi - Archivos copiados: 0
+[2025-08-28 01:45:36] [INFO] spi - Errores: 1
+[2025-08-28 01:45:36] [INFO] === RESUMEN FINAL ===
+[2025-08-28 01:45:36] [INFO] Total archivos copiados: 0
+[2025-08-28 01:45:36] [INFO] Total errores: 2
+[2025-08-28 01:45:36] [INFO] === FIN DE SINCRONIZACIÓN ===
+[2025-08-28 01:47:13] [INFO] === INICIO DE SINCRONIZACIÓN DE ÍNDICES ===
+[2025-08-28 01:47:13] [INFO] Timestamp: 2025-08-28T01:47:13+00:00
+[2025-08-28 01:47:13] [INFO] --- Procesando índices spei ---
+[2025-08-28 01:47:13] [INFO] Origen: /home/dmc/public_html/maps/data/entrada/spei/txt
+[2025-08-28 01:47:13] [INFO] Destino: D:\UNBCCorp\DMC-front/public/maps/data/salida/spei/txt
+[2025-08-28 01:47:13] [INFO] Patrón: *.txt
+[2025-08-28 01:47:13] [ERROR] ERROR: Directorio origen no existe: /home/dmc/public_html/maps/data/entrada/spei/txt
+[2025-08-28 01:47:13] [INFO] spei - Archivos copiados: 0
+[2025-08-28 01:47:13] [INFO] spei - Errores: 1
+[2025-08-28 01:47:13] [INFO] --- Procesando índices spi ---
+[2025-08-28 01:47:13] [INFO] Origen: /home/dmc/public_html/maps/data/entrada/spi/txt
+[2025-08-28 01:47:13] [INFO] Destino: D:\UNBCCorp\DMC-front/public/maps/data/salida/spi/txt
+[2025-08-28 01:47:13] [INFO] Patrón: *.txt
+[2025-08-28 01:47:13] [ERROR] ERROR: Directorio origen no existe: /home/dmc/public_html/maps/data/entrada/spi/txt
+[2025-08-28 01:47:13] [INFO] spi - Archivos copiados: 0
+[2025-08-28 01:47:13] [INFO] spi - Errores: 1
+[2025-08-28 01:47:13] [INFO] === RESUMEN FINAL ===
+[2025-08-28 01:47:13] [INFO] Total archivos copiados: 0
+[2025-08-28 01:47:13] [INFO] Total errores: 2
+[2025-08-28 01:47:13] [INFO] === FIN DE SINCRONIZACIÓN ===
+[2025-08-28 01:50:34] [INFO] === INICIO DE SINCRONIZACIÓN DE ÍNDICES ===
+[2025-08-28 01:50:34] [INFO] Timestamp: 2025-08-28T01:50:34+00:00
+[2025-08-28 01:50:34] [INFO] --- Procesando índices spei ---
+[2025-08-28 01:50:34] [INFO] Origen: /prueba/spei
+[2025-08-28 01:50:34] [INFO] Destino: D:\UNBCCorp\DMC-front/public/maps/data/salida/spei/txt
+[2025-08-28 01:50:34] [INFO] Patrón: *.txt
+[2025-08-28 01:50:34] [ERROR] ERROR: Directorio origen no existe: /prueba/spei
+[2025-08-28 01:50:34] [INFO] spei - Archivos copiados: 0
+[2025-08-28 01:50:34] [INFO] spei - Errores: 1
+[2025-08-28 01:50:34] [INFO] --- Procesando índices spi ---
+[2025-08-28 01:50:34] [INFO] Origen: /prueba/spi
+[2025-08-28 01:50:34] [INFO] Destino: D:\UNBCCorp\DMC-front/public/maps/data/salida/spi/txt
+[2025-08-28 01:50:34] [INFO] Patrón: *.txt
+[2025-08-28 01:50:34] [ERROR] ERROR: Directorio origen no existe: /prueba/spi
+[2025-08-28 01:50:34] [INFO] spi - Archivos copiados: 0
+[2025-08-28 01:50:34] [INFO] spi - Errores: 1
+[2025-08-28 01:50:34] [INFO] === RESUMEN FINAL ===
+[2025-08-28 01:50:34] [INFO] Total archivos copiados: 0
+[2025-08-28 01:50:34] [INFO] Total errores: 2
+[2025-08-28 01:50:34] [INFO] === FIN DE SINCRONIZACIÓN ===
+[2025-08-28 01:51:43] [INFO] === INICIO DE SINCRONIZACIÓN DE ÍNDICES ===
+[2025-08-28 01:51:43] [INFO] Timestamp: 2025-08-28T01:51:43+00:00
+[2025-08-28 01:51:43] [INFO] --- Procesando índices spei ---
+[2025-08-28 01:51:43] [INFO] Origen: D:\UNBCCorp\DMC-front/prueba/spei
+[2025-08-28 01:51:43] [INFO] Destino: D:\UNBCCorp\DMC-front/public/maps/data/salida/spei/txt
+[2025-08-28 01:51:43] [INFO] Patrón: *.txt
+[2025-08-28 01:51:43] [INFO] Encontrados 1 archivos para copiar desde: D:\UNBCCorp\DMC-front/prueba/spei
+[2025-08-28 01:51:43] [INFO] Copiado: prueba_spei.txt
+[2025-08-28 01:51:43] [INFO] spei - Archivos copiados: 1
+[2025-08-28 01:51:43] [INFO] spei - Errores: 0
+[2025-08-28 01:51:43] [INFO] --- Procesando índices spi ---
+[2025-08-28 01:51:43] [INFO] Origen: D:\UNBCCorp\DMC-front/prueba/spi
+[2025-08-28 01:51:43] [INFO] Destino: D:\UNBCCorp\DMC-front/public/maps/data/salida/spi/txt
+[2025-08-28 01:51:43] [INFO] Patrón: *.txt
+[2025-08-28 01:51:43] [INFO] Encontrados 1 archivos para copiar desde: D:\UNBCCorp\DMC-front/prueba/spi
+[2025-08-28 01:51:43] [INFO] Copiado: prueba_spi.txt
+[2025-08-28 01:51:43] [INFO] spi - Archivos copiados: 1
+[2025-08-28 01:51:43] [INFO] spi - Errores: 0
+[2025-08-28 01:51:43] [INFO] === RESUMEN FINAL ===
+[2025-08-28 01:51:43] [INFO] Total archivos copiados: 2
+[2025-08-28 01:51:43] [INFO] Total errores: 0
+[2025-08-28 01:51:43] [INFO] === FIN DE SINCRONIZACIÓN ===
+[2025-08-28 01:53:04] [INFO] === INICIO DE SINCRONIZACIÓN DE ÍNDICES ===
+[2025-08-28 01:53:04] [INFO] Timestamp: 2025-08-28T01:53:04+00:00
+[2025-08-28 01:53:04] [INFO] --- Procesando índices spei ---
+[2025-08-28 01:53:04] [INFO] Origen: D:\UNBCCorp\DMC-front/prueba/spei
+[2025-08-28 01:53:04] [INFO] Destino: D:\UNBCCorp\DMC-front/public/maps/data/salida/spei/txt
+[2025-08-28 01:53:04] [INFO] Patrón: *.txt
+[2025-08-28 01:53:04] [INFO] Encontrados 1 archivos para copiar desde: D:\UNBCCorp\DMC-front/prueba/spei
+[2025-08-28 01:53:04] [INFO] Copiado: prueba_spei.txt
+[2025-08-28 01:53:04] [INFO] spei - Archivos copiados: 1
+[2025-08-28 01:53:04] [INFO] spei - Errores: 0
+[2025-08-28 01:53:04] [INFO] --- Procesando índices spi ---
+[2025-08-28 01:53:04] [INFO] Origen: D:\UNBCCorp\DMC-front/prueba/spi
+[2025-08-28 01:53:04] [INFO] Destino: D:\UNBCCorp\DMC-front/public/maps/data/salida/spi/txt
+[2025-08-28 01:53:04] [INFO] Patrón: *.txt
+[2025-08-28 01:53:04] [INFO] Encontrados 1 archivos para copiar desde: D:\UNBCCorp\DMC-front/prueba/spi
+[2025-08-28 01:53:04] [INFO] Copiado: prueba_spi.txt
+[2025-08-28 01:53:04] [INFO] spi - Archivos copiados: 1
+[2025-08-28 01:53:04] [INFO] spi - Errores: 0
+[2025-08-28 01:53:04] [INFO] === RESUMEN FINAL ===
+[2025-08-28 01:53:04] [INFO] Total archivos copiados: 2
+[2025-08-28 01:53:04] [INFO] Total errores: 0
+[2025-08-28 01:53:04] [INFO] === FIN DE SINCRONIZACIÓN ===
+[2025-08-28 01:54:00] [INFO] === INICIO DE SINCRONIZACIÓN DE ÍNDICES ===
+[2025-08-28 01:54:00] [INFO] Timestamp: 2025-08-28T01:54:00+00:00
+[2025-08-28 01:54:00] [INFO] --- Procesando índices spei ---
+[2025-08-28 01:54:00] [INFO] Origen: D:\UNBCCorp\DMC-front/prueba/spei
+[2025-08-28 01:54:00] [INFO] Destino: D:\UNBCCorp\DMC-front/public/maps/data/salida/spei/txt
+[2025-08-28 01:54:00] [INFO] Patrón: *.txt
+[2025-08-28 01:54:00] [INFO] Encontrados 1 archivos para copiar desde: D:\UNBCCorp\DMC-front/prueba/spei
+[2025-08-28 01:54:00] [INFO] Copiado: prueba_spei.txt
+[2025-08-28 01:54:00] [INFO] spei - Archivos copiados: 1
+[2025-08-28 01:54:00] [INFO] spei - Errores: 0
+[2025-08-28 01:54:00] [INFO] --- Procesando índices spi ---
+[2025-08-28 01:54:00] [INFO] Origen: D:\UNBCCorp\DMC-front/prueba/spi
+[2025-08-28 01:54:00] [INFO] Destino: D:\UNBCCorp\DMC-front/public/maps/data/salida/spi/txt
+[2025-08-28 01:54:00] [INFO] Patrón: *.txt
+[2025-08-28 01:54:00] [INFO] Encontrados 1 archivos para copiar desde: D:\UNBCCorp\DMC-front/prueba/spi
+[2025-08-28 01:54:00] [INFO] Copiado: prueba_spi.txt
+[2025-08-28 01:54:00] [INFO] spi - Archivos copiados: 1
+[2025-08-28 01:54:00] [INFO] spi - Errores: 0
+[2025-08-28 01:54:00] [INFO] === RESUMEN FINAL ===
+[2025-08-28 01:54:00] [INFO] Total archivos copiados: 2
+[2025-08-28 01:54:00] [INFO] Total errores: 0
+[2025-08-28 01:54:00] [INFO] === FIN DE SINCRONIZACIÓN ===
