@@ -73,19 +73,21 @@ function getRegionalValuesFromFile(textContent, stationFilter) {
 function renderTimeSeriesChart(containerId, title, fechas, series) {
     const placeholder = document.querySelector(`#${containerId} .loading-placeholder`);
 
-    // Extraer solo las fechas que tienen datos, manteniendo la correspondencia
-    const fechasConDatos = [];
+    // Mantener TODAS las fechas para preservar continuidad temporal
+    const fechasConDatos = fechas;
     const seriesFiltradas = series.map(serie => {
-        const datosValidos = [];
-        serie.data.forEach((point, index) => {
+        // Mantener todos los puntos, incluso los null, para preservar continuidad
+        const datosCompletos = serie.data.map((point, index) => {
             if (point !== null && point.y !== null && !isNaN(point.y)) {
-                datosValidos.push(point);
-                fechasConDatos.push(fechas[index]);
+                return point;
+            } else {
+                // Retornar null para meses sin datos - Highcharts manejará la discontinuidad
+                return null;
             }
         });
         return {
             ...serie,
-            data: datosValidos
+            data: datosCompletos
         };
     });
 
@@ -112,59 +114,147 @@ function renderTimeSeriesChart(containerId, title, fechas, series) {
         serie.color = '#333333'; // Color de la línea
         serie.lineWidth = 1.5;
         
-        // Configurar zonas de colores para el área rellena
+        // Configurar zonas de colores para el área rellena - Coinciden con la barra indicadora
         serie.zones = [
             {
-                value: -2,
-                color: '#8B4513', // Marrón para sequía extrema
+                value: -2.5,
+                color: '#8B0000', // -3.0 a -2.5 - Rojo oscuro
                 fillColor: {
                     linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
                     stops: [
-                        [0, '#8B4513'],
-                        [1, 'rgba(139, 69, 19, 0.3)']
+                        [0, '#8B0000'],
+                        [1, 'rgba(139, 0, 0, 0.3)']
+                    ]
+                }
+            },
+            {
+                value: -2,
+                color: '#FF0000', // -2.5 a -2.0 - Rojo
+                fillColor: {
+                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                    stops: [
+                        [0, '#FF0000'],
+                        [1, 'rgba(255, 0, 0, 0.3)']
+                    ]
+                }
+            },
+            {
+                value: -1.5,
+                color: '#FF4500', // -2.0 a -1.5 - Rojo-naranja
+                fillColor: {
+                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                    stops: [
+                        [0, '#FF4500'],
+                        [1, 'rgba(255, 69, 0, 0.3)']
                     ]
                 }
             },
             {
                 value: -1,
-                color: '#DEB887', // Beige para sequía moderada
+                color: '#FF8C00', // -1.5 a -1.0 - Naranja oscuro
                 fillColor: {
                     linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
                     stops: [
-                        [0, '#DEB887'],
-                        [1, 'rgba(222, 184, 135, 0.3)']
+                        [0, '#FF8C00'],
+                        [1, 'rgba(255, 140, 0, 0.3)']
+                    ]
+                }
+            },
+            {
+                value: -0.5,
+                color: '#FFA500', // -1.0 a -0.5 - Naranja
+                fillColor: {
+                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                    stops: [
+                        [0, '#FFA500'],
+                        [1, 'rgba(255, 165, 0, 0.3)']
                     ]
                 }
             },
             {
                 value: 0,
-                color: '#F5DEB3', // Beige claro para valores negativos cercanos a 0
+                color: '#FFD700', // -0.5 a 0.0 - Dorado
                 fillColor: {
                     linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
                     stops: [
-                        [0, '#F5DEB3'],
-                        [1, 'rgba(245, 222, 179, 0.3)']
+                        [0, '#FFD700'],
+                        [1, 'rgba(255, 215, 0, 0.3)']
+                    ]
+                }
+            },
+            {
+                value: 0.5,
+                color: '#FFFF00', // 0.0 a 0.5 - Amarillo
+                fillColor: {
+                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                    stops: [
+                        [0, '#FFFF00'],
+                        [1, 'rgba(255, 255, 0, 0.3)']
                     ]
                 }
             },
             {
                 value: 1,
-                color: '#87CEEB', // Azul claro para húmedo
+                color: '#ADFF2F', // 0.5 a 1.0 - Verde-amarillo
                 fillColor: {
                     linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
                     stops: [
-                        [0, '#87CEEB'],
-                        [1, 'rgba(135, 206, 235, 0.3)']
+                        [0, '#ADFF2F'],
+                        [1, 'rgba(173, 255, 47, 0.3)']
                     ]
                 }
             },
             {
-                color: '#4682B4', // Azul para muy húmedo
+                value: 1.5,
+                color: '#00FF00', // 1.0 a 1.5 - Verde
                 fillColor: {
                     linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
                     stops: [
-                        [0, '#4682B4'],
-                        [1, 'rgba(70, 130, 180, 0.3)']
+                        [0, '#00FF00'],
+                        [1, 'rgba(0, 255, 0, 0.3)']
+                    ]
+                }
+            },
+            {
+                value: 2,
+                color: '#00CED1', // 1.5 a 2.0 - Turquesa
+                fillColor: {
+                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                    stops: [
+                        [0, '#00CED1'],
+                        [1, 'rgba(0, 206, 209, 0.3)']
+                    ]
+                }
+            },
+            {
+                value: 2.5,
+                color: '#0000FF', // 2.0 a 2.5 - Azul
+                fillColor: {
+                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                    stops: [
+                        [0, '#0000FF'],
+                        [1, 'rgba(0, 0, 255, 0.3)']
+                    ]
+                }
+            },
+            {
+                value: 3,
+                color: '#4169E1', // 2.5 a 3.0 - Azul real
+                fillColor: {
+                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                    stops: [
+                        [0, '#4169E1'],
+                        [1, 'rgba(65, 105, 225, 0.3)']
+                    ]
+                }
+            },
+            {
+                color: '#8A2BE2', // > 3.0 - Violeta
+                fillColor: {
+                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                    stops: [
+                        [0, '#8A2BE2'],
+                        [1, 'rgba(138, 43, 226, 0.3)']
                     ]
                 }
             }
@@ -265,9 +355,11 @@ function renderTimeSeriesChart(containerId, title, fechas, series) {
                     }
                 },
                 lineWidth: 1.5,
-                connectNulls: false,
+                connectNulls: false, // No conectar valores null - mostrar discontinuidad
                 fillOpacity: 0.6,
-                threshold: 0 // Línea base en 0 para el relleno
+                threshold: 0, // Línea base en 0 para el relleno
+                allowPointSelect: false,
+                gapSize: 0 // No crear gaps automáticos
             }
         },
 
@@ -356,16 +448,16 @@ async function processAndRender(indexType, containerId, title, escalaSeleccionad
             }
         });
         
-        // Filtrar datos nulos del inicio y final para un gráfico más limpio
-        let primerIndiceConDatos = datosParaSerie.findIndex(dato => dato !== null);
-        let ultimoIndiceConDatos = datosParaSerie.length - 1 - datosParaSerie.slice().reverse().findIndex(dato => dato !== null);
-        
-        if (primerIndiceConDatos === -1) {
+        // NO filtrar datos nulos - mantener TODA la serie temporal para continuidad
+        // Verificar que al menos tengamos algunos datos
+        const datosValidos = datosParaSerie.filter(dato => dato !== null);
+        if (datosValidos.length === 0) {
             throw new Error(`No se encontraron datos para ${indexType.toUpperCase()}-${escalaSeleccionada}`);
         }
         
-        const datosLimpios = datosParaSerie.slice(primerIndiceConDatos, ultimoIndiceConDatos + 1);
-        const fechasLimpias = fechasConDatos.slice(primerIndiceConDatos, ultimoIndiceConDatos + 1);
+        // Usar TODOS los datos y fechas sin filtrar
+        const datosLimpios = datosParaSerie;
+        const fechasLimpias = fechasConDatos;
         
         const seriesFinales = [{
             name: `${indexType.toUpperCase()}-${escalaSeleccionada} (Promedio Regional)`,

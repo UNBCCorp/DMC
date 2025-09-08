@@ -254,6 +254,131 @@ h5 {
     }
 }
 
+/* Estilos para la leyenda de colores de los índices de sequía - Versión Vertical */
+.chart-with-legend {
+    display: flex;
+    align-items: stretch;
+    gap: 15px;
+}
+
+.chart-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.indicator-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+    margin-top: -39px;
+}
+
+.color-bar {
+    width: 15px;
+    height: 200px;
+    position: relative;
+    border: 1px solid #333;
+    border-radius: 3px;
+    background: red; /* Color de respaldo simple para debug */
+    background: linear-gradient(180deg,
+        #8A2BE2 0%,     /* 3.0 - Violeta */
+        #4169E1 7.69%,  /* 2.5 - Azul real */
+        #0000FF 15.38%, /* 2.0 - Azul */
+        #00CED1 23.08%, /* 1.5 - Turquesa */
+        #00FF00 30.77%, /* 1.0 - Verde */
+        #ADFF2F 38.46%, /* 0.5 - Verde-amarillo */
+        #FFFF00 46.15%, /* 0.0 - Amarillo */
+        #FFD700 53.85%, /* -0.5 - Dorado */
+        #FFA500 61.54%, /* -1.0 - Naranja */
+        #FF8C00 69.23%, /* -1.5 - Naranja oscuro */
+        #FF4500 76.92%, /* -2.0 - Rojo-naranja */
+        #FF0000 84.62%, /* -2.5 - Rojo */
+        #8B0000 100%    /* -3.0 - Rojo oscuro */
+    );
+}
+
+.scale-labels {
+    display: flex;
+    flex-direction: column-reverse;
+    height: 200px;
+    justify-content: space-between;
+    align-items: flex-start;
+    font-size: 10px;
+    color: #333;
+    padding-left: 5px;
+}
+
+.scale-labels span {
+    line-height: 1;
+    font-weight: 500;
+}
+
+/* Marcador central opcional en la barra */
+.color-bar::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -2px;
+    right: -2px;
+    height: 1px;
+    background-color: #000;
+    z-index: 1;
+}
+
+/* Responsive para la leyenda */
+@media (max-width: 768px) {
+    .chart-with-legend {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .indicator-container {
+        justify-content: center;
+        margin: 10px 0;
+    }
+    
+    .color-bar {
+        width: 200px;
+        height: 15px;
+        background: blue; /* Color de respaldo para debug */
+        background: linear-gradient(90deg,
+            #8B0000 0%,     /* -3.0 - Rojo oscuro */
+            #FF0000 7.69%,  /* -2.5 - Rojo */
+            #FF4500 15.38%, /* -2.0 - Rojo-naranja */
+            #FF8C00 23.08%, /* -1.5 - Naranja oscuro */
+            #FFA500 30.77%, /* -1.0 - Naranja */
+            #FFD700 38.46%, /* -0.5 - Dorado */
+            #FFFF00 46.15%, /* 0.0 - Amarillo */
+            #ADFF2F 53.85%, /* 0.5 - Verde-amarillo */
+            #00FF00 61.54%, /* 1.0 - Verde */
+            #00CED1 69.23%, /* 1.5 - Turquesa */
+            #0000FF 76.92%, /* 2.0 - Azul */
+            #4169E1 84.62%, /* 2.5 - Azul real */
+            #8A2BE2 100%    /* 3.0 - Violeta */
+        );
+    }
+    
+    .color-bar::before {
+        left: 50%;
+        top: -5px;
+        bottom: -5px;
+        width: 1px;
+        height: auto;
+        right: auto;
+    }
+    
+    .scale-labels {
+        flex-direction: row;
+        justify-content: space-between;
+        width: 200px;
+        height: auto;
+        margin-top: 5px;
+        padding-left: 0;
+        font-size: 8px;
+    }
+}
+  
 .loading-placeholder {
     display: flex;
     align-items: center;
