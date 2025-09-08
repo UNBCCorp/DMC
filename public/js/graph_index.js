@@ -184,23 +184,23 @@ function renderTimeSeriesChart(containerId, title, fechas, series) {
             },
             {
                 value: 0.5,
-                color: '#FFFF00', // 0.0 a 0.5 - Amarillo
+                color: '#F5F5F5', // 0.0 a 0.5 - Gris muy claro (casi blanco)
                 fillColor: {
                     linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
                     stops: [
-                        [0, '#FFFF00'],
-                        [1, 'rgba(255, 255, 0, 0.3)']
+                        [0, '#F5F5F5'],
+                        [1, 'rgba(245, 245, 245, 0.3)']
                     ]
                 }
             },
             {
                 value: 1,
-                color: '#ADFF2F', // 0.5 a 1.0 - Verde-amarillo
+                color: '#00FF00', // 0.5 a 1.0 - Verde
                 fillColor: {
                     linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
                     stops: [
-                        [0, '#ADFF2F'],
-                        [1, 'rgba(173, 255, 47, 0.3)']
+                        [0, '#00FF00'],
+                        [1, 'rgba(0, 255, 0, 0.3)']
                     ]
                 }
             },
