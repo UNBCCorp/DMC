@@ -79,7 +79,6 @@ function determinarColorPorCategoriaDominante(feature) {
 }
 function aplicarMascara(geojsonDataComunas, mapaParaMascara) {
     if (!mapaParaMascara || typeof turf === 'undefined' || !geojsonDataComunas) {
-        console.warn("No se pudo aplicar la máscara: mapa, turf o datos no disponibles.");
         return;
     }
     const mundo = turf.polygon([[[-180, -90], [180, -90], [180, 90], [-180, 90], [-180, -90]]]);
@@ -90,7 +89,6 @@ function aplicarMascara(geojsonDataComunas, mapaParaMascara) {
                 try {
                     return acc ? turf.union(acc, feature) : feature;
                 } catch (e) {
-                    console.error("Error en turf.union:", e, feature);
                     return acc;
                 }
             }
@@ -98,7 +96,6 @@ function aplicarMascara(geojsonDataComunas, mapaParaMascara) {
         }, null);
     }
     if (!unionValpo) {
-        console.warn("No se pudo crear la unión de las comunas para la máscara.");
         return;
     }
     try {
@@ -110,7 +107,7 @@ function aplicarMascara(geojsonDataComunas, mapaParaMascara) {
                 stroke: false
             }
         }).addTo(mapaParaMascara);
-    } catch (e) { console.error("Error al aplicar la máscara con Turf.js:", e); }
+    } catch (e) {}
 }
 
 function getColorForIndex(indexValue) {
@@ -258,7 +255,6 @@ function openMapModal(title, geojsonData, stylePropertyKey, mapIdShort) {
                 aplicarMascara(geojsonData, currentModalMapInstance);
             }
         } else {
-            console.warn("No hay datos GeoJSON para mostrar en el modal para:", title);
         }
         if (L.easyPrint && currentModalMapInstance) {
         L.easyPrint({
@@ -270,7 +266,6 @@ function openMapModal(title, geojsonData, stylePropertyKey, mapIdShort) {
             hideControlContainer: false
         }).addTo(currentModalMapInstance);
     } else {
-        console.warn("Leaflet.EasyPrint no está disponible para el mapa del modal.");
     }
     }, 10);
 }
@@ -344,7 +339,6 @@ async function cargarDatosHistoricos() {
             }
             return null;
         } catch (e) {
-            console.error(`Error al cargar datos históricos para ${ano}/${mes}:`, e);
             return null;
         }
     };
@@ -446,6 +440,9 @@ function getHighchartsConfig(labels, datasetsData, title) {
     ];
 
     return {
+        accessibility: {
+            enabled: false // Deshabilitar accesibilidad para evitar warnings
+        },
         chart: { type: 'area' },
         title: { text: title },
         xAxis: { categories: labels, labels: { style: { fontSize: '8px' } } },
@@ -520,11 +517,9 @@ function crearGraficoComunalConDatosReales(comunaProps, containerId) {
 function crearGraficoRegionalConDatosReales(containerId) {
     const container = document.getElementById(containerId);
     if (!container) {
-        console.error(`Contenedor con ID "${containerId}" no encontrado para el gráfico regional.`);
         return;
     }
     if (!datosHistoricosGlobales) {
-        console.error(`Datos históricos no disponibles para gráfico regional.`);
         container.innerHTML = '<p class="text-center small p-3">No se pudieron cargar los datos históricos.</p>';
         return;
     }
@@ -686,7 +681,6 @@ const mes = String(fechaObjetivo.getMonth() + 1).padStart(2, '0');
         }
 
     } catch (error) {
-        console.warn(`La API en vivo falló (${error.message}). Usando respaldo local. URL consultada:`, apiUrl);
         try {
             const fallbackResponse = await fetch(fallbackUrl);
             if (!fallbackResponse.ok) throw new Error(`El archivo de respaldo no pudo cargarse.`);
@@ -699,7 +693,6 @@ const mes = String(fechaObjetivo.getMonth() + 1).padStart(2, '0');
                 throw new Error("El archivo de respaldo está vacío o tiene un formato incorrecto.");
             }
         } catch (fallbackError) {
-            console.error(`CRÍTICO: Falló tanto la API en vivo como el respaldo local.`, fallbackError);
             return false;
         }
     }
@@ -715,7 +708,6 @@ const mes = String(fechaObjetivo.getMonth() + 1).padStart(2, '0');
     }
 
     if (!keyFound) {
-        console.error(`No se pudo determinar una clave de código válida ('Code' o 'code') en los datos de la fuente: ${dataSource}.`);
         return false;
     }
     
@@ -739,7 +731,6 @@ const mes = String(fechaObjetivo.getMonth() + 1).padStart(2, '0');
 
 function actualizarPromediosRegionales(datosComunales) {
     if (!datosComunales || datosComunales.length === 0) {
-        console.warn("No hay datos para calcular promedios regionales.");
         return;
     }
 
@@ -769,7 +760,6 @@ function actualizarPromediosRegionales(datosComunales) {
 function crearLeyendaPersistencia() {
     const container = document.getElementById('persistencia-container');
     if (!container) {
-        console.warn('No se encontró el contenedor para la leyenda de persistencia.');
         return;
     }
 
@@ -822,7 +812,6 @@ function crearLeyendaPersistencia() {
 async function inicializarMapaSequiaValparaisoLeaflet() {
     const mapContainerId = 'mapaValparaisoLeaflet';
     const mapEl = document.getElementById(mapContainerId);
-    if (!mapEl) return console.error(`Contenedor '${mapContainerId}' no encontrado.`);
     if (mapEl._leaflet_id) {
         return;
     }
@@ -980,7 +969,6 @@ async function prepararDatosParaMapas() {
         datosGeoJsonGlobales = geojsonData;
 
     } catch (error) {
-        console.error("Error crítico al preparar los datos:", error);
         const mapEl = document.getElementById('mapaValparaisoLeaflet');
         if (mapEl) mapEl.innerHTML = `<p style="color:red; text-align:center;">${error.message}</p>`;
         throw error;
@@ -1030,21 +1018,18 @@ async function cargarDatosDesdeTxtYMostrarPersistencia(geojsonData) {
         }
 
     } catch (error) {
-        console.error("Falló la carga o fusión de datos de persistencia:", error);
     }
 }
 
 document.addEventListener('DOMContentLoaded', function () {
     // Verificar si el nuevo sistema MVC está activo
     if (window.Model && window.View && window.Controller) {
-        console.log('Sistema MVC detectado. Desactivando inicialización de sequia.js');
         return;
     }
     
     if (document.getElementById('mapaValparaisoLeaflet')) {
         inicializarMapaSequiaValparaisoLeaflet();
     } else {
-        console.error("Error Crítico: No se encontró el div con ID 'mapaValparaisoLeaflet' en el DOM.");
     }
     
     panelDetalle = document.getElementById('panel-detalle-comuna');

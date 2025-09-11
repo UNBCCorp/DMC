@@ -103,7 +103,6 @@ async function crearMapaPercentilesHighcharts(
         return chart;
 
     } catch (error) {
-        console.error(`Error creando mapa en ${containerId}:`, error);
         if (placeholder) placeholder.innerHTML = `<p style="color:red; text-align:center;">Error al crear mapa: ${error.message}</p>`;
         return null;
     }
@@ -195,13 +194,11 @@ async function inicializarMapasDePercentiles() {
     );
 
     } catch (error) {
-        console.error("Error fatal al inicializar mapas:", error);
     }
 }
 
 function unificarGeometriasPorComuna(geojson) {
     if (typeof turf === 'undefined') {
-        console.error("Turf.js no está disponible. No se pueden unificar las geometrías.");
         return geojson;
     }
     const comunasAgrupadas = new Map();

@@ -12,12 +12,7 @@
   
   @import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700&display=swap');
 
-@font-face{
-    font-family: "TitilliumWeb";
-    src: url('../fonts/Titillium/TitilliumWeb-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style:normal;
-}
+/* Fuente local removida - usando Google Fonts */
   
   *{
     font-family: 'Titillium Web', 'TitilliumWeb', Arial, sans-serif;    /* CON ESTO USO EL MISMO TIPO DE LETRA PARA TODO */

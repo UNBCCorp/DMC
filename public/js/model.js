@@ -11,7 +11,6 @@ window.Model = class Model {
             if (!result.success) throw new Error(result.message);
             this.datos = result;
         } catch (error) {
-            console.error("Fallo al cargar datos desde el backend:", error);
             throw error;
         }
     }

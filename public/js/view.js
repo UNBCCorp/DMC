@@ -37,7 +37,6 @@ window.View = class View {
         this.modalMapContainer = document.getElementById('modalMapContainer');
         
         if (!this.mapContainer) {
-            console.error('Contenedor del mapa no encontrado: mapaValparaisoLeaflet');
         }
     }
     ocultarModalMapa() { 
@@ -345,7 +344,6 @@ window.View = class View {
 
     renderizarMapa(geojsonData, onComunaMouseover, onComunaMouseout, onComunaClick) {
         if (!this.mapContainer || !L) {
-            console.error("El contenedor del mapa o Leaflet no está disponible.");
             return;
         }
 
@@ -396,7 +394,6 @@ window.View = class View {
         );
         
         if (!tieneCategoriasSequia) {
-            console.warn('Comuna sin datos de sequía:', props.COMUNA);
             return {
                 fillColor: this.COLORES_SEQUIA.DEFAULT,
                 weight: 1, opacity: 1, color: '#666', fillOpacity: 0.7
@@ -414,7 +411,7 @@ window.View = class View {
             }
         });
 
-        console.log(`Comuna ${props.COMUNA}: categoría dominante ${categoriaDominante} (${maxValor}%)`);
+        // Categoría dominante calculada
 
         return {
             fillColor: this.COLORES_SEQUIA[categoriaDominante] || this.COLORES_SEQUIA.DEFAULT,
@@ -530,7 +527,7 @@ window.View = class View {
         // Actualizar título con comuna y mes
         document.getElementById('detalle-comuna-nombre').textContent = `${nombreComuna} - ${mesNombre}`;
         
-        console.log('Mostrando panel para comuna:', nombreComuna, comunaProps);
+        // Mostrando panel de detalle
         
         // Crear tabla con información de la comuna
         let tablaHtml = `
@@ -586,7 +583,6 @@ window.View = class View {
             try {
                 this.detalleChartInstance.destroy();
             } catch (error) {
-                console.warn('Error al destruir gráfico al ocultar panel:', error);
             }
             this.detalleChartInstance = null;
         }
@@ -606,14 +602,12 @@ window.View = class View {
             try {
                 this.detalleChartInstance.destroy();
             } catch (error) {
-                console.warn('Error al destruir gráfico anterior:', error);
             }
             this.detalleChartInstance = null;
         }
 
         const graficoContainer = document.getElementById('detalle-comuna-grafico');
         if (!graficoContainer) {
-            console.warn('Contenedor del gráfico no encontrado');
             return;
         }
 
@@ -622,7 +616,7 @@ window.View = class View {
             return;
         }
 
-        console.log('Creando gráfico para:', comunaProps.COMUNA, 'con', historialComuna.length, 'registros históricos');
+        // Creando gráfico histórico
 
         const categorias = ['SA', 'D0', 'D1', 'D2', 'D3', 'D4'];
         const labels = historialComuna.map(r => new Date(r.fecha).toLocaleDateString('es-ES', { month: 'short', year: '2-digit' }));
@@ -641,6 +635,7 @@ window.View = class View {
         ];
 
         this.detalleChartInstance = Highcharts.chart('detalle-comuna-grafico', {
+            accessibility: { enabled: false },
             chart: { type: 'area' },
             title: { text: null },
             xAxis: { categories: labels, labels: { style: { fontSize: '8px' } } },
@@ -653,7 +648,7 @@ window.View = class View {
         });
     }
     renderizarMinimapas(geojsonData, onMinimapClick) {
-        console.log('Iniciando renderizado de minimapas...');
+        // Iniciando renderizado de minimapas
         const periodos = [
             { id: 'mapaPersistencia3m', clave: 'p_3m', titulo: '3 Meses con SPI' },
             { id: 'mapaPersistencia9m', clave: 'p_9m', titulo: '9 Meses con SPI' },
@@ -665,25 +660,24 @@ window.View = class View {
         periodos.forEach(p => {
             const container = document.getElementById(p.id);
             if (!container) {
-                console.warn(`Contenedor ${p.id} no encontrado`);
                 return;
             }
             
-            console.log(`Procesando minimapa ${p.id} con clave ${p.clave}`);
+            // Procesando minimapa
             
             // Verificar si hay datos de persistencia para esta clave
             const tieneDatos = geojsonData.features.some(f => 
                 f.properties[p.clave] !== null && 
                 f.properties[p.clave] !== undefined
             );
-            console.log(`Minimapa ${p.id} tiene datos:`, tieneDatos);
+            // Verificando datos del minimapa
             
             // Limpiar contenido anterior (incluyendo spinner)
             container.innerHTML = '';
             
             // Limpiar mapa anterior si existe
             if (container._leaflet_id) {
-                console.log(`Limpiando minimapa existente: ${p.id}`);
+                // Limpiando minimapa existente
                 container._leaflet_id = undefined;
             }
             
@@ -702,10 +696,9 @@ window.View = class View {
                 }
                 
                 container.addEventListener('click', () => onMinimapClick(p.titulo, geojsonData, p.clave));
-                console.log(`Minimapa ${p.id} inicializado correctamente`);
+                // Minimapa inicializado correctamente
                 
             } catch (error) {
-                console.error(`Error inicializando minimapa ${p.id}:`, error);
                 // Mostrar mensaje de error en lugar del spinner
                 container.innerHTML = '<div class="d-flex justify-content-center align-items-center h-100"><small class="text-muted">Error al cargar</small></div>';
             }
@@ -722,7 +715,6 @@ window.View = class View {
             try {
                 this.regionalChartInstance.destroy();
             } catch (error) {
-                console.warn('Error al destruir gráfico regional anterior:', error);
             }
             this.regionalChartInstance = null;
         }
@@ -732,6 +724,7 @@ window.View = class View {
             data: datosSidebar.historico.series[cat]
         }));
         this.regionalChartInstance = Highcharts.chart('timeSeriesChartRegionalSidebar', {
+            accessibility: { enabled: false },
             chart: { type: 'area' }, title: { text: null },
             xAxis: { categories: datosSidebar.historico.labels, labels: { style: { fontSize: '8px' } } },
             yAxis: { min: 0, max: 100, title: { text: '%' } },
@@ -743,7 +736,7 @@ window.View = class View {
     renderizarMapaPrincipal(geojsonData, onComunaMouseover, onComunaMouseout, onComunaClick) {
         // Verificar si ya existe un mapa y limpiarlo
         if (this.mapa) {
-            console.log('Limpiando mapa existente...');
+            // Limpiando mapa existente
             this.mapa.remove();
             this.mapa = null;
             this.geoJsonLayer = null;
@@ -752,25 +745,23 @@ window.View = class View {
 
         // Verificar si el contenedor ya tiene un mapa inicializado
         if (this.mapContainer && this.mapContainer._leaflet_id) {
-            console.log('Limpiando contenedor del mapa...');
+            // Limpiando contenedor del mapa
             this.mapContainer._leaflet_id = undefined;
             this.mapContainer.innerHTML = '';
         }
 
         // Verificar que el contenedor esté disponible y visible
         if (!this.mapContainer || !L) {
-            console.error("El contenedor del mapa o Leaflet no está disponible.");
             return;
         }
 
         // Verificar que el contenedor tenga dimensiones válidas
         if (this.mapContainer.offsetWidth === 0 || this.mapContainer.offsetHeight === 0) {
-            console.warn('El contenedor del mapa no tiene dimensiones válidas. Reintentando...');
             setTimeout(() => this.renderizarMapaPrincipal(geojsonData, onComunaMouseover, onComunaMouseout, onComunaClick), 100);
             return;
         }
 
-        console.log('Inicializando nuevo mapa...');
+        // Inicializando nuevo mapa
         
         try {
             this.mapa = L.map(this.mapContainer, {
@@ -812,10 +803,9 @@ window.View = class View {
                 onComunaClick(null); // Para cerrar el panel al hacer clic fuera
             });
             
-            console.log('Mapa inicializado correctamente');
+            // Mapa inicializado correctamente
             
         } catch (error) {
-            console.error('Error al inicializar el mapa:', error);
         }
     }
 }

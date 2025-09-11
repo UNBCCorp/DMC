@@ -265,11 +265,6 @@ geoJsonComunasCorregido.features.forEach((comunaFeature) => {
         comunaFeature.properties.climas.push(climaCode.trim());
       }
     } catch (e) {
-      console.error(
-        "Error con turf.intersect en la comuna:",
-        comunaFeature.properties.COMUNA,
-        e
-      );
     }
   }
   comunaFeature.properties.climas = [

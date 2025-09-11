@@ -48,7 +48,6 @@ async function cargarYProcesarDatosCSV() {
         return estaciones;
 
     } catch (error) {
-        console.error("Error al cargar o procesar el CSV:", error);
         return null;
     }
 }
@@ -100,7 +99,6 @@ async function initStationMap(datosEstaciones) {
         if (placeholder) placeholder.style.display = 'none';
 
     } catch (error) {
-        console.error("Error inicializando mapa de estaciones:", error);
         if (placeholder) placeholder.innerHTML = `<p style="color:red;">Error al cargar mapa.</p>`;
     }
 }
@@ -126,6 +124,9 @@ function crearOActualizarClimogramaDinamico(datosEstacion) {
     ];
 
     const chartOptions = {
+        accessibility: {
+            enabled: false // Deshabilitar accesibilidad para evitar warnings
+        },
         chart: { zoomType: 'xy' },
         title: {
             text: `Climograma - ${datosEstacion.name}`,
@@ -188,6 +189,9 @@ async function inicializarClimogramaRegional(datosEstaciones) {
         if (subtitle) subtitle.innerHTML = `<small>Promedio de ${estacionesArray.length} estaciones</small>`;
 
         Highcharts.chart(containerId, {
+            accessibility: {
+                enabled: false // Deshabilitar accesibilidad para evitar warnings
+            },
             chart: { zoomType: 'xy' },
             title: {
                 text: 'Climograma Regional',
@@ -211,14 +215,12 @@ async function inicializarClimogramaRegional(datosEstaciones) {
         });
 
     } catch (error) {
-        console.error("Error inicializando climograma regional:", error);
         if (placeholder) placeholder.innerHTML = `<p style="color:red;">Error al cargar gráfico.</p>`;
     }
 }
 
 function unificarGeometriasPorComuna(geojson) {
     if (typeof turf === 'undefined') {
-        console.error("Turf.js no está disponible. No se pueden unificar las geometrías.");
         return geojson;
     }
     const comunasAgrupadas = new Map();
@@ -246,7 +248,6 @@ function unificarGeometriasPorComuna(geojson) {
                 geometriaUnificada.properties = featureMasGrande.properties;
                 featuresUnificados.push(geometriaUnificada);
             } catch (e) {
-                console.error(`Error al unificar la comuna '${nombre}'. Usando el polígono más grande como respaldo.`, e);
                 const featureMasGrande = features.sort((a, b) => b.properties.Shape_Area - a.properties.Shape_Area)[0];
                 featuresUnificados.push(featureMasGrande);
             }

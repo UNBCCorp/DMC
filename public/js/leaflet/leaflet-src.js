@@ -405,9 +405,7 @@
 
   	for (var i = 0; i < includes.length; i++) {
   		if (includes[i] === L.Mixin.Events) {
-  			console.warn('Deprecated include of L.Mixin.Events: ' +
-  				'this property will be removed in future releases, ' +
-  				'please inherit from L.Evented instead.', new Error().stack);
+
   		}
   	}
   }
@@ -508,8 +506,7 @@
   	// attach listener (without syntactic sugar now)
   	_on: function (type, fn, context, _once) {
   		if (typeof fn !== 'function') {
-  			console.warn('wrong listener type: ' + typeof fn);
-  			return;
+
   		}
 
   		// check if fn already there
@@ -560,7 +557,6 @@
   		}
 
   		if (typeof fn !== 'function') {
-  			console.warn('wrong listener type: ' + typeof fn);
   			return;
   		}
 
@@ -624,7 +620,7 @@
   	// The verification can optionally be propagated, it will return `true` if parents have the listener attached to it.
   	listens: function (type, fn, context, propagate) {
   		if (typeof type !== 'string') {
-  			console.warn('"string" type argument expected');
+
   		}
 
   		// we don't overwrite the input `fn` value, because we need to use it for propagation
@@ -2166,7 +2162,7 @@
   		_addPointerDocListener();
   	}
   	if (!handle[type]) {
-  		console.warn('wrong event specified:', type);
+
   		return falseFn;
   	}
   	handler = handle[type].bind(this, handler);
@@ -2176,7 +2172,7 @@
 
   function removePointerListener(obj, type, handler) {
   	if (!pEvent[type]) {
-  		console.warn('wrong event specified:', type);
+
   		return;
   	}
   	obj.removeEventListener(pEvent[type], handler, false);
@@ -6228,7 +6224,6 @@
   	}
 
   	if (!isFlat(latlngs)) {
-  		console.warn('latlngs are not flat! Only the first ring will be used');
   		latlngs = latlngs[0];
   	}
 
@@ -6531,7 +6526,6 @@
   }
 
   function _flat(latlngs) {
-  	console.warn('Deprecated use of _flat, please use L.LineUtil.isFlat instead.');
   	return isFlat(latlngs);
   }
 
@@ -6546,7 +6540,6 @@
   	}
 
   	if (!isFlat(latlngs)) {
-  		console.warn('latlngs are not flat! Only the first ring will be used');
   		latlngs = latlngs[0];
   	}
 

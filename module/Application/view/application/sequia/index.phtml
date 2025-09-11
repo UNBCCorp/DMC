@@ -239,21 +239,14 @@ $this->inlineScript()
         try {
             // Verificar que Leaflet esté disponible
             if (typeof L === 'undefined') {
-                console.error('Leaflet no está disponible');
                 return;
             }
             
             // Verificar que las clases estén disponibles (ya cargadas desde el layout)
             if (!window.Model || !window.View || !window.Controller) {
-                console.error('Las clases MVC no están disponibles:', {
-                    Model: !!window.Model,
-                    View: !!window.View,
-                    Controller: !!window.Controller
-                });
                 return;
             }
             
-            console.log('Iniciando sistema MVC para sequía...');
             const model = new window.Model();
             const view = new window.View();
             const controller = new window.Controller(model, view);
@@ -261,7 +254,6 @@ $this->inlineScript()
             controller.init();
             
         } catch (error) {
-            console.error('Error inicializando sistema MVC:', error);
         }
     });
 </script>

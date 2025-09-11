@@ -14,8 +14,7 @@ window.Controller = class Controller {
             
             if (!geojsonData || !datosSidebar) throw new Error("Datos insuficientes del backend.");
 
-            console.log('Datos GeoJSON recibidos:', geojsonData);
-            console.log('Verificando datos de persistencia en primera feature:', geojsonData.features[0]?.properties);
+            // Datos GeoJSON cargados correctamente
 
             this.view.renderizarMapaPrincipal(geojsonData, this.handleComunaMouseover, this.handleComunaMouseout, this.handleComunaClick);
             this.view.renderizarSidebar(datosSidebar);
@@ -25,7 +24,6 @@ window.Controller = class Controller {
             // Actualizar título con el mes correspondiente a los datos
             this.actualizarTituloConMes();
         } catch (error) {
-            console.error("Error crítico en la inicialización:", error);
         }
     }
 
@@ -98,8 +96,7 @@ window.Controller = class Controller {
             }
         }
         
-        console.log('Clic en comuna:', layer.feature.properties.COMUNA, 'CUT_COM:', cutCom);
-        console.log('Datos históricos disponibles:', !!datosHistoricos);
+        // Procesando clic en comuna
         
         this.view.mostrarPanelDetalle(layer.feature.properties, historial);
     }

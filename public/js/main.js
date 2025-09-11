@@ -3,11 +3,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Verificar que las clases estén disponibles
     if (!window.Model || !window.View || !window.Controller) {
-        console.error('Las clases no están disponibles:', {
-            Model: !!window.Model,
-            View: !!window.View,
-            Controller: !!window.Controller
-        });
         return;
     }
     
