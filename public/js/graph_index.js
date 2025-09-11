@@ -158,11 +158,24 @@ function renderTimeSeriesChart(containerId, title, fechas, series) {
         serie.color = '#333333'; // Color de la línea
         serie.lineWidth = 1.5;
         
-        // Configurar zonas de colores para el área rellena - Coinciden con la barra indicadora
+        // Configurar zonas de colores para el área rellena - Actualizado 2025-09-11
+        // Colores sincronizados con la barra indicadora según especificación técnica
+        // Verificación: aplicando nueva paleta de colores
         serie.zones = [
             {
+                value: -3,
+                color: '#4A0E0E', // < -3.0 - Café/rojo muy oscuro
+                fillColor: {
+                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                    stops: [
+                        [0, '#4A0E0E'],
+                        [1, 'rgba(74, 14, 14, 0.3)']
+                    ]
+                }
+            },
+            {
                 value: -2.5,
-                color: '#8B0000', // -3.0 a -2.5 - Rojo oscuro
+                color: '#8B0000', // -2.5 a -3.0 - Tonos rojos oscuros a café/rojo oscuro
                 fillColor: {
                     linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
                     stops: [
@@ -173,18 +186,18 @@ function renderTimeSeriesChart(containerId, title, fechas, series) {
             },
             {
                 value: -2,
-                color: '#FF0000', // -2.5 a -2.0 - Rojo
+                color: '#DC143C', // -2.0 a -2.5 - Tonos rojos
                 fillColor: {
                     linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
                     stops: [
-                        [0, '#FF0000'],
-                        [1, 'rgba(255, 0, 0, 0.3)']
+                        [0, '#DC143C'],
+                        [1, 'rgba(220, 20, 60, 0.3)']
                     ]
                 }
             },
             {
                 value: -1.5,
-                color: '#FF4500', // -2.0 a -1.5 - Rojo-naranja
+                color: '#FF4500', // -1.5 a -2.0 - Tonos naranjos
                 fillColor: {
                     linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
                     stops: [
@@ -195,18 +208,7 @@ function renderTimeSeriesChart(containerId, title, fechas, series) {
             },
             {
                 value: -1,
-                color: '#FF8C00', // -1.5 a -1.0 - Naranja oscuro
-                fillColor: {
-                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                    stops: [
-                        [0, '#FF8C00'],
-                        [1, 'rgba(255, 140, 0, 0.3)']
-                    ]
-                }
-            },
-            {
-                value: -0.5,
-                color: '#FFA500', // -1.0 a -0.5 - Naranja
+                color: '#FFA500', // -1.0 a -1.5 - Tonos amarillo fuerte a naranjos claro
                 fillColor: {
                     linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
                     stops: [
@@ -216,19 +218,19 @@ function renderTimeSeriesChart(containerId, title, fechas, series) {
                 }
             },
             {
-                value: 0,
-                color: '#FFD700', // -0.5 a 0.0 - Dorado
+                value: -0.4,
+                color: '#FFFF00', // -0.4 a -1.0 - Tonos amarillos
                 fillColor: {
                     linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
                     stops: [
-                        [0, '#FFD700'],
-                        [1, 'rgba(255, 215, 0, 0.3)']
+                        [0, '#FFFF00'],
+                        [1, 'rgba(255, 255, 0, 0.3)']
                     ]
                 }
             },
             {
-                value: 0.5,
-                color: '#F5F5F5', // 0.0 a 0.5 - Gris muy claro (casi blanco)
+                value: 0.4,
+                color: '#F5F5F5', // -0.4 a +0.4 - Gris claro o blanco
                 fillColor: {
                     linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
                     stops: [
@@ -239,51 +241,29 @@ function renderTimeSeriesChart(containerId, title, fechas, series) {
             },
             {
                 value: 1,
-                color: '#00FF00', // 0.5 a 1.0 - Verde
+                color: '#90EE90', // 0.4 a 1.0 - Tonos verdes
                 fillColor: {
                     linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
                     stops: [
-                        [0, '#00FF00'],
-                        [1, 'rgba(0, 255, 0, 0.3)']
+                        [0, '#90EE90'],
+                        [1, 'rgba(144, 238, 144, 0.3)']
                     ]
                 }
             },
             {
                 value: 1.5,
-                color: '#00FF00', // 1.0 a 1.5 - Verde
+                color: '#006400', // 1.0 a 1.5 - Tonos verde oscuro a azul claro
                 fillColor: {
                     linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
                     stops: [
-                        [0, '#00FF00'],
-                        [1, 'rgba(0, 255, 0, 0.3)']
+                        [0, '#006400'],
+                        [1, 'rgba(0, 100, 0, 0.3)']
                     ]
                 }
             },
             {
                 value: 2,
-                color: '#00CED1', // 1.5 a 2.0 - Turquesa
-                fillColor: {
-                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                    stops: [
-                        [0, '#00CED1'],
-                        [1, 'rgba(0, 206, 209, 0.3)']
-                    ]
-                }
-            },
-            {
-                value: 2.5,
-                color: '#0000FF', // 2.0 a 2.5 - Azul
-                fillColor: {
-                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-                    stops: [
-                        [0, '#0000FF'],
-                        [1, 'rgba(0, 0, 255, 0.3)']
-                    ]
-                }
-            },
-            {
-                value: 3,
-                color: '#4169E1', // 2.5 a 3.0 - Azul real
+                color: '#4169E1', // 1.5 a 2.0 - Tonos azul oscuro a violeta
                 fillColor: {
                     linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
                     stops: [
@@ -293,12 +273,34 @@ function renderTimeSeriesChart(containerId, title, fechas, series) {
                 }
             },
             {
-                color: '#8A2BE2', // > 3.0 - Violeta
+                value: 2.5,
+                color: '#8A2BE2', // 2.0 a 2.5 - Tonos violeta oscuro a magenta oscuro
                 fillColor: {
                     linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
                     stops: [
                         [0, '#8A2BE2'],
                         [1, 'rgba(138, 43, 226, 0.3)']
+                    ]
+                }
+            },
+            {
+                value: 3,
+                color: '#FF00FF', // 2.5 a 3.0 - Tonos magenta oscuro a magenta claro
+                fillColor: {
+                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                    stops: [
+                        [0, '#FF00FF'],
+                        [1, 'rgba(255, 0, 255, 0.3)']
+                    ]
+                }
+            },
+            {
+                color: '#FF69B4', // > 3.0 - Tono magenta
+                fillColor: {
+                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                    stops: [
+                        [0, '#FF69B4'],
+                        [1, 'rgba(255, 105, 180, 0.3)']
                     ]
                 }
             }
