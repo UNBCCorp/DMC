@@ -10,7 +10,7 @@
 
 return [
     // Retrieve list of modules used in this application.
-    'modules' => require __DIR__ . '/modules.config.php',
+    'modules' => require_once __DIR__ . '/modules.config.php',
 
     // These are various options for the listeners attached to the ModuleManager
     'module_listener_options' => [

@@ -6,9 +6,9 @@ use Laminas\ModuleManager\Listener\ListenerOptions;
 
 chdir(__DIR__ . '/../');
 
-require 'vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
-$config = include 'config/application.config.php';
+$config = include_once 'config/application.config.php';
 
 if (! isset($config['module_listener_options'])) {
     echo "No module listener options found. Can not determine config cache location." . PHP_EOL;
