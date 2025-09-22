@@ -94,23 +94,43 @@ function calculateAverage(arr) {
     return sum / arr.length;
 }
 
-function getRegionalValuesFromFile(textContent, stationFilter) {
-    const lines = textContent.split('\n').filter(line => line.trim() && !line.startsWith('Estacion'));
-    if (lines.length === 0) return null;
-    const regionalValues = { '3': [], '9': [], '12': [], '24': [], '48': [] };
-    for (const line of lines) {
-        const values = line.split(',');
-        const stationCode = values[0].trim();
-        if (stationFilter.hasOwnProperty(stationCode)) {
-            for (const scale in MONTH_SCALE_TO_COLUMN_INDEX) {
-                const colIndex = MONTH_SCALE_TO_COLUMN_INDEX[scale];
-                if (values[colIndex] !== undefined) {
-                    const value = parseFloat(values[colIndex]);
-                    if (!isNaN(value)) regionalValues[scale].push(value);
-                }
+/**
+ * Procesa los valores de una escala específica para una línea de datos
+ */
+function processScaleValues(values, regionalValues) {
+    for (const scale in MONTH_SCALE_TO_COLUMN_INDEX) {
+        const colIndex = MONTH_SCALE_TO_COLUMN_INDEX[scale];
+        if (values[colIndex] !== undefined) {
+            const value = parseFloat(values[colIndex]);
+            if (!isNaN(value)) {
+                regionalValues[scale].push(value);
             }
         }
     }
+}
+
+/**
+ * Procesa una línea individual de datos
+ */
+function processDataLine(line, stationFilter, regionalValues) {
+    const values = line.split(',');
+    const stationCode = values[0].trim();
+    
+    if (stationFilter.hasOwnProperty(stationCode)) {
+        processScaleValues(values, regionalValues);
+    }
+}
+
+function getRegionalValuesFromFile(textContent, stationFilter) {
+    const lines = textContent.split('\n').filter(line => line.trim() && !line.startsWith('Estacion'));
+    if (lines.length === 0) return null;
+    
+    const regionalValues = { '3': [], '9': [], '12': [], '24': [], '48': [] };
+    
+    for (const line of lines) {
+        processDataLine(line, stationFilter, regionalValues);
+    }
+    
     return regionalValues;
 }
 

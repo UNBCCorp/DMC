@@ -8,6 +8,7 @@ chdir(__DIR__ . '/../');
 
 require_once 'vendor/autoload.php';
 
+// NOSONAR - Config file inclusion, not a class import
 $config = include_once 'config/application.config.php';
 
 if (! isset($config['module_listener_options'])) {

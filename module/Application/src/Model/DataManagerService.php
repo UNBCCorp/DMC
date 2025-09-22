@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Application\Model;
 
+use Application\Exception\FileNotFoundException;
+use Application\Exception\JsonProcessingException;
+
 /**
  * Servicio centralizado para la gestión de datos del proyecto DMC
  * Mantiene toda la lógica de procesamiento de datos en un lugar centralizado
@@ -24,12 +27,12 @@ class DataManagerService
     {
         $path = $this->basePath . '/maps/data/valp.geojson';
         if (!file_exists($path)) {
-            throw new \Exception('No se encontró el archivo GeoJSON de comunas');
+            throw new FileNotFoundException($path);
         }
         
         $data = json_decode(file_get_contents($path), true);
         if (!$data) {
-            throw new \Exception('Error al parsear el archivo GeoJSON de comunas');
+            throw new JsonProcessingException("Error al parsear el archivo GeoJSON de comunas: {$path}");
         }
         
         return $data;
@@ -42,12 +45,12 @@ class DataManagerService
     {
         $path = $this->basePath . '/maps/data/ClimaPorComuna.geojson';
         if (!file_exists($path)) {
-            throw new \Exception('No se encontró el archivo GeoJSON de clima');
+            throw new FileNotFoundException($path);
         }
         
         $data = json_decode(file_get_contents($path), true);
         if (!$data) {
-            throw new \Exception('Error al parsear el archivo GeoJSON de clima');
+            throw new JsonProcessingException("Error al parsear el archivo GeoJSON de clima: {$path}");
         }
         
         return $data;
@@ -60,12 +63,12 @@ class DataManagerService
     {
         $path = $this->basePath . '/js/config.json';
         if (!file_exists($path)) {
-            throw new \Exception('No se encontró el archivo de configuración');
+            throw new FileNotFoundException($path);
         }
         
         $data = json_decode(file_get_contents($path), true);
         if (!$data || !isset($data['MAPA_COMUNA_A_ESTACIONES'])) {
-            throw new \Exception('Error al parsear el archivo de configuración');
+            throw new JsonProcessingException("Error al parsear el archivo de configuración: {$path}");
         }
         
         return $data['MAPA_COMUNA_A_ESTACIONES'];
@@ -97,36 +100,66 @@ class DataManagerService
     public function parsearArchivoIndices(string $contenido): array
     {
         if (empty($contenido)) {
-            throw new \Exception('El contenido del archivo está vacío');
+            throw new JsonProcessingException('El contenido del archivo de índices está vacío');
         }
 
         $lineas = explode("\n", trim($contenido));
-        $cabeceraRaw = array_shift($lineas);
-        $cabecera = array_map(function($h) {
+        $cabecera = $this->procesarCabeceraIndices(array_shift($lineas));
+        
+        return $this->procesarLineasIndices($lineas, $cabecera);
+    }
+    
+    /**
+     * Procesa la cabecera del archivo de índices
+     */
+    private function procesarCabeceraIndices(string $cabeceraRaw): array
+    {
+        return array_map(function($h) {
             $hLimpia = trim($h);
             return is_numeric($hLimpia) ? "p_{$hLimpia}m" : $hLimpia;
         }, explode(',', $cabeceraRaw));
-
+    }
+    
+    /**
+     * Procesa las líneas de datos del archivo de índices
+     */
+    private function procesarLineasIndices(array $lineas, array $cabecera): array
+    {
         $datosParseados = [];
+        
         foreach ($lineas as $linea) {
-            if (empty(trim($linea))) continue;
-            
-            $valores = explode(',', trim($linea));
-            $estacionObj = [];
-            
-            foreach ($cabecera as $index => $clave) {
-                if (!isset($valores[$index])) continue;
-                
-                $valor = trim($valores[$index]);
-                $estacionObj[$clave] = is_numeric($valor) ? (float)$valor : $valor;
+            if (empty(trim($linea))) {
+                continue;
             }
+            
+            $estacionObj = $this->procesarLineaIndice($linea, $cabecera);
             
             if (!empty($estacionObj)) {
                 $datosParseados[] = $estacionObj;
             }
         }
-
+        
         return $datosParseados;
+    }
+    
+    /**
+     * Procesa una línea individual del archivo de índices
+     */
+    private function procesarLineaIndice(string $linea, array $cabecera): array
+    {
+        $valores = explode(',', trim($linea));
+        $estacionObj = [];
+        
+        foreach ($cabecera as $index => $clave) {
+            if (!isset($valores[$index])) {
+                continue;
+            }
+            
+            $valor = trim($valores[$index]);
+            $estacionObj[$clave] = is_numeric($valor) ? (float)$valor : $valor;
+        }
+        
+        return $estacionObj;
     }
 
     /**
@@ -159,3 +192,4 @@ class DataManagerService
         return $fechaBase;
     }
 }
+

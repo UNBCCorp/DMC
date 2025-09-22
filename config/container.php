@@ -4,10 +4,10 @@ use Laminas\Mvc\Application;
 use Laminas\Stdlib\ArrayUtils;
 
 // Retrieve configuration
-$appConfig = require __DIR__ . '/application.config.php';
+$appConfig = require_once __DIR__ . '/application.config.php'; // NOSONAR - Config file inclusion, not a class import
 if (file_exists(__DIR__ . '/development.config.php')) {
     /** @var array $devConfig */
-    $devConfig = require __DIR__ . '/development.config.php';
+    $devConfig = require_once __DIR__ . '/development.config.php'; // NOSONAR - Config file inclusion, not a class import
     $appConfig = ArrayUtils::merge($appConfig, $devConfig);
 }
 

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Application\Model;
 
+use Application\Exception\FileNotFoundException;
+use Application\Exception\JsonProcessingException;
+
 class ClimaDataService
 {
     public function getDatosClima()
@@ -12,14 +15,16 @@ class ClimaDataService
         $geojsonClimaPath = getcwd() . '/public/maps/data/ClimaPorComuna.geojson';
         
         if (!file_exists($geojsonComunasPath) || !file_exists($geojsonClimaPath)) {
-            throw new \Exception('No se pudieron cargar los archivos GeoJSON necesarios.');
+            $archivoFaltante = !file_exists($geojsonComunasPath) ? $geojsonComunasPath : $geojsonClimaPath;
+            throw new FileNotFoundException($archivoFaltante);
         }
         
         $geoJsonComunas = json_decode(file_get_contents($geojsonComunasPath), true);
         $geoJsonClima = json_decode(file_get_contents($geojsonClimaPath), true);
         
         if (!$geoJsonComunas || !$geoJsonClima) {
-            throw new \Exception('Error al parsear los archivos GeoJSON.');
+            $archivoProblematico = !$geoJsonComunas ? $geojsonComunasPath : $geojsonClimaPath;
+            throw new JsonProcessingException("Error al parsear el archivo GeoJSON: {$archivoProblematico}");
         }
         
         return [
@@ -28,3 +33,4 @@ class ClimaDataService
         ];
     }
 }
+

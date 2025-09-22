@@ -7,6 +7,9 @@ use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\JsonModel;
 use Application\Model\ApiDataService;
 use Application\Model\SequiaDataService;
+use Application\Exception\SequiaDataException;
+use Application\Exception\FileNotFoundException;
+use Application\Exception\JsonProcessingException;
 
 class ApiController extends AbstractActionController {
     
@@ -22,13 +25,16 @@ class ApiController extends AbstractActionController {
             $hoy = new \DateTime();
             $diaDeHoy = (int) $hoy->format('d');
             $fechaBase = new \DateTime();
-            if ($diaDeHoy < 17) $fechaBase->modify('-2 months');
-            else $fechaBase->modify('-1 month');
+            if ($diaDeHoy < 17) {
+                $fechaBase->modify('-2 months');
+            } else {
+                $fechaBase->modify('-1 month');
+            }
             $anoActual = (int) $fechaBase->format('Y');
             $mesActual = (int) $fechaBase->format('m');
             $datosSequiaActual = $this->apiService->getDp3($anoActual, $mesActual);
             if ($datosSequiaActual === null) {
-                throw new \Exception("No se pudieron obtener datos de sequía actual.");
+                throw new SequiaDataException("No se pudieron obtener datos de sequía actual para el período {$anoActual}-{$mesActual}");
             }
 
             // 2. OBTENER DATOS HISTÓRICOS (ÚLTIMOS 6 MESES)
@@ -39,10 +45,12 @@ class ApiController extends AbstractActionController {
 
             // 4. OBTENER GEOJSON BASE
             $geojsonPath = getcwd() . '/public/maps/data/valp.geojson';
-            if (!file_exists($geojsonPath)) throw new \Exception("No se encontró el archivo GeoJSON.");
+            if (!file_exists($geojsonPath)) {
+                throw new FileNotFoundException($geojsonPath);
+            }
             $geojsonData = json_decode(file_get_contents($geojsonPath), true);
 
-            // 5. FUSIONAR TODO EN UN SOLO GEOJSON
+            // 5. FUSIONAR DATOS: Combinar GeoJSON base con datos de sequía actual y persistencia SPI
             $geojsonDataFusionado = $this->fusionarDatos($geojsonData, $datosSequiaActual, $datosPersistencia);
             
             // 6. PREPARAR DATOS REGIONALES PARA LA BARRA LATERAL
@@ -93,6 +101,52 @@ class ApiController extends AbstractActionController {
 
     // --- MÉTODOS PRIVADOS DE PROCESAMIENTO ---
 
+    /**
+     * Normaliza el nombre de una comuna para búsqueda
+     */
+    private function normalizarNombreComuna($nombreComuna) {
+        return strtoupper(trim(str_replace(['Á','É','Í','Ó','Ú'], ['A','E','I','O','U'], $nombreComuna ?? '')));
+    }
+
+    /**
+     * Fusiona datos de sequía actual en las propiedades de una feature
+     */
+    private function fusionarDatosSequia(&$props, $mapaSequia, $cutCom) {
+        if (isset($mapaSequia[$cutCom])) {
+            $props = array_merge($props, $mapaSequia[$cutCom]);
+        }
+    }
+
+    /**
+     * Calcula el promedio de valores para un período específico
+     */
+    private function calcularPromedioValores($codigosEstacion, $datosPersistencia, $periodo) {
+        $valores = [];
+        foreach ($codigosEstacion as $codigo) {
+            if (isset($datosPersistencia['mapa'][$codigo]) && isset($datosPersistencia['mapa'][$codigo][$periodo])) {
+                $valores[] = $datosPersistencia['mapa'][$codigo][$periodo];
+            }
+        }
+        return !empty($valores) ? array_sum($valores) / count($valores) : null;
+    }
+
+    /**
+     * Fusiona datos de persistencia en las propiedades de una feature
+     */
+    private function fusionarDatosPersistencia(&$props, $mapaComunaAEstaciones, $datosPersistencia) {
+        $nombreComunaNorm = $this->normalizarNombreComuna($props['COMUNA'] ?? '');
+        
+        if (isset($mapaComunaAEstaciones[$nombreComunaNorm])) {
+            $codigosEstacion = $mapaComunaAEstaciones[$nombreComunaNorm];
+            foreach ($datosPersistencia['periodos'] as $periodo) {
+                $props[$periodo] = $this->calcularPromedioValores($codigosEstacion, $datosPersistencia, $periodo);
+            }
+        }
+    }
+
+    /**
+     * Fusiona todos los datos en el GeoJSON
+     */
     private function fusionarDatos($geojsonData, $datosSequia, $datosPersistencia) {
         $mapaSequia = array_column($datosSequia, null, 'Code');
         $mapaComunaAEstaciones = json_decode(file_get_contents(getcwd() . '/public/js/config.json'), true)['MAPA_COMUNA_A_ESTACIONES'];
@@ -102,24 +156,10 @@ class ApiController extends AbstractActionController {
             $cutCom = (string)($props['CUT_COM'] ?? '');
             
             // Fusionar datos de sequía actual
-            if (isset($mapaSequia[$cutCom])) {
-                $props = array_merge($props, $mapaSequia[$cutCom]);
-            }
+            $this->fusionarDatosSequia($props, $mapaSequia, $cutCom);
 
             // Fusionar datos de persistencia
-            $nombreComunaNorm = strtoupper(trim(str_replace(['Á','É','Í','Ó','Ú'], ['A','E','I','O','U'], $props['COMUNA'] ?? '')));
-            if (isset($mapaComunaAEstaciones[$nombreComunaNorm])) {
-                $codigosEstacion = $mapaComunaAEstaciones[$nombreComunaNorm];
-                foreach ($datosPersistencia['periodos'] as $periodo) {
-                    $valores = [];
-                    foreach ($codigosEstacion as $codigo) {
-                        if (isset($datosPersistencia['mapa'][$codigo]) && isset($datosPersistencia['mapa'][$codigo][$periodo])) {
-                            $valores[] = $datosPersistencia['mapa'][$codigo][$periodo];
-                        }
-                    }
-                    $props[$periodo] = count($valores) > 0 ? array_sum($valores) / count($valores) : null;
-                }
-            }
+            $this->fusionarDatosPersistencia($props, $mapaComunaAEstaciones, $datosPersistencia);
         }
         return $geojsonData;
     }
@@ -136,7 +176,9 @@ class ApiController extends AbstractActionController {
                 foreach ($datosMes as $comuna) {
                     $codigo = (string)$comuna['Code'];
                     $comuna['fecha'] = $fechaFetch->format('Y-m-d');
-                    if (!isset($historicos[$codigo])) $historicos[$codigo] = [];
+                    if (!isset($historicos[$codigo])) {
+                        $historicos[$codigo] = [];
+                    }
                     $historicos[$codigo][] = $comuna;
                 }
             }
@@ -159,7 +201,9 @@ class ApiController extends AbstractActionController {
                 break;
             }
         }
-        if (!$contenidoTxt) return ['mapa' => [], 'periodos' => []];
+        if (!$contenidoTxt) {
+            return ['mapa' => [], 'periodos' => []];
+        }
 
         $lineas = explode("\n", trim($contenidoTxt));
         $cabeceraRaw = array_shift($lineas);
@@ -185,7 +229,9 @@ class ApiController extends AbstractActionController {
         $categorias = ['SA', 'D0', 'D1', 'D2', 'D3', 'D4'];
         $sumas = array_fill_keys($categorias, 0);
         $totalComunas = count($datos);
-        if ($totalComunas === 0) return $sumas;
+        if ($totalComunas === 0) {
+            return $sumas;
+        }
 
         foreach ($datos as $comuna) {
             foreach ($categorias as $cat) {
@@ -237,19 +283,19 @@ class ApiController extends AbstractActionController {
         
         if ($jsonString === false) {
             $error = json_last_error_msg();
-            throw new \Exception("Error al serializar respuesta a JSON: $error");
+            throw new JsonProcessingException("Error al serializar respuesta a JSON: $error");
         }
         
         // Verificar que el JSON se pueda decodificar correctamente
         $decoded = json_decode($jsonString, true);
         if ($decoded === null && json_last_error() !== JSON_ERROR_NONE) {
             $error = json_last_error_msg();
-            throw new \Exception("Error al validar JSON generado: $error");
+            throw new JsonProcessingException("Error al validar JSON generado: $error");
         }
         
         // Verificar estructura mínima requerida
         if (!isset($decoded['success']) || !isset($decoded['geojsonData'])) {
-            throw new \Exception("Estructura de respuesta JSON inválida: faltan campos obligatorios");
+            throw new JsonProcessingException("Estructura de respuesta JSON inválida: faltan campos obligatorios");
         }
         
         // Verificar tamaño razonable (evitar respuestas excesivamente grandes)
@@ -291,28 +337,51 @@ class ApiController extends AbstractActionController {
      * Limpia y valida datos antes de incluirlos en la respuesta
      */
     private function sanitizeResponseData($data) {
+        $result = $data; // Valor por defecto
+        
         if (is_array($data)) {
-            $cleaned = [];
-            foreach ($data as $key => $value) {
-                // Limpiar claves
-                $cleanKey = is_string($key) ? trim($key) : $key;
-                
-                // Limpiar valores recursivamente
-                $cleaned[$cleanKey] = $this->sanitizeResponseData($value);
-            }
-            return $cleaned;
+            $result = $this->sanitizeArrayData($data);
         } elseif (is_string($data)) {
-            // Limpiar strings: eliminar caracteres de control, normalizar espacios
-            $cleaned = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/', '', $data);
-            return trim($cleaned);
+            $result = $this->sanitizeStringData($data);
         } elseif (is_numeric($data)) {
-            // Validar números
-            if (is_float($data) && (is_nan($data) || is_infinite($data))) {
-                return null; // Convertir NaN/Infinity a null
-            }
-            return $data;
+            $result = $this->sanitizeNumericData($data);
         }
         
+        return $result;
+    }
+    
+    /**
+     * Limpia datos de tipo array
+     */
+    private function sanitizeArrayData($data) {
+        $cleaned = [];
+        foreach ($data as $key => $value) {
+            // Limpiar claves
+            $cleanKey = is_string($key) ? trim($key) : $key;
+            
+            // Limpiar valores recursivamente
+            $cleaned[$cleanKey] = $this->sanitizeResponseData($value);
+        }
+        return $cleaned;
+    }
+    
+    /**
+     * Limpia datos de tipo string
+     */
+    private function sanitizeStringData($data) {
+        // Limpiar strings: eliminar caracteres de control, normalizar espacios
+        $cleaned = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/', '', $data);
+        return trim($cleaned);
+    }
+    
+    /**
+     * Limpia y valida datos numéricos
+     */
+    private function sanitizeNumericData($data) {
+        // Validar números
+        if (is_float($data) && (is_nan($data) || is_infinite($data))) {
+            return null; // Convertir NaN/Infinity a null
+        }
         return $data;
     }
 }
