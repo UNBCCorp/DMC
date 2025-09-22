@@ -130,8 +130,9 @@ return [
             \Application\Controller\TestController::class => \Laminas\ServiceManager\Factory\InvokableFactory::class,
 
             \Application\Controller\ApiController::class => function($container) {
-                $service = $container->get(\Application\Model\ApiDataService::class);
-                return new \Application\Controller\ApiController($service);
+                $apiService = $container->get(\Application\Model\ApiDataService::class);
+                $sequiaBaseService = $container->get(\Application\Service\SequiaBaseService::class);
+                return new \Application\Controller\ApiController($apiService, $sequiaBaseService);
             },
             \Application\Controller\PercentilesController::class => \Laminas\ServiceManager\Factory\InvokableFactory::class,
             \Application\Controller\ClimaController::class => function($container) {
@@ -139,8 +140,9 @@ return [
                 return new \Application\Controller\ClimaController($service);
             },
             \Application\Controller\SequiaController::class => function($container) {
-                $service = $container->get(\Application\Model\SequiaDataService::class);
-                return new \Application\Controller\SequiaController($service);
+                $sequiaService = $container->get(\Application\Model\SequiaDataService::class);
+                $sequiaBaseService = $container->get(\Application\Service\SequiaBaseService::class);
+                return new \Application\Controller\SequiaController($sequiaService, $sequiaBaseService);
             },
         ],
     ],
@@ -150,6 +152,7 @@ return [
             Model\ClimaDataService::class => InvokableFactory::class,
             Model\SequiaDataService::class => InvokableFactory::class,
             Model\DataManagerService::class => InvokableFactory::class,
+            Service\SequiaBaseService::class => InvokableFactory::class,
         ],
     ],
     'view_manager' => [

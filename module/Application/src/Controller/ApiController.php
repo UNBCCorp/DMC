@@ -7,6 +7,7 @@ use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\JsonModel;
 use Application\Model\ApiDataService;
 use Application\Model\SequiaDataService;
+use Application\Service\SequiaBaseService;
 use Application\Exception\SequiaDataException;
 use Application\Exception\FileNotFoundException;
 use Application\Exception\JsonProcessingException;
@@ -14,28 +15,21 @@ use Application\Exception\JsonProcessingException;
 class ApiController extends AbstractActionController {
     
     private $apiService;
+    private $sequiaBaseService;
 
-    public function __construct(ApiDataService $apiService) {
+    public function __construct(ApiDataService $apiService, SequiaBaseService $sequiaBaseService) {
         $this->apiService = $apiService;
+        $this->sequiaBaseService = $sequiaBaseService;
     }
 
     public function datosSequiaAction() {
         try {
             // 1. OBTENER DATOS DE SEQUÍA ACTUAL
-            $hoy = new \DateTime();
-            $diaDeHoy = (int) $hoy->format('d');
-            $fechaBase = new \DateTime();
-            if ($diaDeHoy < 17) {
-                $fechaBase->modify('-2 months');
-            } else {
-                $fechaBase->modify('-1 month');
-            }
+            $fechaBase = $this->sequiaBaseService->calcularFechaBase();
             $anoActual = (int) $fechaBase->format('Y');
             $mesActual = (int) $fechaBase->format('m');
             $datosSequiaActual = $this->apiService->getDp3($anoActual, $mesActual);
-            if ($datosSequiaActual === null) {
-                throw new SequiaDataException("No se pudieron obtener datos de sequía actual para el período {$anoActual}-{$mesActual}");
-            }
+            $this->sequiaBaseService->validarDatosSequiaActual($datosSequiaActual, $anoActual, $mesActual);
 
             // 2. OBTENER DATOS HISTÓRICOS (ÚLTIMOS 6 MESES)
             $datosHistoricos = $this->getDatosHistoricos($fechaBase, 6);
@@ -44,19 +38,15 @@ class ApiController extends AbstractActionController {
             $datosPersistencia = $this->getDatosPersistencia();
 
             // 4. OBTENER GEOJSON BASE
-            $geojsonPath = getcwd() . '/public/maps/data/valp.geojson';
-            if (!file_exists($geojsonPath)) {
-                throw new FileNotFoundException($geojsonPath);
-            }
-            $geojsonData = json_decode(file_get_contents($geojsonPath), true);
+            $geojsonData = $this->sequiaBaseService->cargarGeojsonBase();
 
             // 5. FUSIONAR DATOS: Combinar GeoJSON base con datos de sequía actual y persistencia SPI
             $geojsonDataFusionado = $this->fusionarDatos($geojsonData, $datosSequiaActual, $datosPersistencia);
             
             // 6. PREPARAR DATOS REGIONALES PARA LA BARRA LATERAL
             $datosSidebar = [
-                'promedios' => $this->calcularPromediosRegionales($datosSequiaActual),
-                'historico' => $this->calcularHistoricoRegional($datosHistoricos)
+                'promedios' => $this->sequiaBaseService->calcularPromediosRegionales($datosSequiaActual),
+                'historico' => $this->sequiaBaseService->calcularHistoricoRegional($datosHistoricos)
             ];
 
             // 7. PREPARAR Y LIMPIAR RESPUESTA
@@ -101,12 +91,6 @@ class ApiController extends AbstractActionController {
 
     // --- MÉTODOS PRIVADOS DE PROCESAMIENTO ---
 
-    /**
-     * Normaliza el nombre de una comuna para búsqueda
-     */
-    private function normalizarNombreComuna($nombreComuna) {
-        return strtoupper(trim(str_replace(['Á','É','Í','Ó','Ú'], ['A','E','I','O','U'], $nombreComuna ?? '')));
-    }
 
     /**
      * Fusiona datos de sequía actual en las propiedades de una feature
@@ -134,7 +118,7 @@ class ApiController extends AbstractActionController {
      * Fusiona datos de persistencia en las propiedades de una feature
      */
     private function fusionarDatosPersistencia(&$props, $mapaComunaAEstaciones, $datosPersistencia) {
-        $nombreComunaNorm = $this->normalizarNombreComuna($props['COMUNA'] ?? '');
+        $nombreComunaNorm = $this->sequiaBaseService->normalizarNombreComuna($props['COMUNA'] ?? '');
         
         if (isset($mapaComunaAEstaciones[$nombreComunaNorm])) {
             $codigosEstacion = $mapaComunaAEstaciones[$nombreComunaNorm];
@@ -224,55 +208,6 @@ class ApiController extends AbstractActionController {
         return ['mapa' => $mapaEstaciones, 'periodos' => array_values($periodos)];
     }
 
-    private function calcularPromediosRegionales($datos) {
-        $promedios = [];
-        $categorias = ['SA', 'D0', 'D1', 'D2', 'D3', 'D4'];
-        $sumas = array_fill_keys($categorias, 0);
-        $totalComunas = count($datos);
-        if ($totalComunas === 0) {
-            return $sumas;
-        }
-
-        foreach ($datos as $comuna) {
-            foreach ($categorias as $cat) {
-                $sumas[$cat] += (float)($comuna[$cat] ?? 0);
-            }
-        }
-        foreach ($sumas as $cat => $suma) {
-            $promedios[$cat] = round($suma / $totalComunas, 1);
-        }
-        return $promedios;
-    }
-    
-    private function calcularHistoricoRegional($datosHistoricos) {
-        $promediosMensuales = [];
-        $categorias = ['SA', 'D0', 'D1', 'D2', 'D3', 'D4'];
-        
-        foreach ($datosHistoricos as $historialComuna) {
-            foreach ($historialComuna as $registro) {
-                $monthKey = substr($registro['fecha'], 0, 7);
-                if (!isset($promediosMensuales[$monthKey])) {
-                    $promediosMensuales[$monthKey] = ['sumas' => array_fill_keys($categorias, 0), 'count' => 0, 'fecha' => $registro['fecha']];
-                }
-                foreach ($categorias as $cat) {
-                    $promediosMensuales[$monthKey]['sumas'][$cat] += (float)($registro[$cat] ?? 0);
-                }
-                $promediosMensuales[$monthKey]['count']++;
-            }
-        }
-        
-        usort($promediosMensuales, fn($a, $b) => strcmp($a['fecha'], $b['fecha']));
-        
-        $resultado = ['labels' => [], 'series' => array_fill_keys($categorias, [])];
-        foreach ($promediosMensuales as $dataMes) {
-            $fecha = new \DateTime($dataMes['fecha']);
-            $resultado['labels'][] = $fecha->format('M y');
-            foreach ($categorias as $cat) {
-                $resultado['series'][$cat][] = round($dataMes['sumas'][$cat] / $dataMes['count'], 1);
-            }
-        }
-        return $resultado;
-    }
     
     /**
      * Valida que los datos puedan ser serializados a JSON sin problemas
