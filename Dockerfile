@@ -6,29 +6,25 @@ LABEL maintainer="getlaminas.org" \
     org.label-schema.url="https://docs.getlaminas.org/mvc/" \
     org.label-schema.vcs-url="https://github.com/laminas/laminas-mvc-skeleton"
 
-## Update package information, configure Apache, and install Composer
+## Update package information, configure Apache, install dependencies and Composer
 RUN apt-get update \
+    && apt-get install --yes \
+        git \
+        libicu-dev \
+        libzip-dev \
+        zlib1g-dev \
     && a2enmod rewrite \
     && sed -i 's!/var/www/html!/var/www/public!g' /etc/apache2/sites-available/000-default.conf \
     && mv /var/www/html /var/www/public \
-    && curl -sS https://getcomposer.org/installer \
-    | php -- --install-dir=/usr/local/bin --filename=composer
-
-###
-## PHP Extensisons
-###
-
-## Install zip libraries and extension
-RUN apt-get install --yes git zlib1g-dev libzip-dev \
-    && docker-php-ext-install zip
-
-## Install intl library and extension
-RUN apt-get install --yes libicu-dev \
     && docker-php-ext-configure intl \
-    && docker-php-ext-install intl
+    && docker-php-ext-install intl zip \
+    && curl -sS https://getcomposer.org/installer \
+        | php -- --install-dir=/usr/local/bin --filename=composer \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 ###
-## Optional PHP extensions 
+## Additional PHP extensions (optional)
 ###
 
 ## mbstring for i18n string support
