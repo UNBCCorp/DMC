@@ -12,7 +12,7 @@ async function crearMapaPercentilesHighcharts(
 ) {
     const placeholder = document.querySelector(`#${containerId} .map-loading-placeholder`);
     try {
-        if (!geoJsonConDatos || !geoJsonConDatos.features) {
+        if (!geoJsonConDatos?.features) {
             throw new Error("GeoJSON para el mapa no está cargado o es inválido.");
         }
 
@@ -23,14 +23,6 @@ async function crearMapaPercentilesHighcharts(
             },
             title: {
                 text: null
-            },
-            exporting: {
-                enabled: true,
-                buttons: {
-                    contextButton: {
-                        enabled: false // Ocultar el botón de menú por defecto
-                    }
-                }
             },
             mapNavigation: {
                 enabled: true,
@@ -155,7 +147,7 @@ async function inicializarMapasDePercentiles() {
             const nombreComuna = feature.properties[COMUNA_NAME_PROPERTY];
             
             const datosPrecip = datosPercentiles.precipitacion[nombreComuna];
-            if (datosPrecip && datosPrecip.percentil !== undefined) {
+            if (datosPrecip?.percentil !== undefined) {
                 feature.properties.percentil_precip = datosPrecip.percentil;
                 feature.properties.valor_precip = datosPrecip.valor_actual; 
             } else {
@@ -164,7 +156,7 @@ async function inicializarMapasDePercentiles() {
             }
 
             const datosTemp = datosPercentiles.temperatura[nombreComuna];
-            if (datosTemp && datosTemp.percentil !== undefined) {
+            if (datosTemp?.percentil !== undefined) {
                 feature.properties.percentil_temp = datosTemp.percentil;
                 feature.properties.valor_temp = datosTemp.valor_actual;
             } else {
@@ -211,12 +203,12 @@ function unificarGeometriasPorComuna(geojson) {
         comunasAgrupadas.get(nombreComuna).push(feature);
     });
     const featuresUnificados = [];
-    for (const [nombre, features] of comunasAgrupadas.entries()) {
+    for (const [, features] of comunasAgrupadas.entries()) {
         if (features.length === 1) {
             featuresUnificados.push(features[0]);
         } else {
             try {
-                if(nombre === "Zapallar");
+                // Código específico para comunas con múltiples geometrías si es necesario
                 let geometriaUnificada = features[0];
                 for (let i = 1; i < features.length; i++) {
                     geometriaUnificada = turf.union(geometriaUnificada, features[i]);

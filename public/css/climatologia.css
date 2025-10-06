@@ -87,17 +87,17 @@
   }
   
   .bg-olasCalor{
-      background-color: #ff5050 !important;;
+      background-color: #ff5050 !important;
       color: #fff !important;
   }
   
   .bg-olasFrio{
-      background-color:#0288D1 !important;;
+      background-color:#0288D1 !important;
       color: #fff !important;
   }
   
   .bg-menu{
-    background-color: var(--background-menu-color) !important;;
+    background-color: var(--background-menu-color) !important;
     color: #fff !important;
   }
   
@@ -189,7 +189,7 @@
   }
   
   .tabla_infoDMC td {
-    font-family: 'TitilliumWeb';  
+    font-family: 'TitilliumWeb', sans-serif;  
     padding: 10px;
     font-size: 16px; 
     text-align: left; 
@@ -242,7 +242,6 @@
   
   /*Fijar cabecera Tabla*/
   thead {
-      /* position: sticky; */
       top: 0;
       z-index: 10;
   }

@@ -70,7 +70,7 @@ window.Controller = class Controller {
     handleCerrarModal = () => { this.view.ocultarModalMapa(); }
     
     handleComunaClick = (layer) => {
-        if (!layer || !layer.feature) { // Clic fuera de una comuna
+        if (!layer?.feature) { // Clic fuera de una comuna
             this.handleCerrarPanel();
             return;
         }

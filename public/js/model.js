@@ -5,14 +5,10 @@ window.Model = class Model {
     }
 
     async cargarDatos() {
-        try {
-            const response = await fetch('/api/sequia');
-            const result = await response.json();
-            if (!result.success) throw new Error(result.message);
-            this.datos = result;
-        } catch (error) {
-            throw error;
-        }
+        const response = await fetch('/api/sequia');
+        const result = await response.json();
+        if (!result.success) throw new Error(result.message);
+        this.datos = result;
     }
 
     getGeojsonData() { return this.datos?.geojsonData; }

@@ -16,16 +16,13 @@
 
 .navbar .navbar-toggler {
     border-color: #eeeeee !important;
+    position: relative;
+    margin-right: 7em;
 }
 
 .navbar .navbar-toggler .navbar-toggler-icon {
     margin-top:25%;
     color: #ffffff !important;
-}
-
-.navbar .navbar-toggler {
-    position: relative;
-    margin-right: 7em;
 }
 
 .navbar .navbar-collapse .navbar-nav .nav-item .dropdown-menu .dropdown-header {

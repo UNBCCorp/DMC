@@ -1,32 +1,23 @@
 // Interceptor global para suprimir errores 404 de archivos de índices
 (function() {
-    // Interceptar console.error para suprimir errores 404 de indices.txt
-    const originalError = console.error;
-    // console.error = function(...args) {
-    //     const message = args.join(' ');
-    //     // Suprimir errores 404 de archivos indices.txt
-    //     if ((message.includes('404') || message.includes('Not Found')) && 
-    //         (message.includes('indices.txt') || message.includes('/txt/'))) {
-    //         return;
-    //     }
-    //     originalError.apply(console, args);
-    // };
+    // Código para interceptar console.error y console.warn está deshabilitado
+    // pero se mantiene como referencia para futuras implementaciones
     
-    // Interceptar console.warn también
-    const originalWarn = console.warn;
-    // console.warn = function(...args) {
-    //     const message = args.join(' ');
-    //     // Suprimir warnings 404 de archivos indices.txt
-    //     if ((message.includes('404') || message.includes('Not Found')) && 
-    //         (message.includes('indices.txt') || message.includes('/txt/'))) {
-    //         return;
-    //     }
-    //     originalWarn.apply(console, args);
-    // };
+    /* Ejemplo de cómo se podría implementar si fuera necesario:
+    const originalError = console.error;
+    console.error = function(...args) {
+        const message = args.join(' ');
+        if ((message.includes('404') || message.includes('Not Found')) && 
+            (message.includes('indices.txt') || message.includes('/txt/'))) {
+            return;
+        }
+        originalError.apply(console, args);
+    };
+    */
     
     // Interceptar eventos de error global del navegador
     window.addEventListener('error', function(e) {
-        if (e.message && e.message.includes('indices.txt') && e.message.includes('404')) {
+        if (e.message?.includes('indices.txt') && e.message?.includes('404')) {
             e.preventDefault();
             e.stopPropagation();
             return false;
@@ -35,7 +26,7 @@
     
     // Interceptar eventos de error no manejados
     window.addEventListener('unhandledrejection', function(e) {
-        if (e.reason && e.reason.toString().includes('indices.txt')) {
+        if (e.reason?.toString().includes('indices.txt')) {
             e.preventDefault();
             return false;
         }
@@ -140,7 +131,7 @@ function renderTimeSeriesChart(containerId, title, fechas, series) {
     // Mantener TODAS las fechas para preservar continuidad temporal
     const fechasConDatos = fechas;
     const seriesFiltradas = series.map(serie => {
-        // Mantener todos los puntos, incluso los null, para preservar continuidad
+        // Mantener  los puntos, incluso los null, para preservar continuidad
         const datosCompletos = serie.data.map((point, index) => {
             if (point !== null && point.y !== null && !isNaN(point.y)) {
                 return point;
@@ -328,7 +319,7 @@ function renderTimeSeriesChart(containerId, title, fechas, series) {
         
         // Configurar puntos individuales
         serie.data.forEach(point => {
-            if (point && point.isIncomplete) {
+            if (point?.isIncomplete) {
                 point.color = '#cccccc';
                 point.borderColor = '#999999';
             }
@@ -386,19 +377,19 @@ function renderTimeSeriesChart(containerId, title, fechas, series) {
             formatter: function () {
                 // Obtener la fecha desde el punto de datos
                 let fechaCompleta = this.x;
-                if (this.point && this.point.fecha) {
+                if (this.point?.fecha) {
                     const [ano, mes] = this.point.fecha.split('-');
                     const nombresMeses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
                                          'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
                     fechaCompleta = `${nombresMeses[parseInt(mes) - 1]} ${ano}`;
-                } else if (categoriasEjeX[this.point.index]) {
+                } else if (categoriasEjeX[this.point?.index]) {
                     fechaCompleta = categoriasEjeX[this.point.index].completo;
                 }
                 
                 let s = `<b>${fechaCompleta}</b><br/>`;
                 
                 this.points.forEach(point => {
-                    const incompleteLabel = point.point.isIncomplete ? ' (Datos Incompletos)' : '';
+                    const incompleteLabel = point.point?.isIncomplete ? ' (Datos Incompletos)' : '';
                     s += `<span style="color:${point.color}">\u25CF</span> ${point.series.name}: <b>${point.y.toFixed(2)}</b>${incompleteLabel}<br/>`;
                 });
                 return s;
@@ -443,7 +434,7 @@ async function processAndRender(indexType, containerId, title, escalaSeleccionad
     const placeholder = document.querySelector(`#${containerId} .loading-placeholder`);
     try {
         // Lista de archivos conocidos que existen (para optimización, pero no limitante)
-        // El sistema intentará cargar todos los archivos en el rango temporal
+        // El sistema intentará cargar  los archivos en el rango temporal
         const archivosConocidos = {
             'spi': [
                 // Archivos que sabemos que existen para optimización
@@ -473,17 +464,30 @@ async function processAndRender(indexType, containerId, title, escalaSeleccionad
             ]
         };
 
-        // Buscar todos los archivos disponibles en el historial completo
-        // Todos los gráficos muestran desde enero 2019 hasta la fecha actual
-        const fechaInicio = new Date(2019, 0, 1); // Enero 2019 para todos los índices
+        // Buscar  los archivos disponibles en el historial completo
+        //  los gráficos muestran desde enero 2019 hasta la fecha actual
+        const fechaInicio = new Date(2019, 0, 1); // Enero 2019 para  los índices
         const fechaFin = new Date(); // Fecha actual
         
         const fechasParaEjeX = [];
         const promesasFetch = [];
         
-        // Generar todas las fechas desde el inicio hasta el final
-        const fechaActual = new Date(fechaInicio);
-        while (fechaActual <= fechaFin) {
+        // Calcular el número total de meses entre fechaInicio y fechaFin
+        const calcularTotalMeses = () => {
+            const mesesDiferencia = 
+                (fechaFin.getFullYear() - fechaInicio.getFullYear()) * 12 + 
+                fechaFin.getMonth() - fechaInicio.getMonth() + 1;
+            return Math.max(0, mesesDiferencia);
+        };
+        
+        const totalMeses = calcularTotalMeses();
+        
+        // Usar un bucle for con índice en lugar de while con comparación de fechas
+        for (let i = 0; i < totalMeses; i++) {
+            // Crear una nueva fecha para cada iteración
+            const fechaActual = new Date(fechaInicio);
+            fechaActual.setMonth(fechaInicio.getMonth() + i);
+            
             const ano = fechaActual.getFullYear();
             const mes = fechaActual.getMonth() + 1;
             const mesFormateado = mes.toString().padStart(2, '0');
@@ -492,10 +496,10 @@ async function processAndRender(indexType, containerId, title, escalaSeleccionad
             
             fechasParaEjeX.push(fechaLabel);
             
-            // Intentar cargar todos los archivos en el rango temporal
+            // Intentar cargar  los archivos en el rango temporal
             // Usar lista de archivos conocidos solo para optimización, no como limitante
             const url = `maps/data/salida/${indexType}/txt/${ano}_${mesFormateado}_indices.txt`;
-            const esArchivoConocido = archivosConocidos[indexType] && archivosConocidos[indexType].includes(archivoKey);
+            const esArchivoConocido = archivosConocidos[indexType]?.includes(archivoKey);
             
             // Función para cargar archivo con manejo de errores
             const cargarArchivo = () => {
@@ -527,9 +531,6 @@ async function processAndRender(indexType, containerId, title, escalaSeleccionad
             };
             
             promesasFetch.push(cargarArchivo());
-            
-            // Avanzar al siguiente mes
-            fechaActual.setMonth(fechaActual.getMonth() + 1);
         }
 
         // Buscando historial completo de datos desde enero 2019 hasta la fecha actual        
@@ -543,7 +544,7 @@ async function processAndRender(indexType, containerId, title, escalaSeleccionad
             if (resultado.text && resultado.encontrado) {
                 archivosEncontrados++;
                 const valoresRegionales = getRegionalValuesFromFile(resultado.text, VALPARAISO_STATIONS);
-                if (valoresRegionales && valoresRegionales[escalaSeleccionada]) {
+                if (valoresRegionales?.[escalaSeleccionada]) {
                     datosMensuales[resultado.fechaLabel] = valoresRegionales[escalaSeleccionada];
                 }
             }
@@ -552,13 +553,14 @@ async function processAndRender(indexType, containerId, title, escalaSeleccionad
         // Archivos procesados correctamente
         // console.log(`Archivos ${indexType.toUpperCase()} encontrados: ${archivosEncontrados} de ${resultadosMensuales.length} meses consultados`);
         
-        // Crear serie de datos con todo el historial disponible
+        // Crear serie de datos con  el historial disponible
+        // Procesar cada fecha del rango temporal y generar datos para el gráfico
         const datosParaSerie = [];
         const fechasConDatos = [];
         
         fechasParaEjeX.forEach(fechaLabel => {
             const valoresEscala = datosMensuales[fechaLabel];
-            if (valoresEscala && valoresEscala.length > 0) {
+            if (valoresEscala?.length > 0) {
                 const promedioMes = calculateAverage(valoresEscala);
                 if (promedioMes !== null && !isNaN(promedioMes)) {
                     datosParaSerie.push({
@@ -584,7 +586,7 @@ async function processAndRender(indexType, containerId, title, escalaSeleccionad
             throw new Error(`No se encontraron datos para ${indexType.toUpperCase()}-${escalaSeleccionada}`);
         }
         
-        // Usar TODOS los datos y fechas sin filtrar
+        // Usar  los datos y fechas sin filtrar
         const datosLimpios = datosParaSerie;
         const fechasLimpias = fechasConDatos;
         

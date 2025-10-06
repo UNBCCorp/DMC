@@ -35,7 +35,7 @@ ESTACIONES_A_BUSCAR = {
 }
 
 
-def buscar_archivos_por_codigo(codigos_estacion, carpeta_datos, sufijo_archivo):
+def buscar_archivos_por_codigo(codigos_estacion, carpeta_datos):
     archivos_encontrados = []
     for codigo in codigos_estacion:
         for dirpath, _, filenames in os.walk(carpeta_datos):
@@ -71,13 +71,13 @@ def calcular_percentiles_estacion(ruta_archivo):
     except Exception as e:
         return {'error': f'Error procesando {os.path.basename(ruta_archivo)}: {e}'}
 
-def procesar_datos_por_tipo(carpeta_datos, sufijo_archivo):
+def procesar_datos_por_tipo(carpeta_datos):
     
     resultados_finales = {}
     
     for nombre_comuna, codigos in ESTACIONES_A_BUSCAR.items():
         
-        archivos_para_estacion = buscar_archivos_por_codigo(codigos, carpeta_datos, sufijo_archivo)
+        archivos_para_estacion = buscar_archivos_por_codigo(codigos, carpeta_datos)
         
 
         if not archivos_para_estacion:
@@ -91,9 +91,9 @@ def procesar_datos_por_tipo(carpeta_datos, sufijo_archivo):
     return resultados_finales
 
 if __name__ == "__main__":
-    resultados_temp = procesar_datos_por_tipo(CARPETA_TEMP, '')
+    resultados_temp = procesar_datos_por_tipo(CARPETA_TEMP)
 
-    resultados_prec = procesar_datos_por_tipo(CARPETA_PREC, '')
+    resultados_prec = procesar_datos_por_tipo(CARPETA_PREC)
     
     datos_para_mapas = {
         'temperatura': resultados_temp,

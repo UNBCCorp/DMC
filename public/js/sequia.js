@@ -83,9 +83,9 @@ function aplicarMascara(geojsonDataComunas, mapaParaMascara) {
     }
     const mundo = turf.polygon([[[-180, -90], [180, -90], [180, 90], [-180, 90], [-180, -90]]]);
     let unionValpo;
-    if (geojsonDataComunas && geojsonDataComunas.features && geojsonDataComunas.features.length > 0) {
+    if (geojsonDataComunas?.features?.length > 0) {
         unionValpo = geojsonDataComunas.features.reduce((acc, feature) => {
-            if (feature && feature.geometry && (feature.geometry.type === "Polygon" || feature.geometry.type === "MultiPolygon")) {
+            if (feature?.geometry && (feature.geometry.type === "Polygon" || feature.geometry.type === "MultiPolygon")) {
                 try {
                     return acc ? turf.union(acc, feature) : feature;
                 } catch (e) {
@@ -238,7 +238,7 @@ function openMapModal(title, geojsonData, stylePropertyKey, mapIdShort) {
             opacity: 0.8
         }).addTo(currentModalMapInstance);
 
-        if (geojsonData && geojsonData.features && geojsonData.features.length > 0) {
+        if (geojsonData?.features?.length > 0) {
             const modalGeoJsonLayer = L.geoJson(geojsonData, {
                 style: feature => styleFeaturePersistencia(feature, stylePropertyKey)
             }).addTo(currentModalMapInstance);
@@ -254,7 +254,6 @@ function openMapModal(title, geojsonData, stylePropertyKey, mapIdShort) {
             if (typeof turf !== 'undefined') {
                 aplicarMascara(geojsonData, currentModalMapInstance);
             }
-        } else {
         }
         if (L.easyPrint && currentModalMapInstance) {
         L.easyPrint({
@@ -265,7 +264,6 @@ function openMapModal(title, geojsonData, stylePropertyKey, mapIdShort) {
             exportOnly: true,
             hideControlContainer: false
         }).addTo(currentModalMapInstance);
-    } else {
     }
     }, 10);
 }
@@ -478,7 +476,7 @@ function getHighchartsConfig(labels, datasetsData, title) {
 
 function crearGraficoComunalConDatosReales(comunaProps, containerId) {
     const container = document.getElementById(containerId);
-    if (!container || !comunaProps || !comunaProps.CUT_COM || !datosHistoricosGlobales) {
+    if (!container || !comunaProps?.CUT_COM || !datosHistoricosGlobales) {
         return;
     }
 
@@ -647,58 +645,71 @@ function actualizarTituloConMes(ano, mes) {
     }
 }
 
-async function fetchAndMergeApiData(geojsonData) {
-const hoy = new Date();
-const diaDeHoy = hoy.getDate();
+/**
+ * Calcula la fecha objetivo para obtener datos
+ * @returns {Object} Objeto con año y mes formateado
+ */
+function calcularFechaObjetivo() {
+    const hoy = new Date();
+    const diaDeHoy = hoy.getDate();
+    const fechaObjetivo = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
 
-const fechaObjetivo = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
+    // Ajustar mes según el día actual
+    if (diaDeHoy < 17) {
+        fechaObjetivo.setMonth(fechaObjetivo.getMonth() - 2);
+    } else {
+        fechaObjetivo.setMonth(fechaObjetivo.getMonth() - 1);
+    }
 
-if (diaDeHoy < 17) {
-    fechaObjetivo.setMonth(fechaObjetivo.getMonth() - 2);
-} else {
-    fechaObjetivo.setMonth(fechaObjetivo.getMonth() - 1);
+    return {
+        ano: fechaObjetivo.getFullYear(),
+        mes: String(fechaObjetivo.getMonth() + 1).padStart(2, '0')
+    };
 }
 
-const ano = fechaObjetivo.getFullYear();
-const mes = String(fechaObjetivo.getMonth() + 1).padStart(2, '0');
-
-    const apiUrl = `https://prodatos.meteochile.gob.cl/intranet/caster/getdp3/${ano}/${mes}`;
-    const fallbackUrl = 'maps/data/dummy_api_data.json';
+/**
+ * Intenta obtener datos desde la API principal
+ * @param {string} apiUrl - URL de la API
+ * @returns {Promise<Array>} Datos de la API
+ */
+async function obtenerDatosDesdeApi(apiUrl) {
+    const response = await fetch(apiUrl);
+    if (!response.ok) throw new Error(`API respondió con estado: ${response.status}`);
     
-    let apiData;
-    let dataSource = '';
-
-    try {
-        const response = await fetch(apiUrl);
-        if (!response.ok) throw new Error(`API respondió con estado: ${response.status}`);
-        const parsedJson = await response.json();
-        
-        if (parsedJson && Array.isArray(parsedJson.datos) && parsedJson.datos.length > 0) {
-            apiData = parsedJson.datos;
-            dataSource = 'API en Vivo';
-        } else {
-            throw new Error("La respuesta de la API está vacía o no es un arreglo.");
-        }
-
-    } catch (error) {
-        try {
-            const fallbackResponse = await fetch(fallbackUrl);
-            if (!fallbackResponse.ok) throw new Error(`El archivo de respaldo no pudo cargarse.`);
-            const fallbackJson = await fallbackResponse.json();
-            
-            if (fallbackJson && Array.isArray(fallbackJson.datos) && fallbackJson.datos.length > 0) {
-                apiData = fallbackJson.datos;
-                dataSource = 'Respaldo Local';
-            } else {
-                throw new Error("El archivo de respaldo está vacío o tiene un formato incorrecto.");
-            }
-        } catch (fallbackError) {
-            return false;
-        }
+    const parsedJson = await response.json();
+    if (!parsedJson || !Array.isArray(parsedJson.datos) || parsedJson.datos.length === 0) {
+        throw new Error("La respuesta de la API está vacía o no es un arreglo.");
     }
     
+    return parsedJson.datos;
+}
+
+/**
+ * Intenta obtener datos desde la fuente de respaldo
+ * @param {string} fallbackUrl - URL del archivo de respaldo
+ * @returns {Promise<Array>} Datos de respaldo
+ */
+async function obtenerDatosDeRespaldo(fallbackUrl) {
+    const fallbackResponse = await fetch(fallbackUrl);
+    if (!fallbackResponse.ok) throw new Error(`El archivo de respaldo no pudo cargarse.`);
+    
+    const fallbackJson = await fallbackResponse.json();
+    if (!fallbackJson || !Array.isArray(fallbackJson.datos) || fallbackJson.datos.length === 0) {
+        throw new Error("El archivo de respaldo está vacío o tiene un formato incorrecto.");
+    }
+    
+    return fallbackJson.datos;
+}
+
+/**
+ * Crea un mapa de datos indexado por código
+ * @param {Array} apiData - Datos de la API
+ * @returns {Map|null} Mapa de datos o null si no hay claves válidas
+ */
+function crearMapaDeDatos(apiData) {
     const apiDataMap = new Map();
     let keyFound = false;
+    
     for (const item of apiData) {
         const key = item.Code || item.code;
         if (key) {
@@ -706,13 +717,18 @@ const mes = String(fechaObjetivo.getMonth() + 1).padStart(2, '0');
             keyFound = true;
         }
     }
-
-    if (!keyFound) {
-        return false;
-    }
     
+    return keyFound ? apiDataMap : null;
+}
+
+/**
+ * Fusiona los datos de la API con el GeoJSON
+ * @param {Object} geojsonData - Datos GeoJSON
+ * @param {Map} apiDataMap - Mapa de datos de la API
+ */
+function fusionarDatosConGeoJson(geojsonData, apiDataMap) {
     geojsonData.features.forEach(feature => {
-        if (feature.properties && feature.properties.CUT_COM) {
+        if (feature.properties?.CUT_COM) {
             let lookupCode = feature.properties.CUT_COM;
             if (typeof lookupCode === 'string' && lookupCode.length === 5 && lookupCode.startsWith('0')) {
                 lookupCode = lookupCode.substring(1);
@@ -723,6 +739,37 @@ const mes = String(fechaObjetivo.getMonth() + 1).padStart(2, '0');
             }
         }
     });
+}
+
+async function fetchAndMergeApiData(geojsonData) {
+    // Calcular fecha objetivo
+    const { ano, mes } = calcularFechaObjetivo();
+    const apiUrl = `https://prodatos.meteochile.gob.cl/intranet/caster/getdp3/${ano}/${mes}`;
+    const fallbackUrl = 'maps/data/dummy_api_data.json';
+    
+    let apiData;
+    try {
+        // Intentar obtener datos de la API principal
+        apiData = await obtenerDatosDesdeApi(apiUrl);
+    } catch (error) {
+        try {
+            // Si falla, intentar con la fuente de respaldo
+            apiData = await obtenerDatosDeRespaldo(fallbackUrl);
+        } catch (fallbackError) {
+            return false;
+        }
+    }
+    
+    // Crear mapa de datos indexado por código
+    const apiDataMap = crearMapaDeDatos(apiData);
+    if (!apiDataMap) {
+        return false;
+    }
+    
+    // Fusionar datos con el GeoJSON
+    fusionarDatosConGeoJson(geojsonData, apiDataMap);
+    
+    // Actualizar datos adicionales
     actualizarPromediosRegionales(apiData);
     actualizarTituloConMes(ano, mes);
     return true;
@@ -1029,7 +1076,6 @@ document.addEventListener('DOMContentLoaded', function () {
     
     if (document.getElementById('mapaValparaisoLeaflet')) {
         inicializarMapaSequiaValparaisoLeaflet();
-    } else {
     }
     
     panelDetalle = document.getElementById('panel-detalle-comuna');

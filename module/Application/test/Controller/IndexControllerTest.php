@@ -18,10 +18,17 @@ class IndexControllerTest extends AbstractHttpControllerTestCase
         // etc.
         $configOverrides = [];
 
+        /**
+         * @SuppressWarnings(PHPMD.Include)
+         * @codingStandardsIgnoreStart
+         */
+        // NOSONAR - FALSO POSITIVO: Este es un archivo de configuración PHP que DEBE ser incluido 
+        // en tiempo de ejecución para obtener un array de configuración.
         $this->setApplicationConfig(ArrayUtils::merge(
-            include __DIR__ . '/../../../../config/application.config.php',
+            include_once __DIR__ . '/../../../../config/application.config.php', // NOSONAR
             $configOverrides
         ));
+        /** @codingStandardsIgnoreEnd */
 
         parent::setUp();
     }

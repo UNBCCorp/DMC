@@ -35,9 +35,6 @@ window.View = class View {
         this.mapContainer = document.getElementById('mapaValparaisoLeaflet');
         this.panelDetalle = document.getElementById('panel-detalle-comuna');
         this.modalMapContainer = document.getElementById('modalMapContainer');
-        
-        if (!this.mapContainer) {
-        }
     }
     ocultarModalMapa() { 
         document.getElementById('mapModal').style.display = 'none'; 
@@ -58,8 +55,6 @@ window.View = class View {
             this.currentModalMapInstance = null;
         }
     }
-    resaltarComuna(layer) { layer.setStyle({ weight: 3, color: '#333' }); layer.bringToFront(); this.infoControl.update(layer.feature.properties); }
-    resetearResaltado(layer) { this.geoJsonLayer.resetStyle(layer); this.infoControl.update(); }
     bloquearCapa(layer) { layer.setStyle({ weight: 4, color: '#000' }); layer.bringToFront(); }
     mostrarModalMapa(titulo, geojsonData, clave) {
         document.getElementById('modalMapTitle').textContent = `Persistencia ${titulo}`;
@@ -665,13 +660,6 @@ window.View = class View {
             
             // Procesando minimapa
             
-            // Verificar si hay datos de persistencia para esta clave
-            const tieneDatos = geojsonData.features.some(f => 
-                f.properties[p.clave] !== null && 
-                f.properties[p.clave] !== undefined
-            );
-            // Verificando datos del minimapa
-            
             // Limpiar contenido anterior (incluyendo spinner)
             container.innerHTML = '';
             
@@ -744,7 +732,7 @@ window.View = class View {
         }
 
         // Verificar si el contenedor ya tiene un mapa inicializado
-        if (this.mapContainer && this.mapContainer._leaflet_id) {
+        if (this.mapContainer?._leaflet_id) {
             // Limpiando contenedor del mapa
             this.mapContainer._leaflet_id = undefined;
             this.mapContainer.innerHTML = '';

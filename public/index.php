@@ -20,7 +20,7 @@ if (php_sapi_name() === 'cli-server') {
 }
 
 // Composer autoloading
-include __DIR__ . '/../vendor/autoload.php';
+include_once __DIR__ . '/../vendor/autoload.php';
 
 if (! class_exists(Application::class)) {
     throw new RuntimeException(
@@ -30,7 +30,7 @@ if (! class_exists(Application::class)) {
     );
 }
 
-$container = require __DIR__ . '/../config/container.php';
+$container = require_once __DIR__ . '/../config/container.php'; // NOSONAR - FALSO POSITIVO: Este es un archivo de configuración PHP que DEBE ser incluido en tiempo de ejecución para obtener un array de configuración. No es una clase o namespace que pueda importarse con "use".
 // Run the application!
 /** @var Application $app */
 $app = $container->get('Application');

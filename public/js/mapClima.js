@@ -121,7 +121,12 @@ function generarTablaDetalleComunasHTML(properties) {
   }
 
   let html = "";
-  climasEnComuna.sort();
+  // Ordenar por el valor numérico del clima según climaColorClasses
+  climasEnComuna.sort((a, b) => {
+    const climaInfoA = climaColorClasses.find(c => c.code.toUpperCase() === (a || "").trim().toUpperCase()) || { numericalValue: 99 };
+    const climaInfoB = climaColorClasses.find(c => c.code.toUpperCase() === (b || "").trim().toUpperCase()) || { numericalValue: 99 };
+    return climaInfoA.numericalValue - climaInfoB.numericalValue;
+  });
   climasEnComuna.forEach((climaCode, index) => {
     const climaInfo = climaColorClasses.find(
       (c) => c.code.toUpperCase() === (climaCode || "").trim().toUpperCase()
@@ -132,7 +137,7 @@ function generarTablaDetalleComunasHTML(properties) {
     if (climaInfo.color) {
       if (typeof climaInfo.color === 'string') {
         backgroundColor = climaInfo.color;
-      } else if (climaInfo.color.pattern && climaInfo.color.pattern.backgroundColor) {
+      } else if (climaInfo.color.pattern?.backgroundColor) {
         backgroundColor = climaInfo.color.pattern.backgroundColor;
       }
     }
@@ -152,7 +157,7 @@ function generarTablaLeyendaFija(climaFeatures) {
     const climaCode = feature.properties.descript4;
     if (climaCode && !climasUnicos.has(climaCode)) {
       const climaInfo = climaColorClasses.find(
-        (c) => c.code.toUpperCase() === (climaCode || "").trim().toUpperCase()
+        (c) => c.code.toUpperCase() === climaCode.trim().toUpperCase()
       );
       if (climaInfo) climasUnicos.set(climaCode, climaInfo);
     }
@@ -174,7 +179,7 @@ function generarTablaLeyendaFija(climaFeatures) {
     if (climaInfo.color) {
       if (typeof climaInfo.color === 'string') {
         backgroundColor = climaInfo.color;
-      } else if (climaInfo.color.pattern && climaInfo.color.pattern.backgroundColor) {
+      } else if (climaInfo.color.pattern?.backgroundColor) {
         backgroundColor = climaInfo.color.pattern.backgroundColor;
       }
     }
@@ -198,7 +203,7 @@ function unificarGeometriasPorComuna(geojson) {
     comunasAgrupadas.get(nombreComuna).push(feature);
   });
   const featuresUnificados = [];
-  for (const [nombre, features] of comunasAgrupadas.entries()) {
+  for (const [, features] of comunasAgrupadas.entries()) {
     if (features.length === 1) {
       featuresUnificados.push(features[0]);
     } else {
@@ -292,7 +297,7 @@ geoJsonComunasCorregido.features.forEach((comunaFeature) => {
       })
     );
 
-    const climaChart = Highcharts.mapChart(containerId, {
+    Highcharts.mapChart(containerId, {
         chart: {
         map: geoJsonComunasCorregido,
         height: "100%",
@@ -307,14 +312,6 @@ geoJsonComunasCorregido.features.forEach((comunaFeature) => {
         },
         },
       title: { text: null },
-      exporting: {
-        enabled: true,
-        buttons: {
-          contextButton: {
-            enabled: false // Ocultar el botón de menú por defecto
-          }
-        }
-      },
       mapNavigation: { enabled: true },
       colorAxis: {
         dataClasses: climaColorClasses.map((clase) => ({
