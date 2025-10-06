@@ -168,8 +168,8 @@ class DataManagerService
     public function normalizarTexto(string $texto): string
     {
         return strtoupper(trim(str_replace(
-            ['Á', 'É', 'Í', 'Ó', 'Ú', 'á', 'é', 'í', 'ó', 'ú'], 
-            ['A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u'], 
+            ['Á', 'É', 'Í', 'Ó', 'Ú', 'á', 'é', 'í', 'ó', 'ú'],
+            ['A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u'],
             $texto
         )));
     }
