@@ -2,27 +2,27 @@
 (function() {
     // Interceptar console.error para suprimir errores 404 de indices.txt
     const originalError = console.error;
-    console.error = function(...args) {
-        const message = args.join(' ');
-        // Suprimir errores 404 de archivos indices.txt
-        if ((message.includes('404') || message.includes('Not Found')) && 
-            (message.includes('indices.txt') || message.includes('/txt/'))) {
-            return;
-        }
-        originalError.apply(console, args);
-    };
+    // console.error = function(...args) {
+    //     const message = args.join(' ');
+    //     // Suprimir errores 404 de archivos indices.txt
+    //     if ((message.includes('404') || message.includes('Not Found')) && 
+    //         (message.includes('indices.txt') || message.includes('/txt/'))) {
+    //         return;
+    //     }
+    //     originalError.apply(console, args);
+    // };
     
     // Interceptar console.warn también
     const originalWarn = console.warn;
-    console.warn = function(...args) {
-        const message = args.join(' ');
-        // Suprimir warnings 404 de archivos indices.txt
-        if ((message.includes('404') || message.includes('Not Found')) && 
-            (message.includes('indices.txt') || message.includes('/txt/'))) {
-            return;
-        }
-        originalWarn.apply(console, args);
-    };
+    // console.warn = function(...args) {
+    //     const message = args.join(' ');
+    //     // Suprimir warnings 404 de archivos indices.txt
+    //     if ((message.includes('404') || message.includes('Not Found')) && 
+    //         (message.includes('indices.txt') || message.includes('/txt/'))) {
+    //         return;
+    //     }
+    //     originalWarn.apply(console, args);
+    // };
     
     // Interceptar eventos de error global del navegador
     window.addEventListener('error', function(e) {
@@ -442,35 +442,40 @@ function renderTimeSeriesChart(containerId, title, fechas, series) {
 async function processAndRender(indexType, containerId, title, escalaSeleccionada = '12') {
     const placeholder = document.querySelector(`#${containerId} .loading-placeholder`);
     try {
-        // Lista de archivos que sabemos que existen (para evitar errores 404)
-        const archivosExistentes = {
+        // Lista de archivos conocidos que existen (para optimización, pero no limitante)
+        // El sistema intentará cargar todos los archivos en el rango temporal
+        const archivosConocidos = {
             'spi': [
-                '2019_01', '2019_02', '2019_03', '2019_04',
-                '2021_06', '2021_07', '2021_08', '2021_09', '2021_10', '2021_11', '2021_12',
-                '2022_01', '2022_02', '2022_03', '2022_04', '2022_05', '2022_06', 
-                '2022_07', '2022_08', '2022_09', '2022_10', '2022_11', '2022_12',
-                '2023_01', '2023_02', '2023_03', '2023_04', '2023_05', '2023_06',
-                '2023_07', '2023_08', '2023_09', '2023_10', '2023_11', '2023_12',
-                '2024_01', '2024_02', '2024_03', '2024_04', '2024_05', '2024_06',
-                '2024_07', '2024_08', '2024_09', '2024_10', '2024_11', '2024_12',
-                '2025_01', '2025_02', '2025_03', '2025_04', '2025_05', '2025_06', '2025_07'
+                // Archivos que sabemos que existen para optimización
+                '2019_01', '2019_02', '2019_03', '2019_04', '2019_05', '2019_06',
+                '2019_07', '2019_08', '2019_09', '2019_10', '2019_11', '2019_12',
+                '2020_01', '2020_02', '2021_06', '2021_07', '2021_08', '2021_09', 
+                '2021_10', '2021_11', '2021_12', '2022_01', '2022_02', '2022_03', 
+                '2022_04', '2022_05', '2022_06', '2022_07', '2022_08', '2022_09', 
+                '2022_10', '2022_11', '2022_12', '2023_01', '2023_02', '2023_03', 
+                '2023_04', '2023_05', '2023_06', '2023_07', '2023_08', '2023_09', 
+                '2023_10', '2023_11', '2023_12', '2024_01', '2024_02', '2024_03', 
+                '2024_04', '2024_05', '2024_06', '2024_07', '2024_08', '2024_09', 
+                '2024_10', '2024_11', '2024_12', '2025_01', '2025_02', '2025_03', 
+                '2025_04', '2025_05', '2025_06', '2025_07'
             ],
             'spei': [
-                '2019_01', '2019_02', '2019_03', '2019_04',
-                '2021_06', '2021_07', '2021_08', '2021_09', '2021_10', '2021_11', '2021_12',
-                '2022_01', '2022_02', '2022_03', '2022_04', '2022_05', '2022_06',
-                '2022_07', '2022_08', '2022_09', '2022_10', '2022_11', '2022_12',
-                '2023_01', '2023_02', '2023_03', '2023_04', '2023_05', '2023_06',
-                '2023_07', '2023_08', '2023_09', '2023_10', '2023_11', '2023_12',
-                '2024_01', '2024_02', '2024_03', '2024_04', '2024_05', '2024_06',
-                '2024_07', '2024_08', '2024_09', '2024_10', '2024_11', '2024_12',
-                '2025_01', '2025_02', '2025_03', '2025_04', '2025_05', '2025_06'
+                // Archivos que sabemos que existen para optimización
+                '2019_01', '2019_02', '2019_03', '2019_04', '2021_06', '2021_07', 
+                '2021_08', '2021_09', '2021_10', '2021_11', '2021_12', '2022_01', 
+                '2022_02', '2022_03', '2022_04', '2022_05', '2022_06', '2022_07', 
+                '2022_08', '2022_09', '2022_10', '2022_11', '2022_12', '2023_01', 
+                '2023_02', '2023_03', '2023_04', '2023_05', '2023_06', '2023_07', 
+                '2023_08', '2023_09', '2023_10', '2023_11', '2023_12', '2024_01', 
+                '2024_02', '2024_03', '2024_04', '2024_05', '2024_06', '2024_07', 
+                '2024_08', '2024_09', '2024_10', '2024_11', '2024_12', '2025_01', 
+                '2025_02', '2025_03', '2025_04', '2025_05', '2025_06'
             ]
         };
 
         // Buscar todos los archivos disponibles en el historial completo
-        // Empezamos desde enero 2019 hasta la fecha más reciente disponible
-        const fechaInicio = new Date(2019, 0, 1); // Enero 2019
+        // Todos los gráficos muestran desde enero 2019 hasta la fecha actual
+        const fechaInicio = new Date(2019, 0, 1); // Enero 2019 para todos los índices
         const fechaFin = new Date(); // Fecha actual
         
         const fechasParaEjeX = [];
@@ -487,44 +492,47 @@ async function processAndRender(indexType, containerId, title, escalaSeleccionad
             
             fechasParaEjeX.push(fechaLabel);
             
-            // Solo hacer petición si sabemos que el archivo existe
-            if (archivosExistentes[indexType] && archivosExistentes[indexType].includes(archivoKey)) {
-                const url = `maps/data/salida/${indexType}/txt/${ano}_${mesFormateado}_indices.txt`;
-                
-                // Función para cargar archivo que sabemos que existe
-                const cargarArchivo = () => {
-                    return new Promise((resolve) => {
-                        const xhr = new XMLHttpRequest();
-                        xhr.open('GET', url, true);
-                        
-                        xhr.onload = function() {
-                            if (xhr.status === 200) {
-                                resolve({ ano, mes, fechaLabel, text: xhr.responseText });
-                            } else {
-                                resolve({ ano, mes, fechaLabel, text: null });
+            // Intentar cargar todos los archivos en el rango temporal
+            // Usar lista de archivos conocidos solo para optimización, no como limitante
+            const url = `maps/data/salida/${indexType}/txt/${ano}_${mesFormateado}_indices.txt`;
+            const esArchivoConocido = archivosConocidos[indexType] && archivosConocidos[indexType].includes(archivoKey);
+            
+            // Función para cargar archivo con manejo de errores
+            const cargarArchivo = () => {
+                return new Promise((resolve) => {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open('GET', url, true);
+                    
+                    xhr.onload = function() {
+                        if (xhr.status === 200) {
+                            resolve({ ano, mes, fechaLabel, text: xhr.responseText, encontrado: true });
+                        } else {
+                            // Solo mostrar error 404 si no es un archivo conocido (para evitar spam en consola)
+                            if (!esArchivoConocido && xhr.status === 404) {
+                                // console.warn(`Archivo no encontrado: ${url}`);
                             }
-                        };
-                        
-                        xhr.onerror = function() {
-                            resolve({ ano, mes, fechaLabel, text: null });
-                        };
-                        
-                        xhr.send();
-                    });
-                };
-                
-                promesasFetch.push(cargarArchivo());
-            } else {
-                // Para archivos que no existen, agregar directamente null sin hacer petición
-                promesasFetch.push(Promise.resolve({ ano, mes, fechaLabel, text: null }));
-            }
+                            resolve({ ano, mes, fechaLabel, text: null, encontrado: false });
+                        }
+                    };
+                    
+                    xhr.onerror = function() {
+                        if (!esArchivoConocido) {
+                            // console.warn(`Error al cargar: ${url}`);
+                        }
+                        resolve({ ano, mes, fechaLabel, text: null, encontrado: false });
+                    };
+                    
+                    xhr.send();
+                });
+            };
+            
+            promesasFetch.push(cargarArchivo());
             
             // Avanzar al siguiente mes
             fechaActual.setMonth(fechaActual.getMonth() + 1);
         }
 
-        // Buscando historial completo de datos
-        
+        // Buscando historial completo de datos desde enero 2019 hasta la fecha actual        
         const resultadosMensuales = await Promise.all(promesasFetch);
 
         // Procesar datos mensualmente - usar solo la columna específica de la escala
@@ -532,7 +540,7 @@ async function processAndRender(indexType, containerId, title, escalaSeleccionad
         let archivosEncontrados = 0;
         
         resultadosMensuales.forEach(resultado => {
-            if (resultado.text) {
+            if (resultado.text && resultado.encontrado) {
                 archivosEncontrados++;
                 const valoresRegionales = getRegionalValuesFromFile(resultado.text, VALPARAISO_STATIONS);
                 if (valoresRegionales && valoresRegionales[escalaSeleccionada]) {
@@ -542,6 +550,7 @@ async function processAndRender(indexType, containerId, title, escalaSeleccionad
         });
         
         // Archivos procesados correctamente
+        // console.log(`Archivos ${indexType.toUpperCase()} encontrados: ${archivosEncontrados} de ${resultadosMensuales.length} meses consultados`);
         
         // Crear serie de datos con todo el historial disponible
         const datosParaSerie = [];
@@ -590,8 +599,7 @@ async function processAndRender(indexType, containerId, title, escalaSeleccionad
         
         const nuevoTitulo = `${title} - Período: ${periodoMostrado}`;
         
-        // Renderizando gráfico con datos procesados
-        
+        // Renderizando gráfico con datos procesados        
         renderTimeSeriesChart(containerId, nuevoTitulo, fechasLimpias, seriesFinales);
 
     } catch (error) {
