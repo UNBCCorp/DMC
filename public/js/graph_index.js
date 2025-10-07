@@ -465,8 +465,8 @@ async function processAndRender(indexType, containerId, title, escalaSeleccionad
         };
 
         // Buscar  los archivos disponibles en el historial completo
-        //  los gráficos muestran desde enero 2019 hasta la fecha actual
-        const fechaInicio = new Date(2019, 0, 1); // Enero 2019 para  los índices
+        //  los gráficos muestran desde junio 2021 hasta la fecha actual
+        const fechaInicio = new Date(2021, 5, 1); // Junio 2021 para  los índices
         const fechaFin = new Date(); // Fecha actual
         
         const fechasParaEjeX = [];
