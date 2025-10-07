@@ -13,6 +13,7 @@ $this->inlineScript()
     ->appendFile('https://code.highcharts.com/modules/offline-exporting.js')
     ->appendFile($this->basePath('/js/turf/turf.min.js'))
     ->appendFile($this->basePath('/js/easyprint/bundle.min.js'))
+    ->appendFile($this->basePath('/js/utils-geo.js'))
     ->appendFile($this->basePath('/js/mapasPercintil.js'));
 ?>
 <div class="container-fluid main-container">

@@ -12,9 +12,7 @@ async function crearMapaPercentilesHighcharts(
 ) {
     const placeholder = document.querySelector(`#${containerId} .map-loading-placeholder`);
     try {
-        if (!geoJsonConDatos?.features) {
-            throw new Error("GeoJSON para el mapa no está cargado o es inválido.");
-        }
+        validateGeoJson(geoJsonConDatos, "GeoJSON para el mapa no está cargado o es inválido.");
 
         const chart = Highcharts.mapChart(containerId, {
             chart: {
@@ -142,27 +140,13 @@ async function inicializarMapasDePercentiles() {
         if (datosPercentiles.error) throw new Error(datosPercentiles.error);
 
         geoJsonComunasCorregido.features.forEach(feature => {
-            if (!feature.properties) feature.properties = {};
-            
             const nombreComuna = feature.properties[COMUNA_NAME_PROPERTY];
             
-            const datosPrecip = datosPercentiles.precipitacion[nombreComuna];
-            if (datosPrecip?.percentil !== undefined) {
-                feature.properties.percentil_precip = datosPrecip.percentil;
-                feature.properties.valor_precip = datosPrecip.valor_actual; 
-            } else {
-                feature.properties.percentil_precip = -999; // Valor especial para sin datos
-                feature.properties.valor_precip = null;
-            }
-
-            const datosTemp = datosPercentiles.temperatura[nombreComuna];
-            if (datosTemp?.percentil !== undefined) {
-                feature.properties.percentil_temp = datosTemp.percentil;
-                feature.properties.valor_temp = datosTemp.valor_actual;
-            } else {
-                feature.properties.percentil_temp = -999; // Valor especial para sin datos
-                feature.properties.valor_temp = null;
-            }
+            // Procesar datos de precipitación
+            procesarDatosPercentiles(feature, nombreComuna, datosPercentiles, 'precipitacion');
+            
+            // Procesar datos de temperatura
+            procesarDatosPercentiles(feature, nombreComuna, datosPercentiles, 'temperatura');
         });
 
         crearMapaPercentilesHighcharts(
@@ -189,41 +173,7 @@ async function inicializarMapasDePercentiles() {
     }
 }
 
-function unificarGeometriasPorComuna(geojson) {
-    if (typeof turf === 'undefined') {
-        return geojson;
-    }
-    const comunasAgrupadas = new Map();
-    geojson.features.forEach(feature => {
-        const nombreComuna = feature.properties.COMUNA;
-        if (!nombreComuna) return;
-        if (!comunasAgrupadas.has(nombreComuna)) {
-            comunasAgrupadas.set(nombreComuna, []);
-        }
-        comunasAgrupadas.get(nombreComuna).push(feature);
-    });
-    const featuresUnificados = [];
-    for (const [, features] of comunasAgrupadas.entries()) {
-        if (features.length === 1) {
-            featuresUnificados.push(features[0]);
-        } else {
-            try {
-                // Código específico para comunas con múltiples geometrías si es necesario
-                let geometriaUnificada = features[0];
-                for (let i = 1; i < features.length; i++) {
-                    geometriaUnificada = turf.union(geometriaUnificada, features[i]);
-                }
-                const featureMasGrande = features.sort((a, b) => b.properties.Shape_Area - a.properties.Shape_Area)[0];
-                geometriaUnificada.properties = featureMasGrande.properties;
-                featuresUnificados.push(geometriaUnificada);
-            } catch (e) {
-                const featureMasGrande = features.sort((a, b) => b.properties.Shape_Area - a.properties.Shape_Area)[0];
-                featuresUnificados.push(featureMasGrande);
-            }
-        }
-    }
-    return { type: 'FeatureCollection', name: geojson.name, features: featuresUnificados };
-}
+// Función unificarGeometriasPorComuna movida a utils-geo.js para evitar duplicación
 
 document.addEventListener('DOMContentLoaded', function() {
     inicializarMapasDePercentiles();

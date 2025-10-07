@@ -15,6 +15,7 @@ $this->inlineScript()
     ->appendFile('https://code.highcharts.com/modules/offline-exporting.js')
     ->appendFile($this->basePath('/js/turf/turf.min.js'))
     ->appendFile($this->basePath('/js/easyprint/bundle.min.js'))
+    ->appendFile($this->basePath('/js/utils-geo.js'))
     ->appendFile($this->basePath('/js/mapClima.js?v=' . time()));
 ?>
 <link rel="stylesheet" href="<?= $this->basePath('/css/nuevo.css') ?>">

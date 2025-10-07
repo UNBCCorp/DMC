@@ -1,0 +1,17 @@
+<?php
+// module/Application/view/application/partial/spinner-with-text.phtml
+// Spinner de carga con texto descriptivo reutilizable
+$spinnerText = $spinnerText ?? 'Cargando...';
+$descriptionText = $descriptionText ?? 'Cargando contenido...';
+$spinnerSize = $spinnerSize ?? 'spinner-border';
+?>
+<div class="d-flex justify-content-center align-items-center h-100">
+    <div class="text-center">
+        <div class="<?= $spinnerSize ?> text-primary">
+            <output class="visually-hidden"><?= $spinnerText ?></output>
+        </div>
+        <div class="mt-2">
+            <small class="text-muted"><?= $descriptionText ?></small>
+        </div>
+    </div>
+</div>

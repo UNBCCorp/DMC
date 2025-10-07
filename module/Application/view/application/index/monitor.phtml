@@ -87,29 +87,7 @@ $this->inlineScript()
                                 <div class="card">
                                     <div class="card-header d-flex justify-content-between align-items-center bg-cabezera text-white">
                                         <h6>Categorías por Comuna (% Área D0-D4)</h6>
-                                        <div id="map-legend" class="legend d-inline-block">
-                                        <table class="table-legend">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Categoría 1</th>
-                                                    <th scope="col">Categoría 2</th>
-                                                    <th scope="col">Categoría 3</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td><span class="color-box" style="background:#d9d9d9;"></span> SS</td>
-                                                    <td><span class="color-box" style="background:#ffff00;"></span> D0</td>
-                                                    <td><span class="color-box" style="background:#fcd37f;"></span> D1</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><span class="color-box" style="background:#ffaa00;"></span> D2</td>
-                                                    <td><span class="color-box" style="background:#EA2B00;"></span> D3</td>
-                                                    <td><span class="color-box" style="background:#801300;"></span> D4</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                        <?= $this->partial('application/partial/sequia-legend.phtml') ?>
                                     </div>
                                     <div class="card-body p-0">
                                         <div id="mapaValparaisoLeaflet" style="height: 600px;"></div>
@@ -167,11 +145,4 @@ $this->inlineScript()
     </div>
 </div>
 
-<!-- Modal del Mapa -->
-<div id="mapModal" class="map-modal"> 
-    <div class="map-modal-content">
-        <span class="map-modal-close-button">&times;</span> 
-        <h3 id="modalMapTitle">Detalles del Mapa</h3> 
-        <div id="modalMapContainer"></div> 
-    </div>
-</div>
+<?= $this->partial('application/partial/sequia-modal.phtml') ?>

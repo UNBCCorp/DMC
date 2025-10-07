@@ -189,48 +189,7 @@ function generarTablaLeyendaFija(climaFeatures) {
   leyendaBody.innerHTML = html;
 }
 
-function unificarGeometriasPorComuna(geojson) {
-  if (typeof turf === "undefined") {
-    return geojson;
-  }
-  const comunasAgrupadas = new Map();
-  geojson.features.forEach((feature) => {
-    const nombreComuna = feature.properties.COMUNA;
-    if (!nombreComuna) return;
-    if (!comunasAgrupadas.has(nombreComuna)) {
-      comunasAgrupadas.set(nombreComuna, []);
-    }
-    comunasAgrupadas.get(nombreComuna).push(feature);
-  });
-  const featuresUnificados = [];
-  for (const [, features] of comunasAgrupadas.entries()) {
-    if (features.length === 1) {
-      featuresUnificados.push(features[0]);
-    } else {
-      try {
-        let geometriaUnificada = features[0];
-        for (let i = 1; i < features.length; i++) {
-          geometriaUnificada = turf.union(geometriaUnificada, features[i]);
-        }
-        const featureMasGrande = features.sort(
-          (a, b) => b.properties.Shape_Area - a.properties.Shape_Area
-        )[0];
-        geometriaUnificada.properties = featureMasGrande.properties;
-        featuresUnificados.push(geometriaUnificada);
-      } catch (e) {
-        const featureMasGrande = features.sort(
-          (a, b) => b.properties.Shape_Area - a.properties.Shape_Area
-        )[0];
-        featuresUnificados.push(featureMasGrande);
-      }
-    }
-  }
-  return {
-    type: "FeatureCollection",
-    name: geojson.name,
-    features: featuresUnificados,
-  };
-}
+// Función unificarGeometriasPorComuna movida a utils-geo.js para evitar duplicación
 
 let mapaClimaLeaflet = null;
 

@@ -1,0 +1,11 @@
+<?php
+// module/Application/view/application/partial/spinner-loading.phtml
+// Spinner de carga reutilizable
+$spinnerText = $spinnerText ?? 'Cargando...';
+$spinnerSize = $spinnerSize ?? 'spinner-border'; // spinner-border-sm para spinners pequeños
+?>
+<div class="d-flex justify-content-center align-items-center h-100">
+    <div class="<?= $spinnerSize ?> text-primary">
+        <output class="visually-hidden"><?= $spinnerText ?></output>
+    </div>
+</div>
