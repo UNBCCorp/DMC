@@ -34,6 +34,16 @@ function procesarDatosPercentiles(feature, comunaName, datosPercentiles, tipo) {
 }
 
 /**
+ * Obtiene el feature más grande basado en Shape_Area
+ * @param {Array} features - Array de features
+ * @returns {Object} El feature con mayor Shape_Area
+ */
+function obtenerFeatureMasGrande(features) {
+    const sortedFeatures = [...features].sort((a, b) => b.properties.Shape_Area - a.properties.Shape_Area);
+    return sortedFeatures[0];
+}
+
+/**
  * Unifica geometrías por comuna para evitar duplicados
  * @param {Object} geojson - GeoJSON original
  * @param {string} comunaProperty - Propiedad que contiene el nombre de la comuna
@@ -65,11 +75,11 @@ function unificarGeometriasPorComuna(geojson, comunaProperty = 'COMUNA') {
                 for (let i = 1; i < features.length; i++) {
                     geometriaUnificada = turf.union(geometriaUnificada, features[i]);
                 }
-                const featureMasGrande = features.sort((a, b) => b.properties.Shape_Area - a.properties.Shape_Area)[0];
+                const featureMasGrande = obtenerFeatureMasGrande(features);
                 geometriaUnificada.properties = featureMasGrande.properties;
                 featuresUnificados.push(geometriaUnificada);
             } catch (e) {
-                const featureMasGrande = features.sort((a, b) => b.properties.Shape_Area - a.properties.Shape_Area)[0];
+                const featureMasGrande = obtenerFeatureMasGrande(features);
                 featuresUnificados.push(featureMasGrande);
             }
         }
