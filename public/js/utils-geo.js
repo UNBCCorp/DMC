@@ -79,6 +79,8 @@ function unificarGeometriasPorComuna(geojson, comunaProperty = 'COMUNA') {
                 geometriaUnificada.properties = featureMasGrande.properties;
                 featuresUnificados.push(geometriaUnificada);
             } catch (e) {
+                // Si falla la unificación con turf, usar el feature más grande como fallback
+                console.warn('Error al unificar geometrías con turf, usando feature más grande:', e.message);
                 const featureMasGrande = obtenerFeatureMasGrande(features);
                 featuresUnificados.push(featureMasGrande);
             }
