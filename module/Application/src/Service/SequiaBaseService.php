@@ -23,10 +23,9 @@ class SequiaBaseService
         $fechaBase = new \DateTime();
         
         if ($diaDeHoy < 17) {
-            $fechaBase->modify('-2 months');
-        } else {
             $fechaBase->modify('-1 month');
         }
+        // Si día >= 17, usar el mes actual
         
         return $fechaBase;
     }

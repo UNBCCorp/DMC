@@ -316,10 +316,9 @@ async function cargarDatosHistoricos() {
     const fechaBase = new Date(hoy.getFullYear(), hoy.getMonth(), 1); 
 
     if (diaDeHoy < 17) {
-        fechaBase.setMonth(fechaBase.getMonth() - 2);
-    } else {
         fechaBase.setMonth(fechaBase.getMonth() - 1);
     }
+    // Si día >= 17, usar el mes actual
 
     const numMeses = 12;
     const promesas = [];
@@ -656,10 +655,9 @@ function calcularFechaObjetivo() {
 
     // Ajustar mes según el día actual
     if (diaDeHoy < 17) {
-        fechaObjetivo.setMonth(fechaObjetivo.getMonth() - 2);
-    } else {
         fechaObjetivo.setMonth(fechaObjetivo.getMonth() - 1);
     }
+    // Si día >= 17, usar el mes actual
 
     return {
         ano: fechaObjetivo.getFullYear(),

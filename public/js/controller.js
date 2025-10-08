@@ -35,10 +35,9 @@ window.Controller = class Controller {
         
         // Misma lógica que en el backend para determinar el mes de los datos
         if (diaDeHoy < 17) {
-            fechaObjetivo.setMonth(fechaObjetivo.getMonth() - 2);
-        } else {
             fechaObjetivo.setMonth(fechaObjetivo.getMonth() - 1);
         }
+        // Si día >= 17, usar el mes actual
         
         const meses = [
             'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
