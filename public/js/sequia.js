@@ -818,6 +818,72 @@ function actualizarPromediosRegionalesDesdeEndpoint(promedios) {
     });
 }
 
+/**
+ * Configura el mapa base de Leaflet
+ */
+function configurarMapaBase(mapEl) {
+    const mapa = L.map(mapEl, {
+        zoomControl: true, 
+        minZoom: 7.70,
+        maxZoom: 12,
+    }).setView([-33.0, -71.2], 9);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> contributors', 
+        opacity: 0.7
+    }).addTo(mapa);
+    
+    mapa.on('click', function() {
+        ocultarPanelDetalle();
+    });
+    
+    return mapa;
+}
+
+/**
+ * Procesa los datos del endpoint y actualiza variables globales
+ */
+function procesarDatosEndpoint(result) {
+    datosGeoJsonGlobales = result.geojsonData;
+    
+    if (result.datosHistoricosComunales) {
+        datosHistoricosGlobales = result.datosHistoricosComunales;
+    }
+    
+    // Usar optional chaining para mayor concisión
+    result.datosSidebar?.promedios && actualizarPromediosRegionalesDesdeEndpoint(result.datosSidebar.promedios);
+    
+    // Actualizar título con el mes correspondiente
+    const { mesNombre } = Controller.obtenerMesDatos();
+    const tituloElement = document.getElementById('titulo-afectacion-categoria');
+    tituloElement?.textContent && (tituloElement.textContent = `Porcentaje de afectación y categoría - ${mesNombre}`);
+    
+    return JSON.parse(JSON.stringify(datosGeoJsonGlobales));
+}
+
+/**
+ * Configura controles y funcionalidades adicionales del mapa
+ */
+function configurarControlesAdicionales(mapa, dataPrincipal) {
+    const infoCtrl = crearControlInfo();
+    if (infoCtrl) infoCtrl.addTo(mapa);
+
+    if (typeof turf !== 'undefined') {
+        aplicarMascara(dataPrincipal, mapa);
+    }
+
+    if (L.easyPrint) {
+        L.easyPrint({
+            title: 'Exportar Mapa Principal',
+            position: 'topleft',
+            sizeModes: ['A4Portrait', 'A4Landscape', 'Current'],
+            filename: 'mapa_sequia_valparaiso_principal',
+            exportOnly: true,
+            hideControlContainer: false
+        }).addTo(mapa);
+    }
+}
+
 function crearLeyendaPersistencia() {
     const container = document.getElementById('persistencia-container');
     if (!container) {
@@ -879,21 +945,10 @@ async function inicializarMapaSequiaValparaisoLeaflet() {
     mapEl.innerHTML = '';
  
     try {
-        mapaLeafletValparaiso = L.map(mapEl, {
-            zoomControl: true, 
-            minZoom: 7.70,
-            maxZoom: 12,
-        }).setView([-33.0, -71.2], 9);
+        // Configurar mapa base
+        mapaLeafletValparaiso = configurarMapaBase(mapEl);
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> contributors', opacity: 0.7
-        }).addTo(mapaLeafletValparaiso);
-        
-        mapaLeafletValparaiso.on('click', function() {
-            ocultarPanelDetalle();
-        });
-
-        // Cargar todos los datos desde el endpoint PHP
+        // Cargar datos desde el endpoint PHP
         const response = await fetch('/api/sequia');
         if (!response.ok) throw new Error(`Error al cargar datos: ${response.statusText}`);
         const result = await response.json();
@@ -902,27 +957,10 @@ async function inicializarMapaSequiaValparaisoLeaflet() {
             throw new Error(result.message || 'Error al obtener datos del servidor');
         }
 
-        // Usar los datos ya procesados del endpoint PHP
-        datosGeoJsonGlobales = result.geojsonData;
-        const dataPrincipal = JSON.parse(JSON.stringify(datosGeoJsonGlobales));
+        // Procesar datos del endpoint
+        const dataPrincipal = procesarDatosEndpoint(result);
 
-        // Guardar datos históricos globalmente para uso posterior
-        if (result.datosHistoricosComunales) {
-            datosHistoricosGlobales = result.datosHistoricosComunales;
-        }
-
-        // Actualizar título y promedios regionales con datos del endpoint PHP
-        if (result.datosSidebar && result.datosSidebar.promedios) {
-            actualizarPromediosRegionalesDesdeEndpoint(result.datosSidebar.promedios);
-        }
-        
-        // Actualizar título con el mes correspondiente
-        const { mesNombre } = Controller.obtenerMesDatos();
-        const tituloElement = document.getElementById('titulo-afectacion-categoria');
-        if (tituloElement) {
-            tituloElement.textContent = `Porcentaje de afectación y categoría - ${mesNombre}`;
-        }
-
+        // Crear capa GeoJSON
         geoJsonLayerComunas = L.geoJson(dataPrincipal, {
             style: styleFeatureSequia,
             onEachFeature: onEachFeatureSequia
@@ -932,31 +970,18 @@ async function inicializarMapaSequiaValparaisoLeaflet() {
             mapaLeafletValparaiso.fitBounds(geoJsonLayerComunas.getBounds());
         }
 
-        infoControl = crearControlInfo();
-        if (infoControl) infoControl.addTo(mapaLeafletValparaiso);
-
-        if (typeof turf !== 'undefined') {
-            aplicarMascara(dataPrincipal, mapaLeafletValparaiso);
-        }
-
-        if (L.easyPrint) {
-            L.easyPrint({
-                title: 'Exportar Mapa Principal',
-                position: 'topleft',
-                sizeModes: ['A4Portrait', 'A4Landscape', 'Current'],
-                filename: 'mapa_sequia_valparaiso_principal',
-                exportOnly: true,
-                hideControlContainer: false
-            }).addTo(mapaLeafletValparaiso);
-        }
+        // Configurar controles adicionales
+        configurarControlesAdicionales(mapaLeafletValparaiso, dataPrincipal);
         
-        if (document.getElementById('timeSeriesChartRegionalSidebar')) {
+        // Crear gráfico regional si existe el contenedor
+        const chartContainer = document.getElementById('timeSeriesChartRegionalSidebar');
+        if (chartContainer) {
             crearGraficoRegionalConDatosReales('timeSeriesChartRegionalSidebar');
         }
         
+        // Crear leyenda y cargar datos de persistencia
         crearLeyendaPersistencia();
-        
-         if (datosGeoJsonGlobales) {
+        if (datosGeoJsonGlobales) {
             cargarDatosDesdeTxtYMostrarPersistencia(datosGeoJsonGlobales);
         }
  
