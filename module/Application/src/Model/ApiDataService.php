@@ -6,13 +6,13 @@ namespace Application\Model;
 class ApiDataService {
 
      private function fetchApiData( $ano, $mes) {
-        $url = "https://prodatos.meteochile.gob.cl/intranet/caster/getdp3/{$ano}/{$mes}";
+        $url = "https://climatologia.meteochile.gob.cl/application/serviciosb/getMonitorSequia{$ano}/{$mes}";
         
         $curl = curl_init($url);
         curl_setopt_array($curl, [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
-            CURLOPT_TIMEOUT => 10, // Es bueno tener un timeout
+            CURLOPT_TIMEOUT => 10,
             CURLOPT_SSL_VERIFYPEER => true,
             CURLOPT_SSL_VERIFYHOST => 2,
         ]);

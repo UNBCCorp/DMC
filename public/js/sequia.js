@@ -324,7 +324,7 @@ async function cargarDatosHistoricos() {
     const promesas = [];
 
     const fetchMes = async (ano, mes) => {
-        const url = `https://prodatos.meteochile.gob.cl/intranet/caster/getdp3/${ano}/${mes}`;
+        const url = `https://prodatos.meteochile.gob.cl/intranet/caster/getIndiceIntensidadImpactos/${ano}/11`;
         try {
             const response = await fetch(url);
             if (!response.ok) return null;
@@ -742,7 +742,7 @@ function fusionarDatosConGeoJson(geojsonData, apiDataMap) {
 async function fetchAndMergeApiData(geojsonData) {
     // Calcular fecha objetivo
     const { ano, mes } = calcularFechaObjetivo();
-    const apiUrl = `https://prodatos.meteochile.gob.cl/intranet/caster/getdp3/${ano}/${mes}`;
+    const apiUrl = `https://prodatos.meteochile.gob.cl/intranet/caster/getIndiceIntensidadImpactos/${ano}/${mes}`;
     const fallbackUrl = 'maps/data/dummy_api_data.json';
     
     let apiData;
@@ -798,6 +798,22 @@ function actualizarPromediosRegionales(datosComunales) {
         const elemento = document.getElementById(idElemento);
         if (elemento) {
             elemento.textContent = promedio.toFixed(1) + '%';
+        }
+    });
+}
+
+function actualizarPromediosRegionalesDesdeEndpoint(promedios) {
+    if (!promedios) {
+        return;
+    }
+
+    const categorias = ['SA', 'D0', 'D1', 'D2', 'D3', 'D4'];
+    
+    categorias.forEach(cat => {
+        const idElemento = `avg-${cat.toLowerCase()}`;
+        const elemento = document.getElementById(idElemento);
+        if (elemento && promedios[cat] !== undefined) {
+            elemento.textContent = parseFloat(promedios[cat]).toFixed(1) + '%';
         }
     });
 }
@@ -877,18 +893,35 @@ async function inicializarMapaSequiaValparaisoLeaflet() {
             ocultarPanelDetalle();
         });
 
-        await cargarDatosHistoricos();
+        // Cargar todos los datos desde el endpoint PHP
+        const response = await fetch('/api/sequia');
+        if (!response.ok) throw new Error(`Error al cargar datos: ${response.statusText}`);
+        const result = await response.json();
         
-        const response = await fetch(GEOJSON_COMUNAS_VALPO_URL);
-        if (!response.ok) throw new Error(`Error al cargar GeoJSON: ${response.statusText}`);
-        datosGeoJsonGlobales = await response.json();
-
-        const fusionExitosa = await fetchAndMergeApiData(datosGeoJsonGlobales);
-        if (!fusionExitosa) {
-            throw new Error("No se pudieron fusionar los datos de la API; se detiene la carga del mapa.");
+        if (!result.success) {
+            throw new Error(result.message || 'Error al obtener datos del servidor');
         }
 
+        // Usar los datos ya procesados del endpoint PHP
+        datosGeoJsonGlobales = result.geojsonData;
         const dataPrincipal = JSON.parse(JSON.stringify(datosGeoJsonGlobales));
+
+        // Guardar datos históricos globalmente para uso posterior
+        if (result.datosHistoricosComunales) {
+            datosHistoricosGlobales = result.datosHistoricosComunales;
+        }
+
+        // Actualizar título y promedios regionales con datos del endpoint PHP
+        if (result.datosSidebar && result.datosSidebar.promedios) {
+            actualizarPromediosRegionalesDesdeEndpoint(result.datosSidebar.promedios);
+        }
+        
+        // Actualizar título con el mes correspondiente
+        const { mesNombre } = Controller.obtenerMesDatos();
+        const tituloElement = document.getElementById('titulo-afectacion-categoria');
+        if (tituloElement) {
+            tituloElement.textContent = `Porcentaje de afectación y categoría - ${mesNombre}`;
+        }
 
         geoJsonLayerComunas = L.geoJson(dataPrincipal, {
             style: styleFeatureSequia,

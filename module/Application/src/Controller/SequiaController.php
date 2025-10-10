@@ -35,7 +35,27 @@ class SequiaController extends AbstractActionController
             $fechaBase = $this->sequiaBaseService->calcularFechaBase();
             $anoActual = (int) $fechaBase->format('Y');
             $mesActual = (int) $fechaBase->format('m');
+            
+            // Intentar obtener datos del mes calculado
             $datosSequiaActual = $this->sequiaService->getDp3($anoActual, $mesActual);
+            
+            // Si falla, intentar con el mes anterior como fallback
+            if ($datosSequiaActual === null) {
+                $fechaFallback = clone $fechaBase;
+                $fechaFallback->modify('-1 month');
+                $anoFallback = (int) $fechaFallback->format('Y');
+                $mesFallback = (int) $fechaFallback->format('m');
+                
+                $datosSequiaActual = $this->sequiaService->getDp3($anoFallback, $mesFallback);
+                
+                // Si encuentra datos en el fallback, actualizar las variables
+                if ($datosSequiaActual !== null) {
+                    $anoActual = $anoFallback;
+                    $mesActual = $mesFallback;
+                    $fechaBase = $fechaFallback;
+                }
+            }
+            
             $this->sequiaBaseService->validarDatosSequiaActual($datosSequiaActual, $anoActual, $mesActual);
 
             // 2. OBTENER DATOS HISTÓRICOS (ÚLTIMOS 6 MESES)
@@ -59,6 +79,7 @@ class SequiaController extends AbstractActionController
             // 7. PREPARAR Y ENVIAR RESPUESTA: Crear respuesta JSON con todos los datos procesados
             return new JsonModel([
                 'success' => true,
+                'fechaBase' => $anoActual . '/' . $mesActual,
                 'geojsonData' => $geojsonDataFusionado,
                 'datosHistoricosComunales' => $datosHistoricos,
                 'datosSidebar' => $datosSidebar
